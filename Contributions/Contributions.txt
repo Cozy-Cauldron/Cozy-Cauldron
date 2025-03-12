@@ -1,0 +1,7 @@
+Computer Engineering Design 1
+Hour Work Contributions
+
+3/12/2025:
+Phillip
+* 3:30-4:30PM - Started Drafting Skeleton Report
+* 4:30-5:30PM - Adjusting GitHub repository ruleset to make non-main branches unprotected.
