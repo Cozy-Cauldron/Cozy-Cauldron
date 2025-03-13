@@ -5,3 +5,7 @@ Hour Work Contributions
 Phillip Somchanhmavong
 * 3:30-4:30PM - Started Drafting Skeleton Report
 * 4:30-5:30PM - Adjusting GitHub repository ruleset to make non-main branches unprotected.
+
+3/13/2025:
+Phillip Somchanhmavong
+* 11AM - Looking into Magic Wand GitHub documentation and code
