@@ -29,4 +29,15 @@ Installed unity and completed a basic 3D tutorial on setting up in game objects.
 3/13
 Completed object intractability, open/close inventory, put item into inventory functionality, item slot selection in inventory, and item information population on the right side of the inventory.
 
+Ryan Weisse
+3/10
+TensorFlow research and setup.
 
+3/11
+Basic gesture database is implemented, which has only been populated with “dummy” data. This data serves as a placeholder for the gesture data until we collect testing data with the controller when we begin programming the gestures we want.
+
+3/12
+The gesture recognition logic has been integrated, which compares the user-parsed data with the database of pre-coded gestures. Connecting this logic with TensorFlow is the next planned step.
+
+3/14
+User-parsed data passes through a basic filter that checks if the data “is real”. The filter eliminates data sets that are composed of strictly 0x00 or strictly 0xff, which indicates the data was collected incorrectly.
