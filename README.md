@@ -16,9 +16,18 @@ Beginning with the external interfaces from the controller wand, data is recorde
 Data collected via hardware -> interpretation algorithm -> output interface -> game inputs
 
 ## Known Bugs
+### Fixed
+Item image sprite removed slot background. 
+Added a parent UI panel component to the sprite so it would always have a background.
+Character can still move when the inventory is open. 
+Changed timescale to 0 in the inventory manager class when the inventory opens and back to 1 when it closes.
+Distance object moves is significantly smaller than intended 
+Used a different (more compatible) way of moving object instead of root movement
+PC not recognizing connected Pico board.
+Replaced USB cord (was previously charge-only)
+CMake fails for Pico C files.
+Hard-coded PICO_BOARD to pico_w in CMakeLists.txt
+### Not Fixed
 Items of the same type do not stack in the inventory.
-Item image sprite removed slot background. (fixed)
-Character can still move when the inventory is open. (fixed)
 Amount of time before animation starts is inconsistent between actions
-Some actions are currently allowed to overlap unintentionally 
-Distance object moves is significantly smaller than intended (fixed) 
+Some animation actions are currently allowed to overlap unintentionally 
