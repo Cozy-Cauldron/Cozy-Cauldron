@@ -1,1 +1,32 @@
+// Placeholder code before I can properly get my hands on the thing
+// Probably connected to Pico through GPIO?
+
 #include <stdint.h>
+
+class joystick {
+private:
+// Private data elements for security?
+    float xAxis, yAxis;
+
+public:
+// Default Constructor
+// Probably set data elements to 0
+    joystick(void);
+
+// initializer
+// most likely setting up power/pulling pins
+    bool init(void);
+
+// Reset joystick 
+// Pull pin opposite, reset values, reinit
+    bool reset(void);
+
+// Updates class elements with recorded values
+// Use read_reg helper function to do so
+// Remember to convert from 0~1024 (w/ mid being 512) to float
+    void update(void);
+
+// GetVal functions for private elements
+    float getAxisX(void);
+    float getAxisY(void);
+};

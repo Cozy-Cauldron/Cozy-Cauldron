@@ -28,6 +28,7 @@ public:
 
 // Updates class elements with recorded values
 // Use read_reg helper function to do so
+// Remember to convert from the two's complement into the float
     void update(void);
 
 // GetVal functions for private elements
