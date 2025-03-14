@@ -2,6 +2,7 @@
 // Look into owned hardware later to retool towards specifications
 
 #include <stdint.h>
+#include <stdio.h>
 
 class IMUclass {
 private:
