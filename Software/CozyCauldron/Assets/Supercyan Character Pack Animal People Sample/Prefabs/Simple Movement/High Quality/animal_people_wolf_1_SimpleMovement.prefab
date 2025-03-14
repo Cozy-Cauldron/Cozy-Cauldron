@@ -13,6 +13,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9100000, guid: eb28ccc0cf9e0e142a31d85ad402181d, type: 2}
     - target: {fileID: 1595969889546942702, guid: b3d22c566a40cfe45bfc575a822257f4, type: 3}
+      propertyPath: m_UpdateMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1595969889546942702, guid: b3d22c566a40cfe45bfc575a822257f4, type: 3}
       propertyPath: m_CullingMode
       value: 1
       objectReference: {fileID: 0}
@@ -147,14 +151,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3115044124669147887}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d7b3916f6e92d3745b68b9e3fb6987fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_characterRenderer: {fileID: 8569027583893054830}
-  m_accessoriesToAttach:
-  - {fileID: 0}
+  m_accessoriesToAttach: []
 --- !u!114 &2673826191164833858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -168,6 +171,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 20
+  walkSpeed: 5
+  runSpeed: 10
 --- !u!137 &8569027583893054830 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: 558457316708465754, guid: b3d22c566a40cfe45bfc575a822257f4, type: 3}
