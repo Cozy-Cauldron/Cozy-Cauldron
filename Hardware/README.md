@@ -16,5 +16,6 @@ Pico Board
 
 Connected Device
 - stores ML training dataset?
-- receives info from Pico, processes data to check for valid gestures
-- identify (in)valid gestures, then send interpreted result to Game Software for future handling
+- receives info from Pico, processes data to check for valid gestures?
+- identify (in)valid gestures, then send interpreted result to Game Software for future handling?
+- assume more info in ML folder of repo
