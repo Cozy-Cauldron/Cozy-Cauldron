@@ -11,6 +11,8 @@ public class Item : MonoBehaviour, IInteractable
 
      [SerializeField] private Sprite itemImage;
 
+     [TextArea][SerializeField] private string itemDescription;
+
      private InventoryManager inventoryManager;
 
      void Start()
@@ -21,7 +23,7 @@ public class Item : MonoBehaviour, IInteractable
    public bool Interact(Interactor interactor)
    {
         Debug.Log("Pick up!");
-        inventoryManager.AddItem(itemName, quantity, itemImage);
+        inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
         Destroy(gameObject);
         return true;
    }
