@@ -1,21 +1,10 @@
-Pre-Alpha Hardware Build Placeholder Concepts
+The hardware part of this project is based around getting the button, joystick, and IMU components set up, detecting data, and then transmitting said data to the PicoBoard to send out to the rest of the project for interpretation. As such, it primarily deals with the external interfaces that connect to the persistent state of the project.
 
-joystick class
-- holds X/Y-axis data elements
-- initialize & update functions
-- sends elements to board via i2c/connection
+Pre-Alpha:
+- As hardware components are not yet set in stone, most code exists as prototypes to be retooled later for the specific values and locations of each module.
+- The primary concept is splitting up each module into individual driver classes with their own private data and public functions. These will hold the recorded data from the external interfaces, and then send out that data to the rest of the project to be interpreted.
 
-IMU class
-- holds accelerometer/gyrometer data elements
-- initialize & update functions
-- sends elements to board via i2c/connection
-
-Pico Board
-- component initialize & update functions
-- sends received elements from board to connected device
-
-Connected Device
-- stores ML training dataset?
-- receives info from Pico, processes data to check for valid gestures?
-- identify (in)valid gestures, then send interpreted result to Game Software for future handling?
-- assume more info in ML folder of repo
+Current Bugs (See also: Issues):
+- Most code is non-functional, being prototype examples of the driver classes
+- The IMU class is based around LIS3DH code, but needs to be retooled properly for the different IMU spec we're using
+- Driver classes are lacking a main/board file that represents the PicoBoard receiving the data to send out to the other internal systems/persistent states.
