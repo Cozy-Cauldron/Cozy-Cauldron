@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-class joystick {
+class Joystick {
 private:
 // Private data elements for security?
     float xAxis, yAxis;
@@ -11,7 +11,7 @@ private:
 public:
 // Default Constructor
 // Probably set data elements to 0
-    joystick(void);
+    Joystick(void);
 
 // initializer
 // most likely setting up power/pulling pins
@@ -22,7 +22,6 @@ public:
     bool reset(void);
 
 // Updates class elements with recorded values
-// Use read_reg helper function to do so
 // Remember to convert from 0~1024 (w/ mid being 512) to float
     void update(void);
 
