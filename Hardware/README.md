@@ -8,3 +8,4 @@ Current Bugs (See also: Issues):
 - Most code is non-functional, being prototype examples of the driver classes
 - The IMU class is based around LIS3DH code, but needs to be retooled properly for the different IMU spec we're using
 - Driver classes are lacking a main/board file that represents the PicoBoard receiving the data to send out to the other internal systems/persistent states.
+- PuTTY was used to demonstrate data could be sent over USB, but it cannot be used to display I2C data. Another method will be needed to further test/debug the I2C communication between the IMU and Pico board.
