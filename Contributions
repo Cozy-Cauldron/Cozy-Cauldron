@@ -39,3 +39,13 @@ Basic gesture database is implemented, which has only been populated with “dum
 The gesture recognition logic has been integrated, which compares the user-parsed data with the database of pre-coded gestures. Connecting this logic with TensorFlow is the next planned step.
 3/14
 User-parsed data passes through a basic filter that checks if the data “is real”. The filter eliminates data sets that are composed of strictly 0x00 or strictly 0xff, which indicates the data was collected incorrectly.
+
+M Vargo
+3/10
+Reading more documentation and relevant examples (for I2C, USB, etc.) for Pico W board and IMU.
+3/11
+Downloaded firmware for Pico board, followed "getting started" guide for the Pico W, and initialized necessary SDK/submodules.
+3/13 - 3/14
+Soldered header pins to the Pico board and IMU. Read pinouts and connected necessary pins on a breadboard to enable I2C communication.
+3/14
+Got the Pico to connect correctly and run some examples.
