@@ -49,3 +49,11 @@ Downloaded firmware for Pico board, followed "getting started" guide for the Pic
 Soldered header pins to the Pico board and IMU. Read pinouts and connected necessary pins on a breadboard to enable I2C communication.
 3/14
 Got the Pico to connect correctly and run some examples.
+
+-------------------------------3/15 - 3/21-------------------------------------
+Spring Break
+
+-------------------------------3/22 - 3/28-------------------------------------
+Kylie Lennon
+3/24
+Implemented item stacking in the inventory.
