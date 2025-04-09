@@ -17,14 +17,34 @@ public class Item : MonoBehaviour, IInteractable
 
      void Start()
      {
-          inventoryManager = GameObject.Find("InventoryCanvas").GetComponent<InventoryManager>();
+        GameObject inventoryObject = GameObject.Find("InventoryCanvas");
+    
+        if (inventoryObject == null)
+        {
+            Debug.LogError("Item: Could not find InventoryCanvas in the scene!");
+            return;
+        }
+
+        inventoryManager = inventoryObject.GetComponent<InventoryManager>();
+
+        if (inventoryManager == null)
+        {
+            Debug.LogError("Item: InventoryCanvas found, but it has no InventoryManager component!");
+        }
      }
 
    public bool Interact(Interactor interactor)
    {
-        Debug.Log("Pick up!");
-        inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
-        Destroy(gameObject);
+        //Debug.Log("Pick up!");
+        int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
+        if(leftOverItems<=0)
+        {
+          Destroy(gameObject);
+        }
+        else
+        {
+          quantity = leftOverItems;
+        }
         return true;
    }
     public Sprite GetItemImage()

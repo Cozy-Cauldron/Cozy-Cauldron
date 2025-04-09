@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,20 @@ public class InventoryManager : MonoBehaviour
 
     void Start()
     {
+        if (itemSlots == null || itemSlots.Length == 0)
+        {
+            Debug.LogError("InventoryManager: itemSlots array is null or empty! Assign it in the Inspector.");
+            return;
+        }
+
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            if (itemSlots[i] == null)
+            {
+                Debug.LogError($"InventoryManager: itemSlots[{i}] is null! Ensure all slots are assigned.");
+            }
+        }
+
         // Ensure only the first item is highlighted at start
         if (itemSlots.Length > 0)
         {
@@ -98,16 +113,21 @@ public class InventoryManager : MonoBehaviour
         itemSlots[selectedItemIndex].SetHighlight(true);
     }
 
-    public void AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
+    public int AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
     {
         for (int i = 0; i < itemSlots.Length; i++)
         {
-            if(itemSlots[i].isFull == false)
+            if(itemSlots[i].isFull == false && (itemSlots[i].itemName == itemName || itemSlots[i].quantity==0))
             {
-                itemSlots[i].AddItem(itemName, quantity, itemSprite, itemDescription);
-                return;
+                int leftOverItems = itemSlots[i].AddItem(itemName, quantity, itemSprite, itemDescription);
+                if(leftOverItems > 0)
+                {
+                    leftOverItems = AddItem(itemName, leftOverItems, itemSprite, itemDescription);
+                }   
+                return leftOverItems; 
             }
         }
+        return quantity;
     }
 
 }
