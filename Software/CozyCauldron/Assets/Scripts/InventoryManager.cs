@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using NUnit.Framework.Interfaces;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,13 +14,16 @@ public class InventoryManager : MonoBehaviour
     private const int columns = 5; // Number of columns in the inventory grid
     private const int rows = 4; // Number of rows in the inventory grid
 
+
     void Start()
     {
+
         // Ensure only the first item is highlighted at start
         if (itemSlots.Length > 0)
         {
             itemSlots[selectedItemIndex].SetHighlight(true);
         }
+
     }
 
     void Update()
@@ -110,4 +115,14 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    public void RefillInventoryUI() //refill inventory on load a new scene
+    {
+        for (int i = 0; i < itemSlots.Length; i++)
+        {
+            itemSlots[i].isFull = false; // Clear previous data
+        }
+    }
+
 }
+
+

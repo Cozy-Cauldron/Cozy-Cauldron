@@ -56,7 +56,7 @@ public class PlayerMovement : MonoBehaviour
         //    m_Rigidbody.MoveRotation(smoothedRotation);
         //}
         bool isWaving = Input.GetKey(KeyCode.Space);
-        Debug.Log("waving?" + isWaving);
+        //Debug.Log("waving?" + isWaving);
         m_Animator.SetBool("isWaving", isWaving);
 
         //bool isWaving = Input.GetKey(KeyCode.Q); //boolean for waving (if the Q key is pressed)
