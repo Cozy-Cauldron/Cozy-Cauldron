@@ -9,8 +9,8 @@ KNOWN BUGS:
 - issues with reading from the csv file if the data is not in hex format
 
 PROTOTYPE:
--added serial to csv conversion file, which reads from the accelerometer and gyroscope and formats the data into a csv file, which is needed for TensorFlow/ML operations.
--added basis for I squared C, may or may not be the direction we decide to go in, but will be capable of reading from controller directly to i2c
+- added serial to csv conversion file, which reads from the accelerometer and gyroscope and formats the data into a csv file, which is needed for TensorFlow/ML operations.
+- added basis for I squared C, may or may not be the direction we decide to go in, but will be capable of reading from controller directly to i2c
 
 KNOWN BUGS:
 - currently experimenting with different sizes for csv file, I will test which sizes are optimal for feature extraction and selection.
