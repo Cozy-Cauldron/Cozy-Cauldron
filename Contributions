@@ -57,3 +57,29 @@ Spring Break
 Kylie Lennon
 3/24
 Implemented item stacking in the inventory.
+
+Ryan Weisse
+3/26
+Began work on MSU -> I2C conversion 
+3/28
+Finalized MSU -> I2C conversion, ready for use, committed to github
+-------------------------------3/29 - 4/4--------------------------------------
+Ryan Weisse
+4/3
+Began work on serial -> csv conversion
+-------------------------------4/5 - 4/11--------------------------------------
+Ryan Weisse 
+4/8
+TensorFlow Model training, using dummy values to train datasets
+4/9
+Experimented with different feature numbers and dataset size for example datasets online
+
+4/11
+Finalized serial -> csv conversion, ready for use, committed to github
+-------------------------------4/12 - 4/19-------------------------------------
+
+
+
+
+
+
