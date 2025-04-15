@@ -68,6 +68,8 @@ Ryan Weisse
 4/3
 Began work on serial -> csv conversion
 -------------------------------4/5 - 4/11--------------------------------------
+Weekly Team Meeting: 4/8 - All members attended, status updates on project aspects given
+
 Ryan Weisse 
 4/8
 TensorFlow Model training, using dummy values to train datasets
@@ -76,10 +78,19 @@ Experimented with different feature numbers and dataset size for example dataset
 
 4/11
 Finalized serial -> csv conversion, ready for use, committed to github
+
+Phillip S.
+4/10 ~ 4 hours
+Looked into joystick components, using documentations for both to pick one (GPIO) for the prototype build 
+4/10 ~ 2 hours
+Looked into Pico HID connection options for the controller to interact with Software's Unity in the future
 -------------------------------4/12 - 4/19-------------------------------------
+Weekly Team Meeting: 4/15 -
 
+Phillip S.
+4/14 ~ 2 hours
+Looked into Pico's C++ SDKs (specifically ADCs/GPIOs) and further into hardware components schematics for planning Driver code
+4/14~4/15 ~ 4 hours
+Coded Joystick/Button drivers+connections in C++, using placeholder pin values & Pico Projects, committed to personal test branch
 
-
-
-
-
+Weekly Updates and all non-logged tasks (not reflected in this repo) go here with name, date(s) of work, and a short description of the task.
