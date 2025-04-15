@@ -3,12 +3,14 @@
 
 #include <stdint.h>
 
+#include "hardware/gpio.h"
+
 class Buttons {
 private:
 // Private data elements for security?
 // True if pressed, False if not pressed
 // May change to uint if we use pressure-sensitive buttons?
-    bool buttA, buttB;
+    bool buttAPressed, buttBPressed;
 
 public:
 // Default Constructor
@@ -27,6 +29,6 @@ public:
     void update(void);
 
 // GetVal functions for private elements
-    float getButtA(void);
-    float getButtB(void);
+    bool getButtA(void);
+    bool getButtB(void);
 };

@@ -3,10 +3,14 @@
 
 #include <stdint.h>
 
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
+
 class Joystick {
 private:
 // Private data elements for security?
     float xAxis, yAxis;
+    bool zButtonPressed;
 
 public:
 // Default Constructor
@@ -28,4 +32,5 @@ public:
 // GetVal functions for private elements
     float getAxisX(void);
     float getAxisY(void);
+    bool getZButton(void);
 };
