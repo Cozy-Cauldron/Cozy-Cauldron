@@ -13,5 +13,7 @@ Prototype:
 
 Current Bugs (See also: Issues):
 - Main/board file currently has no actual code making use of the Driver libraries beyond initialization and currently is not connected to rest of project yet
-- PuTTY was used to demonstrate data could be sent over USB, but it cannot be used to display I2C data. Another method will be needed to further test/debug the I2C communication between the IMU and Pico board.
 - Joystick/Button updates have to be done manually, look later into updating them more actively in real-time as will be required for the final product. ADC+GPIO Interrupts/IRQs perhaps?
+- Joystick & Button pins have placeholder PIN values for now. Update with actual values once known.
+
+- PuTTY was used to demonstrate data could be sent over USB, but it cannot be used to display I2C data. Another method will be needed to further test/debug the I2C communication between the IMU and Pico board.
