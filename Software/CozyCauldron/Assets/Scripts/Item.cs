@@ -35,15 +35,25 @@ public class Item : MonoBehaviour, IInteractable
 
    public bool Interact(Interactor interactor)
    {
-        //Debug.Log("Pick up!");
-        int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
-        if(leftOverItems<=0)
+        if(itemName == "Cauldron")
         {
-          Destroy(gameObject);
+            //open the workstation menu
+            inventoryManager.workstationActivated = true;
+            inventoryManager.currentWorkstationName = itemName;
+            inventoryManager.currentWorkstationSprite = itemImage;  
         }
         else
         {
-          quantity = leftOverItems;
+            //pick up the item
+            int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
+            if (leftOverItems <= 0)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                quantity = leftOverItems;
+            }
         }
         return true;
    }

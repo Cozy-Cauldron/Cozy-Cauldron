@@ -96,7 +96,8 @@ MonoBehaviour:
   itemSprite: {fileID: 0}
   isFull: 0
   itemDescription: 
-  maxNumberOfItems: 2
+  maxNumberOfItems: 64
+  emptySlotSprite: {fileID: 21300000, guid: a386ec011bf5c054d9bdb4396748d238, type: 3}
   quantityText: {fileID: 3468215697168427872}
   itemImage: {fileID: 4890674019752474436}
   SelectedPanel: {fileID: 5581665961303706757}

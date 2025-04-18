@@ -12,6 +12,7 @@ public class ItemSlot : MonoBehaviour
     public string itemDescription;
 
     [SerializeField] private int maxNumberOfItems;
+    [SerializeField] private Sprite emptySlotSprite;
 
     //Item Slot
     [SerializeField] private TMP_Text quantityText;
@@ -64,7 +65,7 @@ public class ItemSlot : MonoBehaviour
             SelectedPanel.SetActive(isHighlighted);
         }
 
-        if (isHighlighted && isFull) // Only update UI if the slot has an item
+        if (isHighlighted && this.quantity > 0) // Only update UI if the slot has an item
         {
             if (ItemDescriptionNameText != null) ItemDescriptionNameText.text = itemName;
             if (ItemDescriptionText != null) ItemDescriptionText.text = itemDescription;
@@ -74,7 +75,32 @@ public class ItemSlot : MonoBehaviour
         {
             if (ItemDescriptionNameText != null) ItemDescriptionNameText.text = "";
             if (ItemDescriptionText != null) ItemDescriptionText.text = "";
-            if (itemDescriptionImage != null) itemDescriptionImage.sprite = null;
+            if (itemDescriptionImage != null) itemDescriptionImage.sprite = emptySlotSprite;
+        }
+    }
+
+    public void RemoveItem()
+    {
+        //decrement quantity
+        //if quantity is 0
+        //set isFull to false and clear slot
+       if(this.quantity > 0)
+       {
+            this.quantity--;
+            this.isFull = false;
+            this.quantityText.text = this.quantity.ToString();
+       }
+       if(this.quantity <= 0)
+       {
+            this.quantity = 0;
+            this.itemName = "";
+            this.itemSprite = null;
+            this.itemDescription = null;
+            itemImage.sprite = emptySlotSprite;
+            quantityText.enabled = false;
+
+            SetHighlight(true);
+
         }
     }
 }
