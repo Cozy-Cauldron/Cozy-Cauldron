@@ -29,7 +29,13 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Hard-coded PICO_BOARD to pico_w in CMakeLists.txt
 - Items of the same type do not stack in the inventory.
   - Checked if item of the same name already exist and add to existing quantity.
-### Not Fixed
-- Amount of time before animation starts is inconsistent between actions
 - Some animation actions are currently allowed to overlap unintentionally
+  - When transitioning to new main character model/prefab, this problem naturally went away when re-engineering and designing animations
+
+### Not Fixed
+- Amount of time before animation starts is inconsistent between actions 
 - Crafted item does not have a separate UI pop up, it currently just appears in the inventory.
+- Character materials allow to see through their body sometimes
+- Scene completley resets on load
+  - When loading to a previously unloaded scene, any changes are not saved (inventory or environment)
+- Character gets stuck on the ground sometimes  
