@@ -57,3 +57,49 @@ Spring Break
 Kylie Lennon
 3/24
 Implemented item stacking in the inventory.
+
+Ryan Weisse
+3/26
+Began work on MSU -> I2C conversion 
+3/28
+Finalized MSU -> I2C conversion, ready for use, committed to github
+-------------------------------3/29 - 4/4--------------------------------------
+Kylie Lennon
+4/1 
+Workstaion panels and logic for turning it on an off
+
+Ryan Weisse
+4/3
+Began work on serial -> csv conversion
+
+-------------------------------4/5 - 4/11--------------------------------------
+Ryan Weisse 
+4/8
+TensorFlow Model training, using dummy values to train datasets
+4/9
+Experimented with different feature numbers and dataset size for example datasets online
+4/11
+Finalized serial -> csv conversion, ready for use, committed to github
+
+Kylie Lennon
+4/8
+Group meeting, discussed hardware and ordered buttons and switches
+4/10
+Group meeting, discussed hardware and continued working on workstation UI
+4/11
+Finished navigation between slots for inventory and workstation.
+-------------------------------4/12 - 4/19-------------------------------------
+Kylie Lennon
+4/15
+Dropped off buttons and joystick
+4/16
+Started implementing transferring items between inventory and workstation slots.
+4/17
+Finished implementing transferring items, submit button logic, and added logic for valid crafting recipes.
+
+
+
+
+
+
+
