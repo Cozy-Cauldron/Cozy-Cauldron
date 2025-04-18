@@ -2,7 +2,7 @@
 
 ## Completed Work
 ### Hardware
-Prototypes for external interface modules such as the buttons, joystick, and IMU classes have been set up with dummy functions to be fleshed out post-PreAlpha. All classes contain private data elements corresponding to the type of data that their individual components output, and are set up so that they can send their info to the rest of the project for data processing and handling.
+Code for external interface modules such as the buttons, joystick, and IMU classes has been written so it can be combined with the code that handles IMU communication. Buttons have been physically connected to the microcontroller and can take input. The microcontroller is able to read raw data from the IMU (gyroscope and accelerometer) and transmit it serially over USB connection. The output can currently be displayed in a terminal on a PC. Code has been written to convert the serial data to a CSV file for the ML model to read from. 
 
 ### ML
 Basic gesture database is implemented, which has only been populated with “dummy” data. This data serves as a placeholder for the gesture data until we collect testing data with the controller when we begin programming the gestures we want. The gesture recognition logic has also been integrated, which compares the user-parsed data with the database of pre-coded gestures. Connecting this logic with TensorFlow is the next planned step. Lastly, user-parsed data passes through a basic filter that checks if the data “is real”. The filter eliminates data sets that are composed of strictly 0x00 or strictly 0xff, which indicates the data was collected incorrectly.
