@@ -1,3 +1,4 @@
+
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
@@ -49,6 +50,7 @@ public class InventoryManager : MonoBehaviour
         {
             itemSlots[selectedItemIndex].SetHighlight(true);
         }
+
     }
 
     void Update()
@@ -472,6 +474,6 @@ public class InventoryManager : MonoBehaviour
         return quantity;
     }
 
-
-
 }
+
+
