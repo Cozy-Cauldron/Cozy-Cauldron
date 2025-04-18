@@ -31,6 +31,8 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Checked if item of the same name already exist and add to existing quantity.
 - Some animation actions are currently allowed to overlap unintentionally
   - When transitioning to new main character model/prefab, this problem naturally went away when re-engineering and designing animations
+- Serial output not working while IMU is being read.
+  - Rebuilt project, corrected dependencies (TinyUSB, picotool LibUSB)
 
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions 
@@ -38,4 +40,5 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 - Character materials allow to see through their body sometimes
 - Scene completley resets on load
   - When loading to a previously unloaded scene, any changes are not saved (inventory or environment)
-- Character gets stuck on the ground sometimes  
+- Character gets stuck on the ground sometimes
+- GPIO (button presses) on controller not recognized when run alongside IMU code
