@@ -1,5 +1,5 @@
 Weekly Updates and all non-logged tasks (not reflected in this repo) go here with name, date(s) of work, and a short description of the task.
-
+https://docs.google.com/spreadsheets/d/1wOi2Wld8tSl0mfLUhtkj4WHKIg5I0IEFp19wl3439Ic/edit?gid=0#gid=0
 -------------------------3/8 - 3/14----------------------------
 Weekly Team Meeting: 3/14- All members attended and worked on the pre-alpha report.
 
@@ -63,6 +63,9 @@ Ryan Weisse
 Began work on MSU -> I2C conversion 
 3/28
 Finalized MSU -> I2C conversion, ready for use, committed to github
+
+Emilie Doan
+Started modeling new character model (was eventually scrapped) 
 -------------------------------3/29 - 4/4--------------------------------------
 Kylie Lennon
 4/1 
@@ -72,6 +75,8 @@ Ryan Weisse
 4/3
 Began work on serial -> csv conversion
 
+Emilie Doan 
+New character model + scene switching tests 
 -------------------------------4/5 - 4/11--------------------------------------
 Ryan Weisse 
 4/8
@@ -88,6 +93,13 @@ Group meeting, discussed hardware and ordered buttons and switches
 Group meeting, discussed hardware and continued working on workstation UI
 4/11
 Finished navigation between slots for inventory and workstation.
+
+Emilie Doan 
+4/8
+Group meeting, discussed hardware
+4/10
+Group meeting, discussed hardware and continued working on Scene switching and experimenting in my test scene 
+
 -------------------------------4/12 - 4/19-------------------------------------
 Kylie Lennon
 4/15
@@ -97,6 +109,10 @@ Started implementing transferring items between inventory and workstation slots.
 4/17
 Finished implementing transferring items, submit button logic, and added logic for valid crafting recipes.
 
+Emilie Doan 
+Finalized (for now) new character model 
+Created custom blender animations for this new model 
+Integrated new model into the unity project and setup scene transitioning and systems for demoability. 
 
 
 
