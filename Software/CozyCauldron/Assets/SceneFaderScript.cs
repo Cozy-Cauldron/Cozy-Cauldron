@@ -7,7 +7,7 @@ public class SceneFader : MonoBehaviour
     public CanvasGroup fadePanel;
     public float fadeDuration = 1f;
 
-    void Start()
+    private void Start()
     {
         if (fadePanel != null)
         {
@@ -24,6 +24,8 @@ public class SceneFader : MonoBehaviour
     private IEnumerator FadeToBlackAndLoad(string sceneName)
     {
         yield return StartCoroutine(Fade(1)); // Fade to black
+        // Wait one frame to ensure the fade visually completes
+        yield return new WaitForEndOfFrame();
         SceneManager.LoadScene(sceneName);
     }
 
