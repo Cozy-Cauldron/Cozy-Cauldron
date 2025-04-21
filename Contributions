@@ -114,6 +114,12 @@ Group meeting, discussed hardware; reinstalled dependencies and started a full r
 Rewired Pico and IMU to different board to fit GPIO components, fixed connection to pull-up resistors
 Finished final rebuild and got the IMU serial data to display on PC
 
+Phillip S.
+4/10 ~ 4 hours
+Looked into joystick components, using documentations for both to pick one (GPIO) for the prototype build 
+4/10 ~ 2 hours
+Looked into Pico HID connection options for the controller to interact with Software's Unity in the future
+
 -------------------------------4/12 - 4/19-------------------------------------
 Kylie Lennon
 4/15
@@ -142,6 +148,12 @@ Wrote program to generate 'dummy' training data (user inputted)
 Made progress on feature comparison between training and testing data
 4/18
 Working feature comparison, ML can detect the correct gesture that has been loaded :D
+
+Phillip S.
+4/14 ~ 2 hours
+Looked into Pico's C++ SDKs (specifically ADCs/GPIOs) and further into hardware components schematics for planning Driver code
+4/14~4/15 ~ 4 hours
+Coded Joystick/Button drivers+connections in C++, using placeholder pin values & Pico Projects, committed to personal test branch
 
 
 
