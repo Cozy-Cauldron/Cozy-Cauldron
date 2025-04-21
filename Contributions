@@ -65,7 +65,11 @@ Began work on MSU -> I2C conversion
 Finalized MSU -> I2C conversion, ready for use, committed to github
 
 Emilie Doan
-Started modeling new character model (was eventually scrapped) 
+Started modeling new character model (was eventually scrapped)
+
+M Vargo
+3/26
+Confirmed IMU was outputting data by probing pins directly
 -------------------------------3/29 - 4/4--------------------------------------
 Kylie Lennon
 4/1 
@@ -77,6 +81,9 @@ Began work on serial -> csv conversion
 
 Emilie Doan 
 New character model + scene switching tests 
+
+M Vargo
+Began changing code to use SPI to display IMU output (had to roll back)
 -------------------------------4/5 - 4/11--------------------------------------
 Ryan Weisse 
 4/8
@@ -98,7 +105,14 @@ Emilie Doan
 4/8
 Group meeting, discussed hardware
 4/10
-Group meeting, discussed hardware and continued working on Scene switching and experimenting in my test scene 
+Group meeting, discussed hardware and continued working on Scene switching and experimenting in my test scene
+
+M Vargo
+4/8
+Group meeting, discussed hardware; reinstalled dependencies and started a full rebuild
+4/10
+Rewired Pico and IMU to different board to fit GPIO components, fixed connection to pull-up resistors
+Finished final rebuild and got the IMU serial data to display on PC
 
 -------------------------------4/12 - 4/19-------------------------------------
 Kylie Lennon
@@ -112,9 +126,13 @@ Finished implementing transferring items, submit button logic, and added logic f
 Emilie Doan 
 Finalized (for now) new character model 
 Created custom blender animations for this new model 
-Integrated new model into the unity project and setup scene transitioning and systems for demoability. 
+Integrated new model into the unity project and setup scene transitioning and systems for demoability.
 
-
+M Vargo 
+4/15
+Picked up buttons and joystick, started looking at implementation while using temporary ones
+4/18
+Implemented some GPIO functionality (button press)
 
 
 
