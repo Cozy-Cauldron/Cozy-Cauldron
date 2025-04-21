@@ -1,4 +1,4 @@
-# Protoype
+# Prototype
 
 ## Completed Work
 ### Hardware
