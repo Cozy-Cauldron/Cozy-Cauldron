@@ -1,8 +1,8 @@
-# Protorype
+# Protoype
 
 ## Completed Work
 ### Hardware
-Code for external interface modules such as the buttons, joystick, and IMU classes has been written so it can be combined with the code that handles IMU communication. Buttons have been physically connected to the microcontroller and can take input. The microcontroller is able to read raw data from the IMU (gyroscope and accelerometer) and transmit it serially over USB connection. The output can currently be displayed in a terminal on a PC. Code has been written to convert the serial data to a CSV file for the ML model to read from. 
+Code for external interface modules such as the buttons, joystick, and IMU classes has been written so it can be combined with the code that handles IMU communication. Buttons have been physically connected to the microcontroller and can take input. The microcontroller is able to read raw data from the IMU (gyroscope and accelerometer) and transmit it serially over USB connection. The output can currently be displayed in a terminal on a PC. A python script (under ML) converts the serial data to a CSV file for the ML model to read from. 
 
 ### ML
 Basic gesture database is implemented, which has only been populated with “dummy” data. This data serves as a placeholder for the gesture data until we collect testing data with the controller when we begin programming the gestures we want. The gesture recognition logic has also been integrated, which compares the user-parsed data with the database of pre-coded gestures. Connecting this logic with TensorFlow is the next planned step. Lastly, user-parsed data passes through a basic filter that checks if the data “is real”. The filter eliminates data sets that are composed of strictly 0x00 or strictly 0xff, which indicates the data was collected incorrectly.
@@ -33,6 +33,8 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - When transitioning to new main character model/prefab, this problem naturally went away when re-engineering and designing animations
 - Serial output not working while IMU is being read.
   - Rebuilt project, corrected dependencies (TinyUSB, picotool LibUSB)
+- GPIO (button presses) on controller not recognized when run alongside IMU code
+  - Corrected order of GPIO initialization to happen before any IMU data is sent
 
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions 
@@ -41,4 +43,3 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 - Scene completley resets on load
   - When loading to a previously unloaded scene, any changes are not saved (inventory or environment)
 - Character gets stuck on the ground sometimes
-- GPIO (button presses) on controller not recognized when run alongside IMU code
