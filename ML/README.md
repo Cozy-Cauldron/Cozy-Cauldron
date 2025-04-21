@@ -11,6 +11,11 @@ KNOWN BUGS:
 PROTOTYPE:
 - added serial to csv conversion file, which reads from the accelerometer and gyroscope and formats the data into a csv file, which is needed for TensorFlow/ML operations.
 - added basis for I squared C, may or may not be the direction we decide to go in, but will be capable of reading from controller directly to i2c
+- working ML model that loads in training and testing data, and decides which "action" from the training data matches closest with testing data. 
+- uses random forest classification for comparison
+- uses PCA and radar plot for data visuals
 
 KNOWN BUGS:
 - currently experimenting with different sizes for csv file, I will test which sizes are optimal for feature extraction and selection.
+- confusion matrix error: I believe it could be due to the dummy data being too similar to training data.
+- some difficulty with handling labels, I may resort to changing the csv file format to include a gesture id so I can more easily debug this issue

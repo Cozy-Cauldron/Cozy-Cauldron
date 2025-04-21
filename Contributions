@@ -134,6 +134,15 @@ Picked up buttons and joystick, started looking at implementation while using te
 4/18
 Implemented some GPIO functionality (button press)
 
+Ryan Weisse
+4/16
+Wrote program for generating "dummy" data for labeled gestures
+Wrote program to generate 'dummy' training data (user inputted)
+4/17
+Made progress on feature comparison between training and testing data
+4/18
+Working feature comparison, ML can detect the correct gesture that has been loaded :D
+
 
 
 
