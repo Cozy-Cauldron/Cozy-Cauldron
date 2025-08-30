@@ -49,35 +49,20 @@ public class PlayerMovement : MonoBehaviour
             m_Rigidbody.MoveRotation(m_Rotation);
         }
 
-        //if (m_Movement != Vector3.zero)
-        //{
-        //    Quaternion targetRotation = Quaternion.LookRotation(m_Movement);
-        //    Quaternion smoothedRotation = Quaternion.RotateTowards(m_Rigidbody.rotation, targetRotation, turnSpeed * Time.fixedDeltaTime);
-        //    m_Rigidbody.MoveRotation(smoothedRotation);
-        //}
-        bool isWaving = Input.GetKey(KeyCode.Space);
-        //Debug.Log("waving?" + isWaving);
-        m_Animator.SetBool("isWaving", isWaving);
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            m_Animator.SetTrigger("StartFishing");
+        }
 
-        //bool isWaving = Input.GetKey(KeyCode.Q); //boolean for waving (if the Q key is pressed)
-        //if (isWaving)
-        //{
-        //    m_Animator.SetBool("isWaving", isWaving); //set the Wave trigger in the animator
-        //}
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            m_Animator.SetTrigger("CatchBug");
+        }
+
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            m_Animator.SetTrigger("Craft");
+        }
     }
 
-    //private void OnAnimatorMove()
-    //{
-    //    if (isWalking)
-    //    {   // * 5f
-    //        Debug.Log("DeltaPosition: " + m_Animator.deltaPosition);
-    //        m_Rigidbody.MovePosition(m_Rigidbody.position + m_Animator.deltaPosition.magnitude * m_Movement); //move the rigidbody to the new position
-    //        m_Rigidbody.MoveRotation(m_Rotation); //rotate the rigidbody to the new rotation
-    //    }
-    //    else if (isRunning)
-    //    {   // * 10f
-    //        m_Rigidbody.MovePosition(m_Rigidbody.position + m_Movement * m_Animator.deltaPosition.magnitude); //move the rigidbody to the new position
-    //        m_Rigidbody.MoveRotation(m_Rotation); //rotate the rigidbody to the new rotation        }
-    //    }
-    //}
 }
