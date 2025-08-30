@@ -49,27 +49,19 @@ public class PlayerMovement : MonoBehaviour
             m_Rigidbody.MoveRotation(m_Rotation);
         }
 
-        bool isFishing = Input.GetKey(KeyCode.X);
-        m_Animator.SetBool("isFishing", isFishing);
-
-        if (isFishing)
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            print("X pressed");
+            m_Animator.SetTrigger("StartFishing");
         }
 
-        bool isCatchBug = Input.GetKey(KeyCode.C);
-        m_Animator.SetBool("isCatchBug", isCatchBug);
-
-        if (isCatchBug)
+        if (Input.GetKeyDown(KeyCode.C))
         {
-            print("C pressed");
+            m_Animator.SetTrigger("CatchBug");
         }
 
-        bool isCrafting = Input.GetKey(KeyCode.V);
-        m_Animator.SetBool("isCrafting", isCrafting);
-        if (isCrafting)
+        if (Input.GetKeyDown(KeyCode.V))
         {
-            print("V pressed");
+            m_Animator.SetTrigger("Craft");
         }
     }
 
