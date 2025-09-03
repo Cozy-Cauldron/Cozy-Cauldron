@@ -1,13 +1,19 @@
-
+﻿
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject InventoryMenu;
     public GameObject InventoryDescription;
     public GameObject WorkstationMenu;
+    public GameObject CraftingMinigamePanel;
+    private bool minigameActive = false;
+    private string keySequence = "";
+    private int currentKeyIndex = 0;
     public Button workstationButton;
     public string currentWorkstationName;
     public Sprite currentWorkstationSprite;
@@ -16,6 +22,17 @@ public class InventoryManager : MonoBehaviour
     private bool isWorkstationMenuActive;
     public Sprite trashSprite;
     public Sprite combinedSprite;
+
+    public Transform keySequenceContainer; // assign KeySequenceContainer in Inspector
+    public GameObject keyImagePrefab;      // a prefab with just an Image component
+    public Sprite keyZSprite;
+    public Sprite keyXSprite;
+    public Sprite keyCSprite;
+    public Sprite keyVSprite;
+
+    private Dictionary<string, Sprite> keySprites;
+    private List<Image> activeKeyImages = new List<Image>();
+    private List<Image> overlayImages = new List<Image>();
 
     [SerializeField] private ItemSlot[] itemSlots; // Array of inventory item slots
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
@@ -51,10 +68,18 @@ public class InventoryManager : MonoBehaviour
             itemSlots[selectedItemIndex].SetHighlight(true);
         }
 
+        keySprites = new Dictionary<string, Sprite>
+        {
+            { "Z", keyZSprite },
+            { "X", keyXSprite },
+            { "C", keyCSprite },
+            { "V", keyVSprite }
+        };
+
     }
 
     void Update()
-    {
+    {       
         if (isDelaying)
         {
             // Increment the timer
@@ -68,6 +93,13 @@ public class InventoryManager : MonoBehaviour
                 delayTimer = 0f; // Reset the timer
             }
             return; // Skip the rest of Update while delaying
+        }
+
+        // Run minigame update first if active
+        if (minigameActive)
+        {
+            UpdateCraftingMinigame();
+            return; // skip inventory/workstation logic while minigame is running
         }
 
         if (Input.GetButtonDown("Inventory"))
@@ -412,6 +444,101 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private void StartCraftingMinigame()
+    {
+        int sequenceLength = 3;
+        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V" };
+
+        // Shuffle the list
+        for (int i = 0; i < possibleKeys.Count; i++)
+        {
+            int randIndex = UnityEngine.Random.Range(i, possibleKeys.Count);
+            string temp = possibleKeys[i];
+            possibleKeys[i] = possibleKeys[randIndex];
+            possibleKeys[randIndex] = temp;
+        }
+
+        // Pick the first three keys
+        keySequence = string.Join(" ", possibleKeys.GetRange(0, sequenceLength));
+
+        currentKeyIndex = 0;
+        minigameActive = true;
+
+        // Clear old icons and overlays
+        foreach (Transform child in keySequenceContainer)
+            Destroy(child.gameObject);
+
+        activeKeyImages.Clear();
+        overlayImages.Clear();
+
+        // Create icons and overlays
+        string[] keys = keySequence.Split(' ');
+        foreach (string key in keys)
+        {
+            GameObject keyGO = Instantiate(keyImagePrefab, keySequenceContainer);
+            Image keyImg = keyGO.GetComponent<Image>();
+            keyImg.sprite = keySprites[key];
+            keyImg.color = Color.white;
+            activeKeyImages.Add(keyImg);
+
+            // Overlay
+            GameObject overlayGO = new GameObject("Overlay", typeof(RectTransform), typeof(Image));
+            overlayGO.transform.SetParent(keyGO.transform, false);
+            Image overlay = overlayGO.GetComponent<Image>();
+            overlay.color = new Color(0, 1, 0, 0.5f);
+            overlay.gameObject.SetActive(false);
+            overlayImages.Add(overlay);
+
+            // Set overlay size
+            RectTransform rt = overlayGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(400, 400);
+            rt.localPosition = Vector3.zero;
+        }
+
+        CraftingMinigamePanel.SetActive(true);
+    }
+
+    private void UpdateCraftingMinigame()
+    {
+        if (!minigameActive) return;
+
+        string[] keys = keySequence.Split(' ');
+
+        if (Input.anyKeyDown)
+        {
+            string expectedKey = keys[currentKeyIndex].ToLower();
+
+            if (Input.GetKeyDown(expectedKey))
+            {
+                // Correct key → show overlay green
+                overlayImages[currentKeyIndex].gameObject.SetActive(true);
+
+                currentKeyIndex++;
+
+                if (currentKeyIndex >= keys.Length)
+                {
+                    FinishCraftingMinigame();
+                }
+            }
+            else
+            {
+                // Wrong key → reset overlays
+                foreach (Image overlay in overlayImages)
+                    overlay.gameObject.SetActive(false);
+
+                currentKeyIndex = 0;
+            }
+        }
+    }
+
+    private void FinishCraftingMinigame()
+    {
+        minigameActive = false;
+        CraftingMinigamePanel.SetActive(false);
+
+        Debug.Log("Minigame complete!");
+    }
+
     private void PerformCombinationAction()
     {
         int total = 0;
@@ -434,8 +561,13 @@ public class InventoryManager : MonoBehaviour
         // Check if the combination is valid
         if (Cube == 2 && Sphere == 1)
         {
-            //invalid combintation
-            //make combined iterm
+            //make combined item
+            int temp = AddItem("Combined", 1, combinedSprite, "Yippee, you made something!");
+
+        }
+        if (Cube == 1)
+        {
+            //make combined item
             int temp = AddItem("Combined", 1, combinedSprite, "Yippee, you made something!");
 
         }
@@ -445,7 +577,9 @@ public class InventoryManager : MonoBehaviour
             //make trash
             int temp = AddItem("Trash", 1, trashSprite, "Whoops, you made trash! Make sure you throw it out!");
         }
-       
+
+        StartCraftingMinigame();
+
         //Clear the workstation slots
         foreach (ItemSlot slot in workstationSlots)
         {
