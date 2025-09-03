@@ -12,10 +12,10 @@ EditorBuildSettings:
     path: Assets/Scenes/Emilies Test Scene.unity
     guid: 0a684886853a9dc47856fc550b4b6386
   - enabled: 0
-    path: Assets/Scenes/Pre-Alpha_Scene.unity
+    path: Assets/Scenes/Outside House Portals.unity
     guid: a1e485fd3cf758f4fb143a54b82cdb10
   - enabled: 0
-    path: Assets/Scenes/BlankScene1.unity
+    path: Assets/Scenes/Inside House.unity
     guid: a8920d2ec4bde5c45a83d5c4aa2de75b
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
