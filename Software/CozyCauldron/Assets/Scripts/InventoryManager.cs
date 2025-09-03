@@ -45,6 +45,7 @@ public class InventoryManager : MonoBehaviour
 
     private float delayTimer = 0f;
     private bool isDelaying = false;
+    private bool justOpened = false; // Track if the workstation menu was just opened
 
     void Start()
     {
@@ -152,18 +153,31 @@ public class InventoryManager : MonoBehaviour
                 itemSlots[selectedItemIndex].RemoveItem();
             }
         }
-        else if (workstationActivated)
+        else if (workstationActivated && !justOpened)
         {
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
+            justOpened = true;
+
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
             WorkstationImage.sprite = currentWorkstationSprite; 
             InventoryDescription.SetActive(false);
+        }
+        else if (workstationActivated && justOpened)
+        {
+            // If the workstation menu is active, handle navigation for it
+            // Stop time when the workstation menu is active
+
+            Time.timeScale = 0;
+            InventoryMenu.SetActive(true);
+            WorkstationMenu.SetActive(true);
+            WorkstationImage.sprite = currentWorkstationSprite;
+            InventoryDescription.SetActive(false);
             HandleNavigation();
 
-            if(Input.GetButtonDown("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
                 MoveItemBetweenSlots();
                 return;
@@ -176,6 +190,7 @@ public class InventoryManager : MonoBehaviour
             InventoryDescription.SetActive(false);
             menuActivated = false;
             workstationActivated = false;
+            justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
         }
