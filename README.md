@@ -42,8 +42,11 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions 
 - Crafted item does not have a separate UI pop up, it currently just appears in the inventory.
+- When crafting the item in the first slot automatically goes to the workstation slot
+- Minigame needs an additional keystroke to populate the sprites
 - Character materials allow to see through their body sometimes
 - Scene completley resets on load
   - When loading to a previously unloaded scene, any changes are not saved (inventory or environment)
 - Character gets stuck on the ground sometimes
+
 
