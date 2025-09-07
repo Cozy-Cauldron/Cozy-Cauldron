@@ -47,6 +47,22 @@ public class InventoryManager : MonoBehaviour
     private bool isDelaying = false;
     private bool justOpened = false; // Track if the workstation menu was just opened
 
+    public static InventoryManager Instance;
+
+    private void Awake()
+    {
+        // Make this a singleton
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Keep this object between scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Prevent duplicates
+        }
+    }
+
     void Start()
     {
         if (itemSlots == null || itemSlots.Length == 0)
