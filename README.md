@@ -51,11 +51,13 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Recalculate the normals on the body and triangulate faces with more than 3 sides.
 - When loading to a previously unloaded scene, inventory is not saved
   - Made inventory persistent by passing the inventoryCanvas between scenes when they are loaded.
+- Character gets stuck on the ground sometimes
+  - Updated character motion settings to better simulate physics.
 
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
 - Player is able to climb over invisible collider for catching fish
-- Character gets stuck on the ground sometimes
+
 
 
 
