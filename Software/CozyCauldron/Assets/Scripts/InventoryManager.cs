@@ -1,13 +1,19 @@
-
+﻿
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Collections.Generic;
 
 public class InventoryManager : MonoBehaviour
 {
     public GameObject InventoryMenu;
     public GameObject InventoryDescription;
     public GameObject WorkstationMenu;
+    public GameObject CraftingMinigamePanel;
+    private bool minigameActive = false;
+    private string keySequence = "";
+    private int currentKeyIndex = 0;
     public Button workstationButton;
     public string currentWorkstationName;
     public Sprite currentWorkstationSprite;
@@ -16,6 +22,19 @@ public class InventoryManager : MonoBehaviour
     private bool isWorkstationMenuActive;
     public Sprite trashSprite;
     public Sprite combinedSprite;
+
+    public Sprite waterBreathingPotionSprite;
+
+    public Transform keySequenceContainer; // assign KeySequenceContainer in Inspector
+    public GameObject keyImagePrefab;      // a prefab with just an Image component
+    public Sprite keyZSprite;
+    public Sprite keyXSprite;
+    public Sprite keyCSprite;
+    public Sprite keyVSprite;
+
+    private Dictionary<string, Sprite> keySprites;
+    private List<Image> activeKeyImages = new List<Image>();
+    private List<Image> overlayImages = new List<Image>();
 
     [SerializeField] private ItemSlot[] itemSlots; // Array of inventory item slots
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
@@ -28,6 +47,51 @@ public class InventoryManager : MonoBehaviour
 
     private float delayTimer = 0f;
     private bool isDelaying = false;
+    private bool justOpened = false; // Track if the workstation menu was just opened
+
+    private List<(Dictionary<string,int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string,int>, string, Sprite, string)>();
+
+    public static InventoryManager Instance;
+
+    private void Awake()
+    {
+        // Make this a singleton
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // Keep this object between scenes
+        }
+        else
+        {
+            Destroy(gameObject); // Prevent duplicates
+        }
+
+            // Example: Cube + Sphere combination
+        craftingRecipes.Add((
+            new Dictionary<string,int>
+            {
+                {"Cube", 1},
+                {"Sphere", 1}
+            },
+            "Combined",
+            combinedSprite,
+            "Yippee, you made something!"
+        ));
+
+        // Water Breathing Potion
+        craftingRecipes.Add((
+            new Dictionary<string,int>
+            {
+                {"Starfish", 1},
+                {"Clownfish", 1},
+                {"Lily Pad", 1},
+                {"Barnacle", 1}
+            },
+            "Water Breathing Potion",
+            waterBreathingPotionSprite, 
+            "One step closer to becoming a mermaid!"
+        ));
+    }
 
     void Start()
     {
@@ -51,10 +115,18 @@ public class InventoryManager : MonoBehaviour
             itemSlots[selectedItemIndex].SetHighlight(true);
         }
 
+        keySprites = new Dictionary<string, Sprite>
+        {
+            { "Z", keyZSprite },
+            { "X", keyXSprite },
+            { "C", keyCSprite },
+            { "V", keyVSprite }
+        };
+
     }
 
     void Update()
-    {
+    {       
         if (isDelaying)
         {
             // Increment the timer
@@ -68,6 +140,13 @@ public class InventoryManager : MonoBehaviour
                 delayTimer = 0f; // Reset the timer
             }
             return; // Skip the rest of Update while delaying
+        }
+
+        // Run minigame update first if active
+        if (minigameActive)
+        {
+            UpdateCraftingMinigame();
+            return; // skip inventory/workstation logic while minigame is running
         }
 
         if (Input.GetButtonDown("Inventory"))
@@ -120,18 +199,31 @@ public class InventoryManager : MonoBehaviour
                 itemSlots[selectedItemIndex].RemoveItem();
             }
         }
-        else if (workstationActivated)
+        else if (workstationActivated && !justOpened)
         {
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
+            justOpened = true;
+
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
             WorkstationImage.sprite = currentWorkstationSprite; 
             InventoryDescription.SetActive(false);
+        }
+        else if (workstationActivated && justOpened)
+        {
+            // If the workstation menu is active, handle navigation for it
+            // Stop time when the workstation menu is active
+
+            Time.timeScale = 0;
+            InventoryMenu.SetActive(true);
+            WorkstationMenu.SetActive(true);
+            WorkstationImage.sprite = currentWorkstationSprite;
+            InventoryDescription.SetActive(false);
             HandleNavigation();
 
-            if(Input.GetButtonDown("Interact"))
+            if (Input.GetButtonDown("Interact"))
             {
                 MoveItemBetweenSlots();
                 return;
@@ -144,6 +236,7 @@ public class InventoryManager : MonoBehaviour
             InventoryDescription.SetActive(false);
             menuActivated = false;
             workstationActivated = false;
+            justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
         }
@@ -188,13 +281,21 @@ public class InventoryManager : MonoBehaviour
             int newIndex = selectedWorkstationIndex;
             if (direction == -1 && selectedWorkstationIndex == 0)
             {
+                // Move to item slot 9
+                selectedItemIndex = 9;
+                itemSlots[selectedItemIndex].SetHighlight(true);
+                isWorkstationMenuActive = false;
+                return;
+            }
+            if (direction == -1 && selectedWorkstationIndex == 2)
+            {
                 // Move to item slot 14
                 selectedItemIndex = 14;
                 itemSlots[selectedItemIndex].SetHighlight(true);
                 isWorkstationMenuActive = false;
                 return;
             }
-            else if (direction == -1 && selectedWorkstationIndex == 3)
+            else if (direction == -1 && selectedWorkstationIndex == 4)
             {
                 // Move to item slot 19
                 selectedItemIndex = 19;
@@ -204,34 +305,55 @@ public class InventoryManager : MonoBehaviour
             }
             else if (direction == 1 && selectedWorkstationIndex == 0)
             {
-                // Move to the middle slot from the left slot
+                // Move to the top right slot from the top left slot
                 newIndex = 1;
             }
-            else if (direction == 1 && selectedWorkstationIndex == 1)
+            else if (direction == columns && selectedWorkstationIndex == 0)
             {
-                // Move to the right slot from the middle slot
+                // Move to the bottom left slot from the top left slot
                 newIndex = 2;
             }
             else if (direction == -1 && selectedWorkstationIndex == 1)
             {
-                // Move to the left from the middle slot
+                // Move to the top left slot from the top right slot
                 newIndex = 0;
             }
-            else if (direction == -1 && selectedWorkstationIndex == 2)
+             else if (direction == columns && selectedWorkstationIndex == 1)
             {
-                // Move to the middle from the right slot
-                newIndex = 1;
-            }
-            else if (direction == columns && selectedWorkstationIndex < 3)
-            {
-                // Move to the button when navigating down from the first row
+                // Move to the bottom right slot from the top right slot
                 newIndex = 3;
+            }
+            else if (direction == columns && (selectedWorkstationIndex == 2 || selectedWorkstationIndex == 3))
+            {
+                // Move to the button when navigating down from slots 2 or 3
+                newIndex = 4;
+            }
+            else if (direction == 1 && selectedWorkstationIndex == 2)
+            {
+                // Move to the bottom right slot from the bottom left slot
+                newIndex = 3;
+            }
+            else if (direction == -columns && selectedWorkstationIndex == 2)
+            {
+                // Move to the top left slot from the bottom left slot
+                newIndex = 0;
+            }
+            else if (direction == -1 && selectedWorkstationIndex == 3)
+            {
+                // Move to the bottom left slot from the bottom right slot
+                newIndex = 2;
             }
             else if (direction == -columns && selectedWorkstationIndex == 3)
             {
-                // Move to the center slot when navigating up from the button
+                // Move to the top right slot from the bottom right slot
                 newIndex = 1;
             }
+            else if (direction == -columns && selectedWorkstationIndex == 4)
+            {
+                // Move to the bottom left slot from the button
+                newIndex = 2;
+            }
+            
 
             // Update the selected index
             selectedWorkstationIndex = newIndex;
@@ -239,7 +361,7 @@ public class InventoryManager : MonoBehaviour
 
 
             // Highlight the new slot or button
-            if (selectedWorkstationIndex < 3)
+            if (selectedWorkstationIndex < 4)
             {
                 workstationSlots[selectedWorkstationIndex].SetHighlight(true);
             }
@@ -261,13 +383,21 @@ public class InventoryManager : MonoBehaviour
                 {
                     // Select the button
                     workstationButton.SetHighlight(true);
-                    selectedWorkstationIndex = 3;
+                    selectedWorkstationIndex = 4;
                     isWorkstationMenuActive = true;
                     return;
                 }
-                else if (workstationActivated)
+                else if (workstationActivated && selectedItemIndex == 14)
                 {
-                    // Select the first workstation slot
+                    // Select the bottom left workstation slot
+                    workstationSlots[2].SetHighlight(true);
+                    selectedWorkstationIndex = 2;
+                    isWorkstationMenuActive = true;
+                    return;
+                }
+                else if (workstationActivated && selectedItemIndex == 9)
+                {
+                    // Select the top right workstation slot
                     workstationSlots[0].SetHighlight(true);
                     selectedWorkstationIndex = 0;
                     isWorkstationMenuActive = true;
@@ -305,7 +435,7 @@ public class InventoryManager : MonoBehaviour
 
     private void MoveItemBetweenSlots()
     {
-        if (isWorkstationMenuActive && selectedWorkstationIndex == 3) // Submit button logic
+        if (isWorkstationMenuActive && selectedWorkstationIndex == 4) // Submit button logic
         {
             //Debug.Log("Combination submitted!");
             PerformCombinationAction();
@@ -412,48 +542,163 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void PerformCombinationAction()
+    private void StartCraftingMinigame()
     {
-        int total = 0;
-        int Cube = 0;
-        int Sphere = 0;
+        int sequenceLength = 3;
+        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V" };
 
+        // Shuffle the list
+        for (int i = 0; i < possibleKeys.Count; i++)
+        {
+            int randIndex = UnityEngine.Random.Range(i, possibleKeys.Count);
+            string temp = possibleKeys[i];
+            possibleKeys[i] = possibleKeys[randIndex];
+            possibleKeys[randIndex] = temp;
+        }
 
-        foreach (ItemSlot slot in workstationSlots)
-        {
-            if(slot.itemName == "Trash") break;
-            if (slot.itemName == "Cube") Cube += slot.quantity;
-            if (slot.itemName == "Sphere") Sphere += slot.quantity;
-            total += slot.quantity;
-        }
-        if(total == 0)
-        {
-            // No items in the workstation slots
-            return;
-        }
-        // Check if the combination is valid
-        if (Cube == 2 && Sphere == 1)
-        {
-            //invalid combintation
-            //make combined iterm
-            int temp = AddItem("Combined", 1, combinedSprite, "Yippee, you made something!");
+        // Pick the first three keys
+        keySequence = string.Join(" ", possibleKeys.GetRange(0, sequenceLength));
 
-        }
-        else
+        currentKeyIndex = 0;
+        minigameActive = true;
+
+        // Clear old icons and overlays
+        foreach (Transform child in keySequenceContainer)
+            Destroy(child.gameObject);
+
+        activeKeyImages.Clear();
+        overlayImages.Clear();
+
+        // Create icons and overlays
+        string[] keys = keySequence.Split(' ');
+        foreach (string key in keys)
         {
-            //invalid combintation
-            //make trash
-            int temp = AddItem("Trash", 1, trashSprite, "Whoops, you made trash! Make sure you throw it out!");
+            GameObject keyGO = Instantiate(keyImagePrefab, keySequenceContainer);
+            Image keyImg = keyGO.GetComponent<Image>();
+            keyImg.sprite = keySprites[key];
+            keyImg.color = Color.white;
+            activeKeyImages.Add(keyImg);
+
+            // Overlay
+            GameObject overlayGO = new GameObject("Overlay", typeof(RectTransform), typeof(Image));
+            overlayGO.transform.SetParent(keyGO.transform, false);
+            Image overlay = overlayGO.GetComponent<Image>();
+            overlay.color = new Color(0, 1, 0, 0.5f);
+            overlay.gameObject.SetActive(false);
+            overlayImages.Add(overlay);
+
+            // Set overlay size
+            RectTransform rt = overlayGO.GetComponent<RectTransform>();
+            rt.sizeDelta = new Vector2(400, 400);
+            rt.localPosition = Vector3.zero;
         }
-       
-        //Clear the workstation slots
-        foreach (ItemSlot slot in workstationSlots)
+
+        CraftingMinigamePanel.SetActive(true);
+    }
+
+    private void UpdateCraftingMinigame()
+    {
+        if (!minigameActive) return;
+
+        string[] keys = keySequence.Split(' ');
+
+        if (Input.anyKeyDown)
         {
-            while (slot.quantity > 0)
+            string expectedKey = keys[currentKeyIndex].ToLower();
+
+            if (Input.GetKeyDown(expectedKey))
             {
-                slot.RemoveItem(); // Remove one item from the workstation slot
+                // Correct key → show overlay green
+                overlayImages[currentKeyIndex].gameObject.SetActive(true);
+
+                currentKeyIndex++;
+
+                if (currentKeyIndex >= keys.Length)
+                {
+                    FinishCraftingMinigame();
+                }
+            }
+            else
+            {
+                // Wrong key → reset overlays
+                foreach (Image overlay in overlayImages)
+                    overlay.gameObject.SetActive(false);
+
+                currentKeyIndex = 0;
             }
         }
+    }
+
+    private void FinishCraftingMinigame()
+    {
+        minigameActive = false;
+        CraftingMinigamePanel.SetActive(false);
+
+        // Highlight button and unhighlight the workstation slots
+        for(int i = 0; i < 4; i++)
+        {
+            workstationSlots[i].SetHighlight(false);
+        }
+            
+        workstationButton.SetHighlight(true); 
+           
+        Debug.Log("Minigame complete!");
+    }
+
+    private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)
+{
+    foreach (var kv in recipe)
+    {
+        if (!currentCounts.TryGetValue(kv.Key, out int count) || count != kv.Value)
+            return false; // missing item or wrong quantity
+    }
+    return true;
+}
+
+    private void PerformCombinationAction()
+    {
+        // Count items in workstation slots
+    Dictionary<string,int> itemCounts = new Dictionary<string,int>();
+    foreach (ItemSlot slot in workstationSlots)
+    {
+        if (slot.quantity > 0)
+        {
+            if (!itemCounts.ContainsKey(slot.itemName))
+                itemCounts[slot.itemName] = 0;
+
+            itemCounts[slot.itemName] += slot.quantity;
+        }
+    }
+
+    // If no items, exit
+    if (itemCounts.Count == 0) return;
+
+    bool matched = false;
+    foreach (var recipe in craftingRecipes)
+    {
+        if (MatchesRecipe(recipe.recipe, itemCounts))
+        {
+            AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
+            matched = true;
+            break; // stop after the first match
+        }
+    }
+
+    if (!matched)
+    {
+        // If no valid recipe, create trash
+        AddItem("Trash", 1, trashSprite, "Whoops, you made trash!");
+    }
+
+    // Clear workstation slots
+    foreach (ItemSlot slot in workstationSlots)
+    {
+        while (slot.quantity > 0)
+            slot.RemoveItem();
+    }
+
+    // Start the minigame
+    StartCraftingMinigame();
     }
 
 

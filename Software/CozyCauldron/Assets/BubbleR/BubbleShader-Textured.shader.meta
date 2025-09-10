@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 24025d2f448864f4b988c56b1aedfc18
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/BubbleShader-Textured.shader
+  uploadId: 311154

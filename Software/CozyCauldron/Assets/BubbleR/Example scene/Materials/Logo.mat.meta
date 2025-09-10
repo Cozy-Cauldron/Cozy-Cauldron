@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 817b4419f9e06f14590ae6e835d1f12f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/Example scene/Materials/Logo.mat
+  uploadId: 311154

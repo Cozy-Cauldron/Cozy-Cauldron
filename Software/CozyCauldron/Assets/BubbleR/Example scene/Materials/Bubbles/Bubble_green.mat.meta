@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 14005dd20c3bb514b8a00b913327aac8
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/Example scene/Materials/Bubbles/Bubble_green.mat
+  uploadId: 311154

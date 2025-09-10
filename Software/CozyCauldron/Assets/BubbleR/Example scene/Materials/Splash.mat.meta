@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c1ff8e434aef4a14a90f9b236ef2c35b
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/Example scene/Materials/Splash.mat
+  uploadId: 311154
