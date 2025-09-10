@@ -37,16 +37,19 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Corrected order of GPIO initialization to happen before any IMU data is sent
 - confusion matrix error: I believe it could be due to the dummy data being too similar to training data.
 - some difficulty with handling labels, I may resort to changing the csv file format to include a gesture id so I can more easily debug this issue
-
+-When crafting the item in the first slot automatically goes to the workstation slot
+  - Added justOpened bool to only register E for opening the workstation and not for moving over the item.
+- Minigame needs an additional keystroke to populate the sprites
+  - Reordering where the sprites are loaded allowed them to populate as the menu opens
+- Character and model materials are sometimes see through
+  - Recalculate the normals on the body and triangulate faces with more than 3 sides.
+- When loading to a previously unloaded scene, inventory is not saved
+  - Made inventory persistent by passing the inventoryCanvas between scenes when they are loaded.
 
 ### Not Fixed
-- Amount of time before animation starts is inconsistent between actions 
-- Crafted item does not have a separate UI pop up, it currently just appears in the inventory.
-- When crafting the item in the first slot automatically goes to the workstation slot
-- Minigame needs an additional keystroke to populate the sprites
-- Character materials allow to see through their body sometimes
-- Scene completley resets on load
-  - When loading to a previously unloaded scene, any changes are not saved (inventory or environment)
+- Amount of time before animation starts is inconsistent between actions
+- Player is able to climb over invisible collider for catching fish
 - Character gets stuck on the ground sometimes
+
 
 
