@@ -23,6 +23,8 @@ public class InventoryManager : MonoBehaviour
     public Sprite trashSprite;
     public Sprite combinedSprite;
 
+    public Sprite waterBreathingPotionSprite;
+
     public Transform keySequenceContainer; // assign KeySequenceContainer in Inspector
     public GameObject keyImagePrefab;      // a prefab with just an Image component
     public Sprite keyZSprite;
@@ -47,6 +49,8 @@ public class InventoryManager : MonoBehaviour
     private bool isDelaying = false;
     private bool justOpened = false; // Track if the workstation menu was just opened
 
+    private List<(Dictionary<string,int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string,int>, string, Sprite, string)>();
+
     public static InventoryManager Instance;
 
     private void Awake()
@@ -61,6 +65,32 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(gameObject); // Prevent duplicates
         }
+
+            // Example: Cube + Sphere combination
+        craftingRecipes.Add((
+            new Dictionary<string,int>
+            {
+                {"Cube", 1},
+                {"Sphere", 1}
+            },
+            "Combined",
+            combinedSprite,
+            "Yippee, you made something!"
+        ));
+
+        // Water Breathing Potion
+        craftingRecipes.Add((
+            new Dictionary<string,int>
+            {
+                {"Starfish", 1},
+                {"Clownfish", 1},
+                {"Lily Pad", 1},
+                {"Barnacle", 1}
+            },
+            "Water Breathing Potion",
+            waterBreathingPotionSprite, 
+            "One step closer to becoming a mermaid!"
+        ));
     }
 
     void Start()
@@ -251,13 +281,21 @@ public class InventoryManager : MonoBehaviour
             int newIndex = selectedWorkstationIndex;
             if (direction == -1 && selectedWorkstationIndex == 0)
             {
+                // Move to item slot 9
+                selectedItemIndex = 9;
+                itemSlots[selectedItemIndex].SetHighlight(true);
+                isWorkstationMenuActive = false;
+                return;
+            }
+            if (direction == -1 && selectedWorkstationIndex == 2)
+            {
                 // Move to item slot 14
                 selectedItemIndex = 14;
                 itemSlots[selectedItemIndex].SetHighlight(true);
                 isWorkstationMenuActive = false;
                 return;
             }
-            else if (direction == -1 && selectedWorkstationIndex == 3)
+            else if (direction == -1 && selectedWorkstationIndex == 4)
             {
                 // Move to item slot 19
                 selectedItemIndex = 19;
@@ -267,34 +305,55 @@ public class InventoryManager : MonoBehaviour
             }
             else if (direction == 1 && selectedWorkstationIndex == 0)
             {
-                // Move to the middle slot from the left slot
+                // Move to the top right slot from the top left slot
                 newIndex = 1;
             }
-            else if (direction == 1 && selectedWorkstationIndex == 1)
+            else if (direction == columns && selectedWorkstationIndex == 0)
             {
-                // Move to the right slot from the middle slot
+                // Move to the bottom left slot from the top left slot
                 newIndex = 2;
             }
             else if (direction == -1 && selectedWorkstationIndex == 1)
             {
-                // Move to the left from the middle slot
+                // Move to the top left slot from the top right slot
                 newIndex = 0;
             }
-            else if (direction == -1 && selectedWorkstationIndex == 2)
+             else if (direction == columns && selectedWorkstationIndex == 1)
             {
-                // Move to the middle from the right slot
-                newIndex = 1;
-            }
-            else if (direction == columns && selectedWorkstationIndex < 3)
-            {
-                // Move to the button when navigating down from the first row
+                // Move to the bottom right slot from the top right slot
                 newIndex = 3;
+            }
+            else if (direction == columns && (selectedWorkstationIndex == 2 || selectedWorkstationIndex == 3))
+            {
+                // Move to the button when navigating down from slots 2 or 3
+                newIndex = 4;
+            }
+            else if (direction == 1 && selectedWorkstationIndex == 2)
+            {
+                // Move to the bottom right slot from the bottom left slot
+                newIndex = 3;
+            }
+            else if (direction == -columns && selectedWorkstationIndex == 2)
+            {
+                // Move to the top left slot from the bottom left slot
+                newIndex = 0;
+            }
+            else if (direction == -1 && selectedWorkstationIndex == 3)
+            {
+                // Move to the bottom left slot from the bottom right slot
+                newIndex = 2;
             }
             else if (direction == -columns && selectedWorkstationIndex == 3)
             {
-                // Move to the center slot when navigating up from the button
+                // Move to the top right slot from the bottom right slot
                 newIndex = 1;
             }
+            else if (direction == -columns && selectedWorkstationIndex == 4)
+            {
+                // Move to the bottom left slot from the button
+                newIndex = 2;
+            }
+            
 
             // Update the selected index
             selectedWorkstationIndex = newIndex;
@@ -302,7 +361,7 @@ public class InventoryManager : MonoBehaviour
 
 
             // Highlight the new slot or button
-            if (selectedWorkstationIndex < 3)
+            if (selectedWorkstationIndex < 4)
             {
                 workstationSlots[selectedWorkstationIndex].SetHighlight(true);
             }
@@ -324,13 +383,21 @@ public class InventoryManager : MonoBehaviour
                 {
                     // Select the button
                     workstationButton.SetHighlight(true);
-                    selectedWorkstationIndex = 3;
+                    selectedWorkstationIndex = 4;
                     isWorkstationMenuActive = true;
                     return;
                 }
-                else if (workstationActivated)
+                else if (workstationActivated && selectedItemIndex == 14)
                 {
-                    // Select the first workstation slot
+                    // Select the bottom left workstation slot
+                    workstationSlots[2].SetHighlight(true);
+                    selectedWorkstationIndex = 2;
+                    isWorkstationMenuActive = true;
+                    return;
+                }
+                else if (workstationActivated && selectedItemIndex == 9)
+                {
+                    // Select the top right workstation slot
                     workstationSlots[0].SetHighlight(true);
                     selectedWorkstationIndex = 0;
                     isWorkstationMenuActive = true;
@@ -368,7 +435,7 @@ public class InventoryManager : MonoBehaviour
 
     private void MoveItemBetweenSlots()
     {
-        if (isWorkstationMenuActive && selectedWorkstationIndex == 3) // Submit button logic
+        if (isWorkstationMenuActive && selectedWorkstationIndex == 4) // Submit button logic
         {
             //Debug.Log("Combination submitted!");
             PerformCombinationAction();
@@ -567,58 +634,71 @@ public class InventoryManager : MonoBehaviour
         minigameActive = false;
         CraftingMinigamePanel.SetActive(false);
 
+        // Highlight button and unhighlight the workstation slots
+        for(int i = 0; i < 4; i++)
+        {
+            workstationSlots[i].SetHighlight(false);
+        }
+            
+        workstationButton.SetHighlight(true); 
+           
         Debug.Log("Minigame complete!");
     }
 
+    private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)
+{
+    foreach (var kv in recipe)
+    {
+        if (!currentCounts.TryGetValue(kv.Key, out int count) || count != kv.Value)
+            return false; // missing item or wrong quantity
+    }
+    return true;
+}
+
     private void PerformCombinationAction()
     {
-        int total = 0;
-        int Cube = 0;
-        int Sphere = 0;
-
-
-        foreach (ItemSlot slot in workstationSlots)
+        // Count items in workstation slots
+    Dictionary<string,int> itemCounts = new Dictionary<string,int>();
+    foreach (ItemSlot slot in workstationSlots)
+    {
+        if (slot.quantity > 0)
         {
-            if(slot.itemName == "Trash") break;
-            if (slot.itemName == "Cube") Cube += slot.quantity;
-            if (slot.itemName == "Sphere") Sphere += slot.quantity;
-            total += slot.quantity;
-        }
-        if(total == 0)
-        {
-            // No items in the workstation slots
-            return;
-        }
-        // Check if the combination is valid
-        if (Cube == 2 && Sphere == 1)
-        {
-            //make combined item
-            int temp = AddItem("Combined", 1, combinedSprite, "Yippee, you made something!");
+            if (!itemCounts.ContainsKey(slot.itemName))
+                itemCounts[slot.itemName] = 0;
 
+            itemCounts[slot.itemName] += slot.quantity;
         }
-        if (Cube == 1)
-        {
-            //make combined item
-            int temp = AddItem("Combined", 1, combinedSprite, "Yippee, you made something!");
+    }
 
-        }
-        else
-        {
-            //invalid combintation
-            //make trash
-            int temp = AddItem("Trash", 1, trashSprite, "Whoops, you made trash! Make sure you throw it out!");
-        }
+    // If no items, exit
+    if (itemCounts.Count == 0) return;
 
-        StartCraftingMinigame();
-
-        //Clear the workstation slots
-        foreach (ItemSlot slot in workstationSlots)
+    bool matched = false;
+    foreach (var recipe in craftingRecipes)
+    {
+        if (MatchesRecipe(recipe.recipe, itemCounts))
         {
-            while (slot.quantity > 0)
-            {
-                slot.RemoveItem(); // Remove one item from the workstation slot
-            }
+            AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
+            matched = true;
+            break; // stop after the first match
         }
+    }
+
+    if (!matched)
+    {
+        // If no valid recipe, create trash
+        AddItem("Trash", 1, trashSprite, "Whoops, you made trash!");
+    }
+
+    // Clear workstation slots
+    foreach (ItemSlot slot in workstationSlots)
+    {
+        while (slot.quantity > 0)
+            slot.RemoveItem();
+    }
+
+    // Start the minigame
+    StartCraftingMinigame();
     }
 
 

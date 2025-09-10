@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 5d163aa16f2f36a4c81684c8e1b9706f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/Example scene/Materials/Red Block.mat
+  uploadId: 311154

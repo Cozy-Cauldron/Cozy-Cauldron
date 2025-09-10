@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 34d068b4136e22d4698e79054497bb3a
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 145608
+  packageName: BubbleR
+  packageVersion: 1.0
+  assetPath: Assets/BubbleR/BubbleR.cginc
+  uploadId: 311154
