@@ -1,4 +1,10 @@
-# Prototype
+# Alpha Build
+## The Cozy Cauldron
+The Cozy Cauldron is a collaborative senior project created for the University of Florida's Computer Engineering Design course. As an overview, this project is a videogame that's being developed alongside a custom hardware controller and machine learning model to create a unique physical and tacticile gameplay experience.
+
+As a game, The Cozy Cauldron is based around the themes of magic and comfort where you play a witch/wizard who gathers ingredients, craft unique potions, and fulfill requests for them to them to the world beyond! By using your trusty magic wand controller, you'll be able to cast spells through specific gestures to interact with the world. With your spells, you can perform great wonders from fishing straight from a lake to simply stirring your cauldron pot.
+
+As an engineering project, The Cozy Cauldron supports its fun gameplay experience through the custom-developed wand-shaped controller, designed to help immerse the player in casting spells. The controller itself is composed of a Raspberry Pi Pico 1 WH board with a RP2040 chip, a MPU6050 IMU sensor module for motion data, an I2C joystick, several buttons componets, and a USB cord that connects to the user's PC, all of which is encased in a 3D-printed wand casing to give the player the true experience of holding magic in their hands. By pairing with our developed machine learning model, ths custom controller is able to identify specific gestures recorded by the MPU6050's motion data and output gesture-specific signals to the game to be interpreted as inputs for in-game interactions.
 
 ## Completed Work
 ### Hardware
@@ -50,6 +56,7 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 - Amount of time before animation starts is inconsistent between actions
 - Player is able to climb over invisible collider for catching fish
 - Character gets stuck on the ground sometimes
+
 
 
 
