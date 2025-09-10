@@ -163,6 +163,10 @@ Group Meeting: Dividing up work and planning next steps
 Outside House Model
 8/31
 Inside House Model
+
+Ryan
+8/31
+Begin work on improved sampling program
 -------------------------------9/1 - 9/7-------------------------------------
 Kylie
 9/2
@@ -186,6 +190,18 @@ Meeting with Stakeholder
 9/7
 Group Meeting, misc work on models and planning
 
+Ryan Weisse
+9/1
+work on improving sampling program
+9/2
+improved sampling program done
+9/4
+research on most viable pipeline systems
+9/5
+experimented with rest api for pipeline (failed)
+9/7
+developed ml->unity pipeline using keyboard package
+
 -------------------------------9/8 - 9/14-------------------------------------
 Kylie
 9/9
@@ -200,6 +216,13 @@ Emilie Doan
 Instructor Meeting, in-class planning
 9/10
 Work on Alpha Build Report and Alpha Test Plan
+
+Ryan
+9/9
+packaged classifier into joblib, which allows for efficient hardware->ml pipeline
+
+9/10
+finalized controller->ml pipeline, using pyserial and buffer
 
 
 
