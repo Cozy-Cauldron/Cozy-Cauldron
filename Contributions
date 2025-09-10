@@ -1,5 +1,5 @@
 Weekly Updates and all non-logged tasks (not reflected in this repo) go here with name, date(s) of work, and a short description of the task.
-
+https://docs.google.com/spreadsheets/d/1wOi2Wld8tSl0mfLUhtkj4WHKIg5I0IEFp19wl3439Ic/edit?gid=0#gid=0
 -------------------------3/8 - 3/14----------------------------
 Weekly Team Meeting: 3/14- All members attended and worked on the pre-alpha report.
 
@@ -63,6 +63,13 @@ Ryan Weisse
 Began work on MSU -> I2C conversion 
 3/28
 Finalized MSU -> I2C conversion, ready for use, committed to github
+
+Emilie Doan
+Started modeling new character model (was eventually scrapped)
+
+M Vargo
+3/26
+Confirmed IMU was outputting data by probing pins directly
 -------------------------------3/29 - 4/4--------------------------------------
 Kylie Lennon
 4/1 
@@ -72,6 +79,11 @@ Ryan Weisse
 4/3
 Began work on serial -> csv conversion
 
+Emilie Doan 
+New character model + scene switching tests 
+
+M Vargo
+Began changing code to use SPI to display IMU output (had to roll back)
 -------------------------------4/5 - 4/11--------------------------------------
 Ryan Weisse 
 4/8
@@ -88,6 +100,26 @@ Group meeting, discussed hardware and ordered buttons and switches
 Group meeting, discussed hardware and continued working on workstation UI
 4/11
 Finished navigation between slots for inventory and workstation.
+
+Emilie Doan 
+4/8
+Group meeting, discussed hardware
+4/10
+Group meeting, discussed hardware and continued working on Scene switching and experimenting in my test scene
+
+M Vargo
+4/8
+Group meeting, discussed hardware; reinstalled dependencies and started a full rebuild
+4/10
+Rewired Pico and IMU to different board to fit GPIO components, fixed connection to pull-up resistors
+Finished final rebuild and got the IMU serial data to display on PC
+
+Phillip S.
+4/10 ~ 4 hours
+Looked into joystick components, using documentations for both to pick one (GPIO) for the prototype build 
+4/10 ~ 2 hours
+Looked into Pico HID connection options for the controller to interact with Software's Unity in the future
+
 -------------------------------4/12 - 4/19-------------------------------------
 Kylie Lennon
 4/15
@@ -97,8 +129,100 @@ Started implementing transferring items between inventory and workstation slots.
 4/17
 Finished implementing transferring items, submit button logic, and added logic for valid crafting recipes.
 
+Emilie Doan 
+Finalized (for now) new character model 
+Created custom blender animations for this new model 
+Integrated new model into the unity project and setup scene transitioning and systems for demoability.
 
+M Vargo 
+4/15
+Picked up buttons and joystick, started looking at implementation while using temporary ones
+4/18
+Implemented some GPIO functionality (button press)
 
+Ryan Weisse
+4/16
+Wrote program for generating "dummy" data for labeled gestures
+Wrote program to generate 'dummy' training data (user inputted)
+4/17
+Made progress on feature comparison between training and testing data
+4/18
+Working feature comparison, ML can detect the correct gesture that has been loaded :D
+
+Phillip S.
+4/14 ~ 2 hours
+Looked into Pico's C++ SDKs (specifically ADCs/GPIOs) and further into hardware components schematics for planning Driver code
+4/14~4/15 ~ 4 hours
+Coded Joystick/Button drivers+connections in C++, using placeholder pin values & Pico Projects, committed to personal test branch
+
+-------------------------------8/25 - 8/31-------------------------------------
+Kylie
+8/26
+Group Meeting: Dividing up work and planning next steps
+8/28
+Outside House Model
+8/31
+Inside House Model
+
+Ryan
+8/31
+Begin work on improved sampling program
+-------------------------------9/1 - 9/7-------------------------------------
+Kylie
+9/2
+Crafting Minigame Logic and UI
+9/3
+Meeting with Stakeholder
+9/4
+Cutting Board and Mortar and Pestle Models
+9/7
+Group Meeting
+Set up the Inside House Scene with portal logic
+Created Fishing Area Model and added colliders
+ML to Unity keystroke script
+Created Potion Sprites
+
+Emilie Doan 
+9/1-2 
+additional animations, update player model, update in game controllers, bug fixing
+9/3
+Meeting with Stakeholder
+9/7
+Group Meeting, misc work on models and planning
+
+Ryan Weisse
+9/1
+work on improving sampling program
+9/2
+improved sampling program done
+9/4
+research on most viable pipeline systems
+9/5
+experimented with rest api for pipeline (failed)
+9/7
+developed ml->unity pipeline using keyboard package
+
+-------------------------------9/8 - 9/14-------------------------------------
+Kylie
+9/9
+Made models and sprites of ingredients for the water-breathing potion.
+Implemented crafting logic for water-breathing potion
+Added another workstation slot and updated inventory navigation logic accordingly
+9/10
+Work on Alpha Build Report and Alpha Test Plan
+
+Emilie Doan
+9/9
+Instructor Meeting, in-class planning
+9/10
+Work on Alpha Build Report and Alpha Test Plan
+
+Ryan
+9/9
+packaged classifier into joblib, which allows for efficient hardware->ml pipeline
+
+9/10
+finalized controller->ml pipeline, using pyserial and buffer
 
 
 
