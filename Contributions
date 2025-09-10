@@ -155,6 +155,37 @@ Looked into Pico's C++ SDKs (specifically ADCs/GPIOs) and further into hardware 
 4/14~4/15 ~ 4 hours
 Coded Joystick/Button drivers+connections in C++, using placeholder pin values & Pico Projects, committed to personal test branch
 
+-------------------------------8/25 - 8/31-------------------------------------
+Kylie
+8/26
+Group Meeting: Dividing up work and planning next steps
+8/28
+Outside House Model
+8/31
+Inside House Model
+-------------------------------9/1 - 9/7-------------------------------------
+Kylie
+9/2
+Crafting Minigame Logic and UI
+9/3
+Meeting with Stakeholder
+9/4
+Cutting Board and Mortar and Pestle Models
+9/7
+Group Meeting
+Set up the Inside House Scene with portal logic
+Created Fishing Area Model and added colliders
+ML to Unity keystroke script
+Created Potion Sprites
+
+-------------------------------9/8 - 9/14-------------------------------------
+Kylie
+9/9
+Made models and sprites of ingredients for the water-breathing potion.
+Implemented crafting logic for water-breathing potion
+Added another workstation slot and updated inventory navigation logic accordingly
+9/10
+Work on Alpha Build Report and Alpha Test Plan
 
 
 
