@@ -57,6 +57,8 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
 - Player is able to climb over invisible collider for catching fish
+- If the workstation is closed while items are in the crafting slots the items get deleted instead of returned to the inventory
+
 
 
 
