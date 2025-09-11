@@ -202,6 +202,14 @@ experimented with rest api for pipeline (failed)
 9/7
 developed ml->unity pipeline using keyboard package
 
+Phillip S.
+9/3
+  Meeting with Stakeholder
+9/4
+  Cataloguing Pico controller HID sources to use for further research
+9/5~8
+  Work on Alpha Build Report & Test Plan
+  
 -------------------------------9/8 - 9/14-------------------------------------
 Kylie
 9/9
@@ -224,6 +232,12 @@ packaged classifier into joblib, which allows for efficient hardware->ml pipelin
 9/10
 finalized controller->ml pipeline, using pyserial and buffer
 
+Phillip S.
+9/8~10
+  Work on Alpha Build Report & Test Plan
+9/9
+  Meeting with Instructor
+  Research begins on 3D printing the controller casing
 
 
 
