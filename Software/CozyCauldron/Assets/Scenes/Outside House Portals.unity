@@ -549,7 +549,7 @@ GameObject:
   - component: {fileID: 344615586}
   - component: {fileID: 344615585}
   m_Layer: 0
-  m_Name: SceneTransitionPlane
+  m_Name: SceneTransitionPlane_InsideHouse
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
