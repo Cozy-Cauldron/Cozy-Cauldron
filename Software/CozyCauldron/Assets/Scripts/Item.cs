@@ -42,6 +42,11 @@ public class Item : MonoBehaviour, IInteractable
             inventoryManager.currentWorkstationName = itemName;
             inventoryManager.currentWorkstationSprite = itemImage;  
         }
+        else if(itemName == "Crystal Ball")
+        {
+            //open the task menu
+            inventoryManager.taskPanelActivated = true;
+        }
         else
         {
             //pick up the item

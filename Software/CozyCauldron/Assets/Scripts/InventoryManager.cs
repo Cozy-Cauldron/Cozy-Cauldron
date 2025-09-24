@@ -11,6 +11,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject InventoryDescription;
     public GameObject WorkstationMenu;
     public GameObject CraftingMinigamePanel;
+    public GameObject TaskPanel;
     private bool minigameActive = false;
     private string keySequence = "";
     private int currentKeyIndex = 0;
@@ -19,6 +20,7 @@ public class InventoryManager : MonoBehaviour
     public Sprite currentWorkstationSprite;
     private bool menuActivated;
     public bool workstationActivated;
+    public bool taskPanelActivated;
     private bool isWorkstationMenuActive;
     public Sprite trashSprite;
     public Sprite combinedSprite;
@@ -171,7 +173,15 @@ public class InventoryManager : MonoBehaviour
                 Time.timeScale = 1; // Reset time scale
                 return; // Exit early
             }
-            else 
+            else if(taskPanelActivated)
+            {
+                // If the task panel is open, close it
+                taskPanelActivated = false;
+                TaskPanel.SetActive(false);
+                Time.timeScale = 1; // Reset time scale
+                return; // Exit early
+            }
+            else
             {
                 //open inventory
                 menuActivated = true;
@@ -229,11 +239,19 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
+        else if (taskPanelActivated)
+        {
+            // If the task panel is active, show it
+            Time.timeScale = 0;
+            TaskPanel.SetActive(true);
+        }
         else
         {
             InventoryMenu.SetActive(false);
             WorkstationMenu.SetActive(false);
             InventoryDescription.SetActive(false);
+            TaskPanel.SetActive(false);
+            taskPanelActivated = false;
             menuActivated = false;
             workstationActivated = false;
             justOpened = false;
