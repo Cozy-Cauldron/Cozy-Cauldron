@@ -35,14 +35,14 @@ public class Item : MonoBehaviour, IInteractable
 
    public bool Interact(Interactor interactor)
    {
-        if(itemName == "Cauldron")
+        if (itemName == "Cauldron")
         {
             //open the workstation menu
             inventoryManager.workstationActivated = true;
             inventoryManager.currentWorkstationName = itemName;
-            inventoryManager.currentWorkstationSprite = itemImage;  
+            inventoryManager.currentWorkstationSprite = itemImage;
         }
-        else if(itemName == "Crystal Ball")
+        else if (itemName == "Crystal Ball")
         {
             //open the task menu
             inventoryManager.taskPanelActivated = true;

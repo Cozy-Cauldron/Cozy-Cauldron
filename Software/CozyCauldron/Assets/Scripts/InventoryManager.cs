@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -25,9 +26,30 @@ public class InventoryManager : MonoBehaviour
     public Sprite trashSprite;
     public Sprite combinedSprite;
 
-    public Sprite waterBreathingPotionSprite;
+    private int currentPageIndex;
+    public TaskPage[] pages;
+    public Image characterImageUI;
+    public TMP_Text characterNameUI;  
+    public TMP_Text characterTextUI;
+    public Image potionImageUI;
+    public TMP_Text potionNameUI;
+    public TMP_Text potionTextUI;
 
-    public Transform keySequenceContainer; // assign KeySequenceContainer in Inspector
+    public Sprite waterBreathingPotionSprite;
+    public Sprite swimmingPotionSprite;
+    public Sprite jumpingPotionSprite;
+    public Sprite flyingPotionSprite;
+    public Sprite rainbowPotionSprite;
+    public Sprite armorPotionSprite;
+
+    public Sprite kylieSprite;
+    public Sprite emilieSprite;
+    public Sprite mSprite;
+    public Sprite phillipSprite;
+    public Sprite ryanSprite;
+    public Sprite profSprite;
+
+    public Transform keySequenceContainer; 
     public GameObject keyImagePrefab;      // a prefab with just an Image component
     public Sprite keyZSprite;
     public Sprite keyXSprite;
@@ -42,6 +64,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
     public Image WorkstationImage;
 
+    public Button[] taskPanelButtons;
+    public int selectedTaskButtonIndex = 0; // 0 = Left, 1 = Submit, 2 = Right
+    public int previousTaskButtonIndex = 0;
+
     private int selectedItemIndex = 0; // Track the selected item
     private int selectedWorkstationIndex = 0; // Track the selected workstation item
     private const int columns = 5; // Number of columns in the inventory grid
@@ -49,7 +75,7 @@ public class InventoryManager : MonoBehaviour
 
     private float delayTimer = 0f;
     private bool isDelaying = false;
-    private bool justOpened = false; // Track if the workstation menu was just opened
+    private bool justOpened = false; // Track if the workstation was just opened
 
     private List<(Dictionary<string,int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string,int>, string, Sprite, string)>();
 
@@ -67,6 +93,33 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(gameObject); // Prevent duplicates
         }
+        
+        pages = new TaskPage[2];
+
+        pages[0] = new TaskPage {
+            completed = false,
+            characterSprite = kylieSprite,
+            characterName = "Kylie",
+            characterTextBefore = "Bring me a swimming potion!",
+            characterTextAfter = "Thanks! :)",
+            potionSprite = swimmingPotionSprite,
+            potionName = "Swimming Potion",
+            potionText = "Swim Ingredients"
+        };
+
+        pages[1] = new TaskPage {
+            completed = false,
+            characterSprite = emilieSprite,
+            characterName = "Emilie",
+            characterTextBefore = "Bring me a rainbow potion!",
+            characterTextAfter = "Thank you!",
+            potionSprite = rainbowPotionSprite,
+            potionName = "Rainbow Potion",
+            potionText = "Rainbow Ingredients"
+        };
+
+   
+        UpdatePageUI(); // show first page
 
             // Example: Cube + Sphere combination
         craftingRecipes.Add((
@@ -128,7 +181,8 @@ public class InventoryManager : MonoBehaviour
     }
 
     void Update()
-    {       
+    {
+
         if (isDelaying)
         {
             // Increment the timer
@@ -218,7 +272,7 @@ public class InventoryManager : MonoBehaviour
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
-            WorkstationImage.sprite = currentWorkstationSprite; 
+            WorkstationImage.sprite = currentWorkstationSprite;
             InventoryDescription.SetActive(false);
         }
         else if (workstationActivated && justOpened)
@@ -239,11 +293,26 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
-        else if (taskPanelActivated)
+        else if (taskPanelActivated && !justOpened)
+        {
+            Debug.Log("Opened for first time!");
+            justOpened = true;
+            Time.timeScale = 0;
+            TaskPanel.SetActive(true);
+
+            selectedTaskButtonIndex = 1;
+            currentPageIndex = 0;
+            // Unhighlight all buttons first
+            foreach (Button btn in taskPanelButtons)
+                btn.SetHighlight(false);
+            taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
+        }
+        else if (taskPanelActivated && justOpened)
         {
             // If the task panel is active, show it
             Time.timeScale = 0;
             TaskPanel.SetActive(true);
+            HandleTaskNavigation();
         }
         else
         {
@@ -277,6 +346,65 @@ public class InventoryManager : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             MoveSelection(-columns);
+        }
+    }
+
+    private void HandleTaskNavigation()
+    {
+        // Move left/right
+        if (Input.GetKeyDown(KeyCode.RightArrow)) // Right
+        {
+            foreach (Button btn in taskPanelButtons)
+                btn.SetHighlight(false);
+            selectedTaskButtonIndex = Mathf.Min(selectedTaskButtonIndex + 1, 2);
+            taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
+            Debug.Log(selectedTaskButtonIndex);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) // Left
+        {
+            foreach (Button btn in taskPanelButtons)
+                btn.SetHighlight(false);
+            selectedTaskButtonIndex = Mathf.Max(selectedTaskButtonIndex - 1, 0);
+            taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
+            Debug.Log(selectedTaskButtonIndex);
+        }
+        else
+        {
+            if (Input.GetButtonDown("Interact"))
+            {
+                if (selectedTaskButtonIndex == 0) //left
+                {
+                    //change page
+                    Debug.Log("Left");
+                    currentPageIndex--;
+                    if (currentPageIndex < 0)
+                    {
+                        currentPageIndex = pages.Length - 1;
+                    }
+                    UpdatePageUI();
+                }
+                else if (selectedTaskButtonIndex == 1) //submit
+                {
+                    //check if potion is in inventory
+                    Debug.Log("Submit");
+                    string potionName = pages[currentPageIndex].potionName;
+                    pages[currentPageIndex].completed = true;
+                    //if yes change to done and update dialogue
+                    //if no do nothing
+                    UpdatePageUI();
+                }
+                else if (selectedTaskButtonIndex == 2) //right
+                {
+                    //change page
+                    Debug.Log("Right");
+                    currentPageIndex++;
+                    if (currentPageIndex >= pages.Length)
+                    {
+                        currentPageIndex = 0;
+                    }
+                    UpdatePageUI();
+                }
+            }
         }
     }
 
@@ -558,6 +686,25 @@ public class InventoryManager : MonoBehaviour
                 }
             }
         }
+    }
+    
+    private void UpdatePageUI()
+    {
+        TaskPage page = pages[currentPageIndex];
+
+        characterImageUI.sprite = page.characterSprite;
+        characterNameUI.text = page.characterName;
+        if(pages[currentPageIndex].completed)
+        {
+            characterTextUI.text = page.characterTextAfter;
+        }
+        else
+        {
+            characterTextUI.text = page.characterTextBefore;
+        }
+        potionImageUI.sprite = page.potionSprite;
+        potionNameUI.text = page.potionName;
+        potionTextUI.text = page.potionText;
     }
 
     private void StartCraftingMinigame()
