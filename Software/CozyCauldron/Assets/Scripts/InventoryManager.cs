@@ -49,6 +49,9 @@ public class InventoryManager : MonoBehaviour
     public Sprite ryanSprite;
     public Sprite profSprite;
 
+    public Sprite submitSprite;
+    public Sprite doneSprite;
+
     public Transform keySequenceContainer; 
     public GameObject keyImagePrefab;      // a prefab with just an Image component
     public Sprite keyZSprite;
@@ -94,44 +97,82 @@ public class InventoryManager : MonoBehaviour
             Destroy(gameObject); // Prevent duplicates
         }
         
-        pages = new TaskPage[2];
+        pages = new TaskPage[6];
 
-        pages[0] = new TaskPage {
+        pages[0] = new TaskPage 
+        {
             completed = false,
             characterSprite = kylieSprite,
             characterName = "Kylie",
-            characterTextBefore = "Bring me a swimming potion!",
-            characterTextAfter = "Thanks! :)",
-            potionSprite = swimmingPotionSprite,
-            potionName = "Swimming Potion",
-            potionText = "Swim Ingredients"
+            characterTextBefore = "I love to swim! The only issue is I have to come up for air. I heard of something called a Water Breathing Potion, can you make me one?",
+            characterTextAfter = "Thanks! I'm going to explore the bottom of the ocean until I am a prune!",
+            potionSprite = waterBreathingPotionSprite,
+            potionName = "Water Breathing Potion",
+            potionText = "1 Starfish\r\n2 Barnacles\r\n1 Clownfish\r\n2 Lily Pads"
         };
 
-        pages[1] = new TaskPage {
+        pages[1] = new TaskPage 
+        {
             completed = false,
             characterSprite = emilieSprite,
             characterName = "Emilie",
-            characterTextBefore = "Bring me a rainbow potion!",
-            characterTextAfter = "Thank you!",
+            characterTextBefore = "I'm hosting a party and the theme is rainbows! I want to make rainbows using a Rainbow Potion. Can you get one for me?",
+            characterTextAfter = "Thank you! I can't wait to be the life of the party :)",
             potionSprite = rainbowPotionSprite,
             potionName = "Rainbow Potion",
-            potionText = "Rainbow Ingredients"
+            potionText = "2 Sunflowers\r\n2 Roses\r\n2 Daisies\r\n1 Goldfish"
         };
 
-   
-        UpdatePageUI(); // show first page
+        pages[2] = new TaskPage
+        {
+            completed = false,
+            characterSprite = mSprite,
+            characterName = "M",
+            characterTextBefore = "I want to become the toughest fighter. My defensive skills aren't the best so I take a lot of hits. Can you make me an Armor Potion?",
+            characterTextAfter = "With this I'll definitely be able to take a few punches. My opponent might even break a knuckle!",
+            potionSprite = armorPotionSprite,
+            potionName = "Armor Potion",
+            potionText = "1 Beetle\r\n1 Pufferfish \r\n3 Shells\r\n1 Roly Poly"
+        };
 
-            // Example: Cube + Sphere combination
-        craftingRecipes.Add((
-            new Dictionary<string,int>
-            {
-                {"Cube", 1},
-                {"Sphere", 1}
-            },
-            "Combined",
-            combinedSprite,
-            "Yippee, you made something!"
-        ));
+        pages[3] = new TaskPage
+        {
+            completed = false,
+            characterSprite = ryanSprite,
+            characterName = "Ryan",
+            characterTextBefore = "Have you ever noticed that we can't jump? It makes it really hard to play my favorite sports. Can you make me a Jumping Potion?",
+            characterTextAfter = "My skills will definitely improve with this! I might even become the MVP",
+            potionSprite = jumpingPotionSprite,
+            potionName = "Jumping Potion",
+            potionText = "1 Frog\r\n3 Mushrooms\r\n1 Bunny\r\n1 Jumping Spider"
+        };
+
+        pages[4] = new TaskPage
+        {
+            completed = false,
+            characterSprite = phillipSprite,
+            characterName = "Phillip",
+            characterTextBefore = "I trying to learn how to swim but unfortunately I'm not very good, I just keep sinking! Can you help me learn with a Swimming Potion?",
+            characterTextAfter = "This will really help during my next swim lesson. Hopefully I will float!",
+            potionSprite = swimmingPotionSprite,
+            potionName = "Swimming Potion",
+            potionText = "1 Sturgean\r\n1 Bass\r\n1 Salmon\r\n3 Seaweed"
+        };
+
+        pages[5] = new TaskPage
+        {
+            completed = false,
+            characterSprite = profSprite,
+            characterName = "Dr.Del Rocco",
+            characterTextBefore = "I love watching the bugs and the birds fly through the air. I would love to join them, can you make me a Flying Potion?",
+            characterTextAfter = "It's time for takeoff! I hope I can figure out how to land!",
+            potionSprite = flyingPotionSprite,
+            potionName = "Flying Potion",
+            potionText = "1 Lady Bug\r\n1 Butterfly Fish\r\n2 Dandelions\r\n2 Eggs"
+        };
+
+
+        UpdatePageUI(); // show first page
 
         // Water Breathing Potion
         craftingRecipes.Add((
@@ -139,12 +180,82 @@ public class InventoryManager : MonoBehaviour
             {
                 {"Starfish", 1},
                 {"Clownfish", 1},
-                {"Lily Pad", 1},
-                {"Barnacle", 1}
+                {"Lily Pad", 2},
+                {"Barnacle", 2}
             },
             "Water Breathing Potion",
             waterBreathingPotionSprite, 
             "One step closer to becoming a mermaid!"
+        ));
+
+        // Swimming Potion
+        craftingRecipes.Add((
+            new Dictionary<string, int>
+            {
+                {"Sturgean", 1},
+                {"Bass", 1},
+                {"Salmon", 2},
+                {"Seaweed", 2}
+            },
+            "Swimming Potion",
+            swimmingPotionSprite,
+            "With this I can become one with the fish!"
+        ));
+
+        // Rainbow Potion
+        craftingRecipes.Add((
+            new Dictionary<string, int>
+            {
+                {"Sunflower", 2},
+                {"Rose", 2},
+                {"Daisy", 2},
+                {"Goldfish", 1}
+            },
+            "Rainbow Potion",
+            rainbowPotionSprite,
+            "I wonder if this will help me find a pot of gold?"
+        ));
+
+        // Jumping Potion
+        craftingRecipes.Add((
+            new Dictionary<string, int>
+            {
+                {"Frog", 1},
+                {"Mushroom", 3},
+                {"Bunny", 1},
+                {"Jumping Spider", 1}
+            },
+            "Jumping Potion",
+            jumpingPotionSprite,
+            "Don't give this to a monkey, he might jump on your bed!"
+        ));
+
+        // Flying Potion
+        craftingRecipes.Add((
+            new Dictionary<string, int>
+            {
+                {"Lady Bug", 1},
+                {"Butterfly Fish", 1},
+                {"Dandelion", 2},
+                {"Egg", 2}
+            },
+            "Flying Potion",
+            flyingPotionSprite,
+            "I believe I can fly!"
+        ));
+
+        // Armor Potion
+        craftingRecipes.Add((
+            new Dictionary<string, int>
+            {
+                {"Beetle", 1},
+                {"Pufferfish", 1},
+                {"Shell", 3},
+                {"Roly Poly", 1}
+            },
+            "Armor Potion",
+            armorPotionSprite,
+            "I'll be invincible with this!"
         ));
     }
 
@@ -295,7 +406,7 @@ public class InventoryManager : MonoBehaviour
         }
         else if (taskPanelActivated && !justOpened)
         {
-            Debug.Log("Opened for first time!");
+            //Debug.Log("Opened for first time!");
             justOpened = true;
             Time.timeScale = 0;
             TaskPanel.SetActive(true);
@@ -358,7 +469,7 @@ public class InventoryManager : MonoBehaviour
                 btn.SetHighlight(false);
             selectedTaskButtonIndex = Mathf.Min(selectedTaskButtonIndex + 1, 2);
             taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
-            Debug.Log(selectedTaskButtonIndex);
+            //Debug.Log(selectedTaskButtonIndex);
         }
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) // Left
         {
@@ -366,7 +477,7 @@ public class InventoryManager : MonoBehaviour
                 btn.SetHighlight(false);
             selectedTaskButtonIndex = Mathf.Max(selectedTaskButtonIndex - 1, 0);
             taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
-            Debug.Log(selectedTaskButtonIndex);
+            //Debug.Log(selectedTaskButtonIndex);
         }
         else
         {
@@ -375,7 +486,7 @@ public class InventoryManager : MonoBehaviour
                 if (selectedTaskButtonIndex == 0) //left
                 {
                     //change page
-                    Debug.Log("Left");
+                    //Debug.Log("Left");
                     currentPageIndex--;
                     if (currentPageIndex < 0)
                     {
@@ -386,17 +497,21 @@ public class InventoryManager : MonoBehaviour
                 else if (selectedTaskButtonIndex == 1) //submit
                 {
                     //check if potion is in inventory
-                    Debug.Log("Submit");
-                    string potionName = pages[currentPageIndex].potionName;
-                    pages[currentPageIndex].completed = true;
-                    //if yes change to done and update dialogue
-                    //if no do nothing
-                    UpdatePageUI();
+                    foreach (ItemSlot inventorySlot in itemSlots)
+                    {
+                        if (inventorySlot.itemName == pages[currentPageIndex].potionName && inventorySlot.quantity > 0)
+                        {
+                            pages[currentPageIndex].completed = true;
+                            inventorySlot.RemoveItem();
+                            UpdatePageUI();
+                            return;
+                        }
+                    }
                 }
                 else if (selectedTaskButtonIndex == 2) //right
                 {
                     //change page
-                    Debug.Log("Right");
+                    //Debug.Log("Right");
                     currentPageIndex++;
                     if (currentPageIndex >= pages.Length)
                     {
@@ -697,10 +812,22 @@ public class InventoryManager : MonoBehaviour
         if(pages[currentPageIndex].completed)
         {
             characterTextUI.text = page.characterTextAfter;
+            // Get the Submit button GameObject
+            Button submitButton = taskPanelButtons[1];
+            // Find the child called "ButtonImage"
+            Image buttonImage = submitButton.transform.Find("ButtonImage").GetComponent<Image>();
+            // Swap the sprite
+            buttonImage.sprite = doneSprite;
         }
         else
         {
             characterTextUI.text = page.characterTextBefore;
+            // Get the Submit button GameObject
+            Button submitButton = taskPanelButtons[1];
+            // Find the child called "ButtonImage"
+            Image buttonImage = submitButton.transform.Find("ButtonImage").GetComponent<Image>();
+            // Swap the sprite
+            buttonImage.sprite = submitSprite;
         }
         potionImageUI.sprite = page.potionSprite;
         potionNameUI.text = page.potionName;

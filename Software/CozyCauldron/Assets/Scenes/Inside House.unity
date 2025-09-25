@@ -5311,6 +5311,8 @@ MonoBehaviour:
   phillipSprite: {fileID: 21300000, guid: 32459ccc5c7af8945af4430c7b254d33, type: 3}
   ryanSprite: {fileID: 21300000, guid: 35c0e32a425646540a24cd28932f4ea9, type: 3}
   profSprite: {fileID: 21300000, guid: aefa8cc5cc9143f44b5eec7a21b5a98f, type: 3}
+  submitSprite: {fileID: 21300000, guid: 9a245cba4fa16fa468bfd3edd9e83e39, type: 3}
+  doneSprite: {fileID: 21300000, guid: 5f5713b60ec90bc4f9886826baa79416, type: 3}
   keySequenceContainer: {fileID: 937515489}
   keyImagePrefab: {fileID: 502370863991606778, guid: 1f5ae06aa627c61489da528f2a16e482, type: 3}
   keyZSprite: {fileID: 21300000, guid: d899a86d8d16ff74ea1f4076cba86c7a, type: 3}
@@ -5349,6 +5351,7 @@ MonoBehaviour:
   - {fileID: 1693162352}
   - {fileID: 1637514864}
   selectedTaskButtonIndex: 0
+  previousTaskButtonIndex: 0
 --- !u!114 &1286340186
 MonoBehaviour:
   m_ObjectHideFlags: 0
