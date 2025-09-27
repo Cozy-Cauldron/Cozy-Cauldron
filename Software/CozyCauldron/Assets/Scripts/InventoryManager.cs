@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
+
 
 public class InventoryManager : MonoBehaviour
 {
@@ -81,6 +83,8 @@ public class InventoryManager : MonoBehaviour
     private bool justOpened = false; // Track if the workstation was just opened
 
     private List<(Dictionary<string,int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string,int>, string, Sprite, string)>();
+
+    private SaveData loadedSaveData; // Store loaded data temporarily
 
     public static InventoryManager Instance;
 
@@ -293,6 +297,14 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.K)) // Save with K
+        {
+            Save();
+        }
+        if (Input.GetKeyDown(KeyCode.L)) // Load with L
+        {
+            Load();
+        }
 
         if (isDelaying)
         {
@@ -439,6 +451,146 @@ public class InventoryManager : MonoBehaviour
             Time.timeScale = 1;
         }
     }
+
+    public void Save()
+    {
+        SaveData data = new SaveData();
+        //completed tasks
+        bool[] completedPages = new bool[pages.Length];
+        for (int i = 0; i < pages.Length; i++)
+        {
+            completedPages[i] = pages[i].completed;
+        }
+        data.completedPages = completedPages;
+
+        //current scene
+        data.currentScene = SceneManager.GetActiveScene().name;
+
+        //character location
+        GameObject player = GameObject.Find("GREEN");
+        if (player == null)
+        {
+            Debug.LogError("Player object not found in the scene!");
+            return;
+        }
+
+        PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+        if (playerMovement == null)
+        {
+            Debug.LogError("PlayerMovement component not found on the player object!");
+            return;
+        }
+        Vector3 pos = playerMovement.GetPosition();
+        data.playerX = pos.x;
+        data.playerY = pos.y;
+        data.playerZ = pos.z;
+
+        //inventory
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            if (inventorySlot.quantity > 0)
+            {
+                data.itemNames.Add(inventorySlot.itemName);
+                data.itemCounts.Add(inventorySlot.quantity);
+                data.itemSprites.Add(inventorySlot.itemSprite);
+                data.itemDescriptions.Add(inventorySlot.itemDescription);
+            }
+        }
+        SaveSystem.SaveGame(data);
+    }
+
+    public void Load()
+    {
+        SaveData data = SaveSystem.LoadGame();
+        if (data == null)
+        {
+            Debug.LogWarning("No save data found!");
+            return;
+        }
+
+        // Save data locally for use after scene is loaded
+        loadedSaveData = data;
+
+        // Subscribe to sceneLoaded event
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Always reload the saved scene so objects refresh
+        SceneManager.LoadScene(data.currentScene, LoadSceneMode.Single);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        if (loadedSaveData == null) return;
+
+        // Unsubscribe so we don't run this multiple times
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+
+        // Start a coroutine to wait one frame before restoring data
+        StartCoroutine(LoadAfterScene());
+    }
+
+    private System.Collections.IEnumerator LoadAfterScene()
+    {
+        // Wait until end of frame so all objects in the scene are initialized
+        yield return new WaitForEndOfFrame();
+
+        currentPageIndex = 0;
+
+        // Restore completed tasks
+        for (int i = 0; i < pages.Length; i++)
+        {
+            pages[i].completed = i < loadedSaveData.completedPages.Length ? loadedSaveData.completedPages[i] : false;
+        }
+        UpdatePageUI();
+
+        // Restore player position
+        GameObject player = GameObject.Find("GREEN");
+        if (player != null)
+        {
+            PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
+            if (playerMovement != null)
+            {
+                Vector3 savedPos = new Vector3(loadedSaveData.playerX, loadedSaveData.playerY, loadedSaveData.playerZ);
+                playerMovement.SetPosition(savedPos);
+            }
+            else
+            {
+                Debug.LogError("PlayerMovement component not found on GREEN!");
+            }
+        }
+        else
+        {
+            Debug.LogError("Player object 'GREEN' not found in the scene!");
+        }
+
+        // Clear inventory slots
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            inventorySlot.SetHighlight(false);
+            while (inventorySlot.quantity > 0)
+                inventorySlot.RemoveItem();
+        }
+
+        // Load saved items into inventory
+        for (int i = 0; i < loadedSaveData.itemNames.Count && i < itemSlots.Length; i++)
+        {
+            itemSlots[i].AddItem(
+                loadedSaveData.itemNames[i],
+                loadedSaveData.itemCounts[i],
+                loadedSaveData.itemSprites[i],
+                loadedSaveData.itemDescriptions[i]
+            );
+        }
+
+        // Highlight the first item
+        selectedItemIndex = 0;
+        if (itemSlots.Length > 0)
+            itemSlots[selectedItemIndex].SetHighlight(true);
+
+        // Clear temporary save data reference
+        loadedSaveData = null;
+    }
+
 
     private void HandleNavigation()
     {
@@ -934,7 +1086,7 @@ public class InventoryManager : MonoBehaviour
             
         workstationButton.SetHighlight(true); 
            
-        Debug.Log("Minigame complete!");
+        //Debug.Log("Minigame complete!");
     }
 
     private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)

@@ -65,4 +65,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
+
+    public void SetPosition(Vector3 newPosition)
+    {
+        m_Rigidbody.position = newPosition;
+
+    }
 }
