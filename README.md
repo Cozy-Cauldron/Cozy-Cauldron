@@ -6,6 +6,13 @@ As a game, The Cozy Cauldron is based around the themes of magic and comfort whe
 
 As an engineering project, The Cozy Cauldron supports its fun gameplay experience through the custom-developed wand-shaped controller, designed to help immerse the player in casting spells. The controller itself is composed of a Raspberry Pi Pico 1 WH board with a RP2040 chip, a MPU6050 IMU sensor module for motion data, an I2C joystick, several buttons componets, and a USB cord that connects to the user's PC, all of which is encased in a 3D-printed wand casing to give the player the true experience of holding magic in their hands. By pairing with our developed machine learning model, ths custom controller is able to identify specific gestures recorded by the MPU6050's motion data and output gesture-specific signals to the game to be interpreted as inputs for in-game interactions.
 
+This project was developed from Spring 2025 to Fall 2025 by:
+- Kylie Lennon
+- Emilie Doan
+- M Vargo
+- Ryan Weisse
+- Phillip Somchanhmavong
+
 ## Completed Work
 ### Hardware
 Code for external interface modules such as the buttons, joystick, and IMU classes has been written so it can be combined with the code that handles IMU communication. Buttons have been physically connected to the microcontroller and can take input. The microcontroller is able to read raw data from the IMU (gyroscope and accelerometer) and transmit it serially over USB connection. The output can currently be displayed in a terminal on a PC. A python script (under ML) converts the serial data to a CSV file for the ML model to read from. 
@@ -58,6 +65,7 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 - Amount of time before animation starts is inconsistent between actions
 - Player is able to climb over invisible collider for catching fish
 - If the workstation is closed while items are in the crafting slots the items get deleted instead of returned to the inventory
+
 
 
 
