@@ -59,6 +59,11 @@ public class PlayerMovement : MonoBehaviour
             m_Animator.SetTrigger("CatchBug");
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            m_Animator.SetTrigger("PickUp");
+        }
+
         if (Input.GetKeyDown(KeyCode.V))
         {
             m_Animator.SetTrigger("Craft");
