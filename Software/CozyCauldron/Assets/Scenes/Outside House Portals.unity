@@ -285,13 +285,13 @@ GameObject:
   m_Component:
   - component: {fileID: 119318524}
   - component: {fileID: 119318523}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Scene Fader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &119318523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -936,7 +936,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6a876bc9a5ec2ba4b8b238029a5411de, type: 3}
       propertyPath: m_Name
-      value: GREEN
+      value: MainCharacter
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 6a876bc9a5ec2ba4b8b238029a5411de, type: 3}
       propertyPath: m_TagString
@@ -1537,13 +1537,13 @@ GameObject:
   - component: {fileID: 1170398540}
   - component: {fileID: 1170398539}
   - component: {fileID: 1170398538}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: FaderCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1170398538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7173,7 +7173,7 @@ GameObject:
   - component: {fileID: 1682866478}
   - component: {fileID: 1682866477}
   - component: {fileID: 1682866476}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Fade Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
