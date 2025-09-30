@@ -35,9 +35,11 @@ public class Item : MonoBehaviour, IInteractable
 
    public bool Interact(Interactor interactor)
    {
-        if (itemName == "Cauldron")
+        Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
+        if (itemName == "Cauldron" || itemName == "Trashcan")
         {
             //open the workstation menu
+            Debug.Log("Interacted with " + itemName);
             inventoryManager.workstationActivated = true;
             inventoryManager.currentWorkstationName = itemName;
             inventoryManager.currentWorkstationSprite = itemImage;
@@ -46,6 +48,11 @@ public class Item : MonoBehaviour, IInteractable
         {
             //open the task menu
             inventoryManager.taskPanelActivated = true;
+        }
+        else if (itemName == "Bed")
+        {
+            //open the save menu
+            //inventoryManager.savePanelActivated = true;
         }
         else
         {

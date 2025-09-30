@@ -25,8 +25,8 @@ public class InventoryManager : MonoBehaviour
     public bool workstationActivated;
     public bool taskPanelActivated;
     private bool isWorkstationMenuActive;
-    public Sprite trashSprite;
-    public Sprite combinedSprite;
+
+    public Sprite oopsPotionSprite;
 
     private int currentPageIndex;
     public TaskPage[] pages;
@@ -391,7 +391,7 @@ public class InventoryManager : MonoBehaviour
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
             justOpened = true;
-
+            
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
@@ -850,9 +850,26 @@ public class InventoryManager : MonoBehaviour
     {
         if (isWorkstationMenuActive && selectedWorkstationIndex == 4) // Submit button logic
         {
-            //Debug.Log("Combination submitted!");
-            PerformCombinationAction();
-            return; // Exit after handling the submit button
+            if(currentWorkstationName == "Cauldron")
+            {
+                Debug.Log("Combination submitted!");
+                PerformCombinationAction();
+                return; // Exit after handling the submit button
+            }
+            else if(currentWorkstationName == "Trashcan")
+            {
+                Debug.Log("Items trashed!");
+                // Remove all items from workstation slots
+                foreach (ItemSlot slot in workstationSlots)
+                {
+                    while (slot.quantity > 0)
+                    {
+                        slot.RemoveItem();
+                    }
+                    slot.SetHighlight(false);
+                }
+                return; // Exit after handling the submit button
+            }
         }
 
         if (!isWorkstationMenuActive) // Moving from inventory to workstation
@@ -1101,48 +1118,48 @@ public class InventoryManager : MonoBehaviour
 
     private void PerformCombinationAction()
     {
-        // Count items in workstation slots
-    Dictionary<string,int> itemCounts = new Dictionary<string,int>();
-    foreach (ItemSlot slot in workstationSlots)
-    {
-        if (slot.quantity > 0)
+            // Count items in workstation slots
+        Dictionary<string,int> itemCounts = new Dictionary<string,int>();
+        foreach (ItemSlot slot in workstationSlots)
         {
-            if (!itemCounts.ContainsKey(slot.itemName))
-                itemCounts[slot.itemName] = 0;
+            if (slot.quantity > 0)
+            {
+                if (!itemCounts.ContainsKey(slot.itemName))
+                    itemCounts[slot.itemName] = 0;
 
-            itemCounts[slot.itemName] += slot.quantity;
+                itemCounts[slot.itemName] += slot.quantity;
+            }
         }
-    }
 
-    // If no items, exit
-    if (itemCounts.Count == 0) return;
+        // If no items, exit
+        if (itemCounts.Count == 0) return;
 
-    bool matched = false;
-    foreach (var recipe in craftingRecipes)
-    {
-        if (MatchesRecipe(recipe.recipe, itemCounts))
+        bool matched = false;
+        foreach (var recipe in craftingRecipes)
         {
-            AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
-            matched = true;
-            break; // stop after the first match
+            if (MatchesRecipe(recipe.recipe, itemCounts))
+            {
+                AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
+                matched = true;
+                break; // stop after the first match
+            }
         }
-    }
 
-    if (!matched)
-    {
-        // If no valid recipe, create trash
-        AddItem("Trash", 1, trashSprite, "Whoops, you made trash!");
-    }
+        if (!matched)
+        {
+            // If no valid recipe, create Oops Potion
+            AddItem("Oops Potion", 1, oopsPotionSprite, "Oops… did you mean to make this?");
+        }
 
-    // Clear workstation slots
-    foreach (ItemSlot slot in workstationSlots)
-    {
-        while (slot.quantity > 0)
-            slot.RemoveItem();
-    }
+        // Clear workstation slots
+        foreach (ItemSlot slot in workstationSlots)
+        {
+            while (slot.quantity > 0)
+                slot.RemoveItem();
+        }
 
-    // Start the minigame
-    StartCraftingMinigame();
+        // Start the minigame
+        StartCraftingMinigame();
     }
 
 
