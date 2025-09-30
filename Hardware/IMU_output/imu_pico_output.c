@@ -11,13 +11,13 @@
  * https://github.com/raspberrypi/picotool
  * be sure to include libusb in install
  * be sure TinyUSB submodule initialized
- * 
+ *
  *
  * NOTES:
  *
  * Run serialToCSV.py to record data to motion_data.csv
  * If running py script in WSL2 (don't recommend) find serial port in Powershell & bind/attach via usbipd after boot
- *  
+ *
  */
 
 #include <stdio.h>
@@ -27,9 +27,16 @@
 #include "hardware/gpio.h"
 
 #define BUTTON_GPIO 9
+#define SELECT_GPIO 10
+#define INVENTORY_GPIO 11
+#define JOYSTICK_SDA 6
+#define JOYSTICK_SCL 7
 
 // IMU devices on bus addr 0x68 by default
 static int addr = 0x68;
+
+// Joystick on bus addr 0x52 by default
+static int joystick_addr = 0x52;
 
 #ifdef i2c_default
 static void mpu6050_reset() {
@@ -37,18 +44,18 @@ static void mpu6050_reset() {
     uint8_t buf[] = {0x6B, 0x80};
     i2c_write_blocking(i2c_default, addr, buf, 2, false);
     sleep_ms(100);
-	
-	// wake up
+
+    // wake up
     buf[1] = 0x00;  // clear sleep mode: write 0x00 to register @ 0x6B
     i2c_write_blocking(i2c_default, addr, buf, 2, false);
     sleep_ms(10);
 }
 
 static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3]) {
-	// register being read will auto increment
-	// only need to send FIRST register we want to read, then read
+    // register being read will auto increment
+    // only need to send FIRST register we want to read, then read
 
-	// 6 bytes for accel/gyro, 2 bytes each axis
+    // 6 bytes for accel/gyro, 2 bytes each axis
     uint8_t buffer[6];
 
     // send 0x3B (first accel register) and start reading
@@ -74,13 +81,19 @@ static void mpu6050_read_raw(int16_t accel[3], int16_t gyro[3]) {
 int main() {
     stdio_init_all();
     gpio_init(BUTTON_GPIO);
+    gpio_init(SELECT_GPIO);
+    gpio_init(INVENTORY_GPIO);
 
     sleep_ms(200);
 
     gpio_set_dir(BUTTON_GPIO, GPIO_IN);
     gpio_pull_up(BUTTON_GPIO);
+    gpio_set_dir(SELECT_GPIO, GPIO_IN);
+    gpio_pull_up(SELECT_GPIO);
+    gpio_set_dir(INVENTORY_GPIO, GPIO_IN);
+    gpio_pull_up(INVENTORY_GPIO);
 
-    // uses I2C0 on SDA (GPIO pin 4) and SCL (GPIO pin 5)
+    // IMU uses I2C0 on SDA (GPIO pin 4) and SCL (GPIO pin 5)
     i2c_init(i2c_default, 400 * 1000); // baud rate 400000
     gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
     gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
@@ -90,18 +103,56 @@ int main() {
     // make the I2C pins available to picotool
     bi_decl(bi_2pins_with_func(PICO_DEFAULT_I2C_SDA_PIN, PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C));
 
+    // Joystick uses SDA (GPIO pin 6) and SCL (GPIO pin 7)
+    i2c_init(i2c1, 400 * 1000); // baud rate 400000
+    gpio_set_function(JOYSTICK_SDA, GPIO_FUNC_I2C);
+    gpio_set_function(JOYSTICK_SCL, GPIO_FUNC_I2C);
+    gpio_pull_up(JOYSTICK_SDA);
+    gpio_pull_up(JOYSTICK_SCL);
+
+    // make the I2C pins available to picotool
+    bi_decl(bi_2pins_with_func(JOYSTICK_SDA, JOYSTICK_SCL, GPIO_FUNC_I2C));
     mpu6050_reset();
 
     int16_t acceleration[3], gyro[3];
 
+    printf("\nEntered Program...\n");
+
     while (true) {
 
-        // button pulls DOWN when pressed
+		// buttons pull DOWN when pressed
+		if (!gpio_get(SELECT_GPIO)) {
+			sleep_ms(20);
+
+			// check button is still actually pressed (not bouncing)
+			if (!gpio_get(SELECT_GPIO)) {
+				printf("E");
+			}
+
+			// make sure this button press is over before checking for another one
+			sleep_ms(70);
+		}
+
+		if (!gpio_get(INVENTORY_GPIO)) {
+			sleep_ms(20);
+
+			if (!gpio_get(INVENTORY_GPIO)) {
+				printf("I");
+			}
+
+			sleep_ms(70);
+		}
+
         if (!gpio_get(BUTTON_GPIO)) {
             sleep_ms(50);
 
-            // check button is still actually pressed (not bouncing)
             if (!gpio_get(BUTTON_GPIO)) {
+				// IMU uses I2C0 on SDA (GPIO pin 4) and SCL (GPIO pin 5)
+				//i2c_init(i2c_default, 400 * 1000); // baud rate 400000
+				//gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+				//gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+				//gpio_pull_up(PICO_DEFAULT_I2C_SDA_PIN);
+				//gpio_pull_up(PICO_DEFAULT_I2C_SCL_PIN);
                 printf("\n**** Reading gesture... ****\n");
             }
 
@@ -124,22 +175,70 @@ int main() {
                 printf("Acc. X = %f, Y = %f, Z = %f\n", acc_x, acc_y, acc_z);
                 printf("Gyro. X = %f, Y = %f, Z = %f\n", gyro_x, gyro_y, gyro_z);
                 // printf("\n");
-				sleep_ms(200);
+                sleep_ms(200);
             }
+			//printf("Acc. X = %f, Y = %f, Z = %f\n", acc_x, acc_y, acc_z);
+			//printf("Gyro. X = %f, Y = %f, Z = %f\n", gyro_x, gyro_y, gyro_z);
+			printf("STOP READ\n");
 
-            printf("\n**** Stopped reading gesture ****\n");
-        }
+		}
 
-		// *** FOR TESTING IF BUTTON NOT RESPONDING ***
-		// if below message is outputting, check inits
-		//
+        else {
+			// Joystick uses SDA (GPIO pin 6) and SCL (GPIO pin 7)
+			// i2c_init(i2c1, 400 * 1000); // baud rate 400000
+			// gpio_set_function(JOYSTICK_SDA, GPIO_FUNC_I2C);
+			// gpio_set_function(JOYSTICK_SCL, GPIO_FUNC_I2C);
+			// gpio_pull_up(JOYSTICK_SDA);
+			// gpio_pull_up(JOYSTICK_SCL);
+
+			// make the I2C pins available to picotool
+			// bi_decl(bi_2pins_with_func(JOYSTICK_SDA, JOYSTICK_SCL, GPIO_FUNC_I2C));
+
+			uint8_t joystick_buffer[2];
+			//uint8_t joystick_x = -1;
+			//uint8_t joystick_y = -1;
+			uint8_t joystick_start_addr = 0x52;
+
+			i2c_write_blocking(i2c1, joystick_addr, &joystick_start_addr, 1, true); // True to keep master control of bus
+			i2c_read_blocking(i2c1, joystick_addr, joystick_buffer, 2, false); // False - finished with the bus
+
+			uint8_t joystick_x = joystick_buffer[0];
+			uint8_t joystick_y = joystick_buffer[1];
+
+			// *** UNCOMMENT TO CONSTANT OUTPUT JOYSTICK DIRECTION ****
+			//printf("Joystick: X = %d, Y = %d\n", joystick_x, joystick_y);
+
+			// ***           Y ~255 => W
+			// ***
+			// *** X ~0 => A         X ~255 => D
+			// ***
+			// ***            Y ~0 => S
+
+			if (joystick_y >= 190 & joystick_y <= 255) {
+					printf("W");
+			}
+			if (joystick_x >= 0 & joystick_x <= 65) {
+					printf("A");
+			}
+			if (joystick_y >= 0 & joystick_y <= 65) {
+					printf("S");
+			}
+			if (joystick_x >= 190 & joystick_x <= 255) {
+					printf("D");
+			}
+		}
+
+        // *** FOR TESTING IF IMU BUTTON NOT RESPONDING ***
+        // if below message is outputting, check inits
+        //
         // else {
-        // 	sleep_ms(1000);
-        // 	printf("\n**** Not not working ****\n");
-        // 	sleep_ms(1000);
+        //      sleep_ms(1000);
+        //      printf("\n**** Not not working ****\n");
+        //      sleep_ms(1000);
         // }
 
         sleep_ms(100);
     }
+
 
 }
