@@ -1,0 +1,29 @@
+Gestures order: 
+1. counter clockwise circle (x)
+2. clockwise circle (c)
+3. up v (v)
+4. down n (n)
+5. Z (z)
+6. fish loop (b)
+
+WHERE DIFFERENT GESTURES end/begin
+624- where x ends and c begins
+1236- Where c ends and v begins
+1727- where v ends and n begins
+2391- where n ends and z begins
+3157- where z ends and b begins
+
+KEY FRAMES
+2
+566
+890
+1235
+1509
+1727
+2014
+2391
+2738
+3157
+3338
+3873
+4267
