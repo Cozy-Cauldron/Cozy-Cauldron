@@ -467,7 +467,7 @@ public class InventoryManager : MonoBehaviour
         data.currentScene = SceneManager.GetActiveScene().name;
 
         //character location
-        GameObject player = GameObject.Find("GREEN");
+        GameObject player = GameObject.Find("MainCharacter");
         if (player == null)
         {
             Debug.LogError("Player object not found in the scene!");
@@ -544,7 +544,7 @@ public class InventoryManager : MonoBehaviour
         UpdatePageUI();
 
         // Restore player position
-        GameObject player = GameObject.Find("GREEN");
+        GameObject player = GameObject.Find("MainCharacter");
         if (player != null)
         {
             PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
