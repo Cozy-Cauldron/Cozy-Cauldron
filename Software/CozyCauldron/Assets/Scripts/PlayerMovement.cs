@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 10f;
     public float rotationDeadzone = 0.1f;
 
-    Animator m_Animator;
+    public Animator m_Animator;
     Rigidbody m_Rigidbody;
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
@@ -47,26 +47,6 @@ public class PlayerMovement : MonoBehaviour
         if (m_Movement.magnitude > rotationDeadzone)
         {
             m_Rigidbody.MoveRotation(m_Rotation);
-        }
-
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            m_Animator.SetTrigger("StartFishing");
-        }
-
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            m_Animator.SetTrigger("CatchBug");
-        }
-
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            m_Animator.SetTrigger("PickUp");
-        }
-
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            m_Animator.SetTrigger("Craft");
         }
     }
 

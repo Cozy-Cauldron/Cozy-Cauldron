@@ -60,6 +60,8 @@ public class InventoryManager : MonoBehaviour
     public Sprite keyXSprite;
     public Sprite keyCSprite;
     public Sprite keyVSprite;
+    public Sprite keyBSprite;
+    public Sprite keyNSprite;
 
     private Dictionary<string, Sprite> keySprites;
     private List<Image> activeKeyImages = new List<Image>();
@@ -290,7 +292,9 @@ public class InventoryManager : MonoBehaviour
             { "Z", keyZSprite },
             { "X", keyXSprite },
             { "C", keyCSprite },
-            { "V", keyVSprite }
+            { "V", keyVSprite },
+            { "N", keyNSprite },
+            { "B", keyBSprite }
         };
 
     }
@@ -1003,10 +1007,10 @@ public class InventoryManager : MonoBehaviour
         potionTextUI.text = page.potionText;
     }
 
-    private void StartCraftingMinigame()
+    public void StartCraftingMinigame()
     {
         int sequenceLength = 3;
-        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V" };
+        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N" };
 
         // Shuffle the list
         for (int i = 0; i < possibleKeys.Count; i++)
@@ -1057,7 +1061,7 @@ public class InventoryManager : MonoBehaviour
         CraftingMinigamePanel.SetActive(true);
     }
 
-    private void UpdateCraftingMinigame()
+    public void UpdateCraftingMinigame()
     {
         if (!minigameActive) return;
 
@@ -1090,7 +1094,7 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    private void FinishCraftingMinigame()
+    public void FinishCraftingMinigame()
     {
         minigameActive = false;
         CraftingMinigamePanel.SetActive(false);
@@ -1107,14 +1111,14 @@ public class InventoryManager : MonoBehaviour
     }
 
     private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)
-{
-    foreach (var kv in recipe)
     {
-        if (!currentCounts.TryGetValue(kv.Key, out int count) || count != kv.Value)
-            return false; // missing item or wrong quantity
+        foreach (var kv in recipe)
+        {
+            if (!currentCounts.TryGetValue(kv.Key, out int count) || count != kv.Value)
+                return false; // missing item or wrong quantity
+        }
+        return true;
     }
-    return true;
-}
 
     private void PerformCombinationAction()
     {

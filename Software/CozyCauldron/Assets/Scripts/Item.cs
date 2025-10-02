@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Assertions.Must;
+using System.Collections;
 
 public class Item : MonoBehaviour, IInteractable
 {
     [SerializeField] private string prompt;
-   public string InteractionPrompt => prompt;
+    public string InteractionPrompt => prompt;
 
      [SerializeField] private string itemName;
 
@@ -33,12 +35,53 @@ public class Item : MonoBehaviour, IInteractable
         }
      }
 
-   public bool Interact(Interactor interactor)
-   {
+    public bool Interact(Interactor interactor)
+    {
         Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
+
+        // Determine which animation to play
+        string trigger = "";
+        if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball")
+        {
+            trigger = "Craft";
+        }
+        else if (itemName == "Clownfish" || itemName == "Sturgeon" || itemName == "Bass" ||
+            itemName == "Salmon" || itemName == "Butterfly Fish" || itemName == "Goldfish" ||
+            itemName == "Pufferfish")
+        {
+            trigger = "StartFishing";
+        }
+        else if (itemName == "Jumping Spider" || itemName == "Lady Bug" || itemName == "Beetle" ||
+                itemName == "Roly Poly")
+        {
+            trigger = "CatchBug";
+        }
+        else
+        {
+            trigger = "PickUp";
+        }
+
+        // Trigger the animation
+        PlayerMovement playerMovement = interactor.GetComponent<PlayerMovement>();
+        if (playerMovement != null)
+        {
+            playerMovement.m_Animator.SetTrigger(trigger);
+        }
+
+        // Start the coroutine to handle the delayed pick-up
+        StartCoroutine(HandleDelayedPickup(trigger));
+
+        return true;
+    }
+
+    private IEnumerator HandleDelayedPickup(string animationTrigger)
+    {
+        // Wait 1 second for the animation to finish
+        yield return new WaitForSeconds(1f);
+
+        // Now actually pick up the item (or do fishing/bug logic)
         if (itemName == "Cauldron" || itemName == "Trashcan")
         {
-            //open the workstation menu
             Debug.Log("Interacted with " + itemName);
             inventoryManager.workstationActivated = true;
             inventoryManager.currentWorkstationName = itemName;
@@ -46,17 +89,12 @@ public class Item : MonoBehaviour, IInteractable
         }
         else if (itemName == "Crystal Ball")
         {
-            //open the task menu
             inventoryManager.taskPanelActivated = true;
-        }
-        else if (itemName == "Bed")
-        {
-            //open the save menu
-            //inventoryManager.savePanelActivated = true;
         }
         else
         {
-            //pick up the item
+            // Add to inventory after animation
+            inventoryManager.StartCraftingMinigame();
             int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
             if (leftOverItems <= 0)
             {
@@ -67,8 +105,8 @@ public class Item : MonoBehaviour, IInteractable
                 quantity = leftOverItems;
             }
         }
-        return true;
-   }
+    }
+
     public Sprite GetItemImage()
     {
         return itemImage;
