@@ -41,7 +41,7 @@ public class Item : MonoBehaviour, IInteractable
 
         // Determine which animation to play
         string trigger = "";
-        if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball")
+        if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball" || itemName == "Bed")
         {
             trigger = "Craft";
         }
@@ -91,10 +91,17 @@ public class Item : MonoBehaviour, IInteractable
         {
             inventoryManager.taskPanelActivated = true;
         }
+        else if (itemName == "Bed")
+        {
+            inventoryManager.saveMenu = true;
+        }
         else
         {
             // Add to inventory after animation
-            inventoryManager.StartCraftingMinigame();
+            if (animationTrigger == "StartFishing" || animationTrigger == "CatchBug")
+            {
+                inventoryManager.StartCraftingMinigame();
+            }
             int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
             if (leftOverItems <= 0)
             {
