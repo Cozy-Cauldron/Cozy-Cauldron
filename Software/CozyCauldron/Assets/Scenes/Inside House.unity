@@ -6141,7 +6141,6 @@ MonoBehaviour:
   - {fileID: 1693162352}
   - {fileID: 1637514864}
   selectedTaskButtonIndex: 0
-  previousTaskButtonIndex: 0
   startMenu: 1
   saveMenu: 0
   endMenu: 0
@@ -6206,7 +6205,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &1286340189
 RectTransform:
