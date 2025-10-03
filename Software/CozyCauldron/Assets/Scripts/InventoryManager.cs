@@ -15,6 +15,9 @@ public class InventoryManager : MonoBehaviour
     public GameObject WorkstationMenu;
     public GameObject CraftingMinigamePanel;
     public GameObject TaskPanel;
+    public GameObject StartMenu;
+    public GameObject SaveMenu;
+    public GameObject EndMenu;
     private bool minigameActive = false;
     private string keySequence = "";
     private int currentKeyIndex = 0;
@@ -71,9 +74,17 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
     public Image WorkstationImage;
 
+    public Button[] saveButtons;
+    public int selectedSaveButtonIndex = 0; // 0 = Save, 1 = New, 2 = Load, 3 = Close
+
+    public Image saveStatus;
+    public Sprite noStatus;
+    public Sprite saved;
+    public Sprite newSave;
+    public Sprite loaded;
+
     public Button[] taskPanelButtons;
     public int selectedTaskButtonIndex = 0; // 0 = Left, 1 = Submit, 2 = Right
-    public int previousTaskButtonIndex = 0;
 
     private int selectedItemIndex = 0; // Track the selected item
     private int selectedWorkstationIndex = 0; // Track the selected workstation item
@@ -84,7 +95,12 @@ public class InventoryManager : MonoBehaviour
     private bool isDelaying = false;
     private bool justOpened = false; // Track if the workstation was just opened
 
-    private List<(Dictionary<string,int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string,int>, string, Sprite, string)>();
+    public bool startMenu = true;
+    public bool saveMenu = false;
+    public bool endMenu = false;
+
+
+    private List<(Dictionary<string, int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string, int>, string, Sprite, string)>();
 
     private SaveData loadedSaveData; // Store loaded data temporarily
 
@@ -359,8 +375,18 @@ public class InventoryManager : MonoBehaviour
                 // If the task panel is open, close it
                 taskPanelActivated = false;
                 TaskPanel.SetActive(false);
-                Time.timeScale = 1; // Reset time scale
-                return; // Exit early
+                for (int i = 0; i < pages.Length; i++)
+                {
+                    if (!pages[i].completed)
+                    {
+                        Time.timeScale = 1; // Reset time scale
+                        return;
+                    }
+                }
+                //open end menu
+                endMenu = true;
+                EndMenu.SetActive(true);
+                return; 
             }
             else
             {
@@ -395,7 +421,7 @@ public class InventoryManager : MonoBehaviour
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
             justOpened = true;
-            
+
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
@@ -441,6 +467,58 @@ public class InventoryManager : MonoBehaviour
             TaskPanel.SetActive(true);
             HandleTaskNavigation();
         }
+        else if (startMenu)
+        {
+            Time.timeScale = 0;
+            if (Input.GetButtonDown("Interact"))
+            {
+                //close start menu
+                startMenu = false;
+                StartMenu.SetActive(false);
+                //open save menu
+                saveMenu = true;
+                SaveMenu.SetActive(true);
+                return;
+            }
+        }
+        else if (endMenu)
+        {
+            Time.timeScale = 0;
+            if (Input.GetButtonDown("Interact"))
+            {
+                //reset save file
+                NewSave();
+                //close end menu
+                endMenu = false;
+                EndMenu.SetActive(false);
+                //open start menu
+                startMenu = true;
+                StartMenu.SetActive(true);
+                return;
+            }
+        }
+        else if (saveMenu && !justOpened)
+        {
+            justOpened = true;
+            Time.timeScale = 0;
+            SaveMenu.SetActive(true);
+            selectedSaveButtonIndex = 0;
+            saveStatus.sprite = noStatus;
+            // Unhighlight all buttons first
+            foreach (Button btn in saveButtons)
+                btn.SetHighlight(false);
+            saveButtons[selectedSaveButtonIndex].SetHighlight(true);
+        }
+        else if (saveMenu && justOpened)
+        {
+            Time.timeScale = 0;
+            SaveMenu.SetActive(true);
+            HandleSaveNavigation();
+            // Unhighlight all buttons first
+            foreach (Button btn in saveButtons)
+                btn.SetHighlight(false);
+            saveButtons[selectedSaveButtonIndex].SetHighlight(true);
+        }
         else
         {
             InventoryMenu.SetActive(false);
@@ -450,12 +528,38 @@ public class InventoryManager : MonoBehaviour
             taskPanelActivated = false;
             menuActivated = false;
             workstationActivated = false;
+            saveMenu = false;
+            startMenu = false;
+            endMenu = false;
             justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
         }
     }
 
+    public void NewSave()
+    {
+        SaveData data = new SaveData();
+        //set all tasks to false
+        bool[] completedPages = new bool[pages.Length];
+        for (int i = 0; i < pages.Length; i++)
+        {
+            completedPages[i] = false;
+        }
+        data.completedPages = completedPages;
+
+        //current scene
+        data.currentScene = "Inside House";
+
+        //player location
+        data.playerX = 27.9f;
+        data.playerY = 1.1f;
+        data.playerZ = 31.5f;
+
+        //inventory empty
+
+        SaveSystem.SaveGame(data);
+    }
     public void Save()
     {
         SaveData data = new SaveData();
@@ -598,19 +702,19 @@ public class InventoryManager : MonoBehaviour
 
     private void HandleNavigation()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.D))
         {
             MoveSelection(1);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.A))
         {
             MoveSelection(-1);
         }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        else if (Input.GetKeyDown(KeyCode.S))
         {
             MoveSelection(columns);
         }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        else if (Input.GetKeyDown(KeyCode.W))
         {
             MoveSelection(-columns);
         }
@@ -619,7 +723,7 @@ public class InventoryManager : MonoBehaviour
     private void HandleTaskNavigation()
     {
         // Move left/right
-        if (Input.GetKeyDown(KeyCode.RightArrow)) // Right
+        if (Input.GetKeyDown(KeyCode.D)) // Right
         {
             foreach (Button btn in taskPanelButtons)
                 btn.SetHighlight(false);
@@ -627,7 +731,7 @@ public class InventoryManager : MonoBehaviour
             taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
             //Debug.Log(selectedTaskButtonIndex);
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)) // Left
+        else if (Input.GetKeyDown(KeyCode.A)) // Left
         {
             foreach (Button btn in taskPanelButtons)
                 btn.SetHighlight(false);
@@ -675,6 +779,66 @@ public class InventoryManager : MonoBehaviour
                     }
                     UpdatePageUI();
                 }
+            }
+        }
+    }
+
+    private void HandleSaveNavigation()
+    {
+        //move left
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            if (selectedSaveButtonIndex == 1 || selectedSaveButtonIndex == 3)
+            {
+                selectedSaveButtonIndex--;
+            }
+        }
+        //move right
+        else if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (selectedSaveButtonIndex == 0 || selectedSaveButtonIndex == 2)
+            {
+                selectedSaveButtonIndex++;
+            }
+        }
+        //move up
+        else if (Input.GetKeyDown(KeyCode.W))
+        {
+            if (selectedSaveButtonIndex == 2 || selectedSaveButtonIndex == 3)
+            {
+                selectedSaveButtonIndex = selectedSaveButtonIndex - 2;
+            }
+        }
+        //move down
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (selectedSaveButtonIndex == 0 || selectedSaveButtonIndex == 1)
+            {
+                selectedSaveButtonIndex = selectedSaveButtonIndex + 2;
+            }
+        }
+        //on submit
+        else if (Input.GetButtonDown("Interact"))
+        {
+            if (selectedSaveButtonIndex == 0)
+            {
+                Save();
+                saveStatus.sprite = saved;
+            }
+            else if (selectedSaveButtonIndex == 1)
+            {
+                NewSave();
+                saveStatus.sprite = newSave;
+            }
+            else if (selectedSaveButtonIndex == 2)
+            {
+                Load();
+                saveStatus.sprite = loaded;
+            }
+            else
+            {
+                saveMenu = false;
+                SaveMenu.SetActive(false);
             }
         }
     }
@@ -735,7 +899,7 @@ public class InventoryManager : MonoBehaviour
                 // Move to the top left slot from the top right slot
                 newIndex = 0;
             }
-             else if (direction == columns && selectedWorkstationIndex == 1)
+            else if (direction == columns && selectedWorkstationIndex == 1)
             {
                 // Move to the bottom right slot from the top right slot
                 newIndex = 3;
@@ -770,7 +934,7 @@ public class InventoryManager : MonoBehaviour
                 // Move to the bottom left slot from the button
                 newIndex = 2;
             }
-            
+
 
             // Update the selected index
             selectedWorkstationIndex = newIndex;
@@ -785,7 +949,7 @@ public class InventoryManager : MonoBehaviour
             else
             {
                 // Highlight the button
-                workstationButton.SetHighlight(true); 
+                workstationButton.SetHighlight(true);
             }
         }
         else
