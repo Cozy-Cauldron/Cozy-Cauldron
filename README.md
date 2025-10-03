@@ -60,11 +60,13 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Made inventory persistent by passing the inventoryCanvas between scenes when they are loaded.
 - Character gets stuck on the ground sometimes
   - Updated character motion settings to better simulate physics.
-
+- Player is able to climb over invisible collider for catching fish
+  - Made the fish collider a plane instead of a capsule
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
-- Player is able to climb over invisible collider for catching fish
-- If the workstation is closed while items are in the crafting slots the items get deleted instead of returned to the inventory
+- Save Menu opens right after close when next to Bed because they both use the E key
+
+
 
 
 
