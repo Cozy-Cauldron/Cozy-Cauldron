@@ -21,7 +21,7 @@ Code for external interface modules such as the buttons, joystick, and IMU class
 Basic gesture database is implemented, which has only been populated with “dummy” data. This data serves as a placeholder for the gesture data until we collect testing data with the controller when we begin programming the gestures we want. The gesture recognition logic has also been integrated, which compares the user-parsed data with the database of pre-coded gestures. Lastly, user-parsed data passes through a basic filter that checks if the data “is real”. The filter eliminates data sets that are composed of strictly 0x00 or strictly 0xff, which indicates the data was collected incorrectly. There is a developed working ML model that loads in training and testing data, and decides which "action" from the training data matches closest with testing data. The model uses random forest classification for comparison and uses PCA and radar plot for data visuals.
 
 ### Software
-Player movement and animations are working within the game scene for a new in-progress character model. The ability to smoothly transition between scenes has been added for the use of multiple in-game environments in the future. Interactable items have been created and can be picked up. The inventory system can be opened and the selected inventory slot will populate the item information on the right side. Items of the same type can stack in inventory slots. Items can be passed between the workstation menu and the inventory. Basic crafting logic has been implemented, where items are consumed and the crafted item appears in the inventory. Crafting minigame logic and UI has been completed with placeholder keystrokes. Models for environments, witch house interior/exterior, furniture, and ingredients have been created with associated sprites. More player animations have been added for different in-game actions.
+Player movement and collisions are working within the game scene for our custom character model. Different player animations (including fishing rod and bug net animations) are triggered when interacting with different in-game objects. The ability to smoothly transition between scenes has been added for the use of multiple in-game environments. Interactable items have been created and can be picked up. The inventory system can be opened and the selected inventory slot will populate the item information on the right side. Items of the same type can stack in inventory slots. Items can be passed between the workstation menu and the inventory. Trashcan logic and UI is completed. Cauldron crafting logic has been implemented and all required recipes have been added. Crafting minigame and catching minigame logic and UI have been completed with associated gesture sprites. Crystal Ball UI and logic have been made for task list and game progression. Models for environments, witch house interior/exterior, furniture, and ingredients have been created with associated sprites. Start, save, and end menus have been implemented. Save, load, and new save are all fully functional.   
 
 ## Project Architecture
 Beginning with the external interfaces from the controller wand, data is recorded and collected from each of the individual external modules such as the joystick, the buttons, and the motion data from the IMU. After this data is collected, it’s then sent to a persistent state where some data is received and interpreted by the project’s internal ML models to interpret (in)valid gestures. Finally, that data is sent into the game software via keystrokes to be further interpreted into actionable game inputs to which the game responds in turn to.
@@ -62,9 +62,12 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Updated character motion settings to better simulate physics.
 - Player is able to climb over invisible collider for catching fish
   - Made the fish collider a plane instead of a capsule
+- Save Menu opens right after close when next to Bed because they both use the E key
+  - Added an additional check to see if the Save Menu was just opened and skips the animation and reopening.
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
-- Save Menu opens right after close when next to Bed because they both use the E key
+
+
 
 
 
