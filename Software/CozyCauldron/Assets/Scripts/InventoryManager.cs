@@ -98,6 +98,8 @@ public class InventoryManager : MonoBehaviour
     public bool startMenu = true;
     public bool saveMenu = false;
     public bool endMenu = false;
+    public bool saveMenuJustOpened = false;
+
 
 
     private List<(Dictionary<string, int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string, int>, string, Sprite, string)>();
