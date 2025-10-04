@@ -16,11 +16,15 @@ public class Interactor : MonoBehaviour
 
         if(numfound>0)
         {
-            var interactable = colliders[0].GetComponent<IInteractable>();
-
-            if(interactable != null && Input.GetButtonDown("Interact"))
+            for (int i = 0; i < numfound; i++)
             {
-                interactable.Interact(this);
+                var interactable = colliders[i].GetComponent<IInteractable>();
+                if (interactable != null && Input.GetButtonDown("Interact"))
+                {
+                    Debug.Log("Calling Interact on " + colliders[i].name);
+                    interactable.Interact(this);
+                    break; // stop after first successful interact
+                }
             }
         }
     }

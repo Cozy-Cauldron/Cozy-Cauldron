@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 10f;
     public float rotationDeadzone = 0.1f;
 
-    Animator m_Animator;
+    public Animator m_Animator;
     Rigidbody m_Rigidbody;
     Vector3 m_Movement;
     Quaternion m_Rotation = Quaternion.identity;
@@ -48,21 +48,17 @@ public class PlayerMovement : MonoBehaviour
         {
             m_Rigidbody.MoveRotation(m_Rotation);
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            m_Animator.SetTrigger("StartFishing");
-        }
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
 
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            m_Animator.SetTrigger("CatchBug");
-        }
+    public void SetPosition(Vector3 newPosition)
+    {
+        m_Rigidbody.position = newPosition;
 
-        if (Input.GetKeyDown(KeyCode.V))
-        {
-            m_Animator.SetTrigger("Craft");
-        }
     }
 
 }
