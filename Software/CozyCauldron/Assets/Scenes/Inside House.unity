@@ -2897,7 +2897,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Trashcan
   quantity: 1
   itemImage: {fileID: 21300000, guid: 49206888c26bef943901524e014e4f68, type: 3}
@@ -4033,7 +4032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Crystal Ball
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2c5f26dc9bec7484dafbf89fc0bf219c, type: 3}
@@ -6144,6 +6142,7 @@ MonoBehaviour:
   startMenu: 1
   saveMenu: 0
   endMenu: 0
+  saveMenuJustOpened: 0
 --- !u!114 &1286340186
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6374,7 +6373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Bed
   quantity: 1
   itemImage: {fileID: 0}
@@ -7229,7 +7227,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Cauldron
   quantity: 1
   itemImage: {fileID: 21300000, guid: f95e090839aae3f4b99fe7a54e032c75, type: 3}

@@ -180,7 +180,7 @@ public class InventoryManager : MonoBehaviour
             characterTextAfter = "This will really help during my next swim lesson. Hopefully I will float!",
             potionSprite = swimmingPotionSprite,
             potionName = "Swimming Potion",
-            potionText = "1 Sturgean\r\n1 Bass\r\n1 Salmon\r\n3 Seaweed"
+            potionText = "1 Sturgeon\r\n1 Bass\r\n1 Salmon\r\n3 Seaweed"
         };
 
         pages[5] = new TaskPage
@@ -346,6 +346,69 @@ public class InventoryManager : MonoBehaviour
             if(workstationActivated)
             {
                 // If the workstation menu is active, close it
+                //return items to inventory
+                foreach (ItemSlot workstationSlot in workstationSlots)
+                {
+                    if (workstationSlot.quantity > 0)
+                    {
+                        bool itemReturned = false;
+
+                        // Try to stack it into an existing matching slot
+                        foreach (ItemSlot inventorySlot in itemSlots)
+                        {
+                            if (inventorySlot.itemName == workstationSlot.itemName && inventorySlot.quantity > 0)
+                            {
+                                int leftover = inventorySlot.AddItem(
+                                    workstationSlot.itemName,
+                                    workstationSlot.quantity,
+                                    workstationSlot.itemSprite,
+                                    workstationSlot.itemDescription
+                                );
+
+                                // If successfully added, clear the workstation slot
+                                if (leftover == 0)
+                                {
+                                    workstationSlot.RemoveItem();
+                                }
+                                else
+                                {
+                                    workstationSlot.quantity = leftover;
+                                }
+
+                                itemReturned = true;
+                                break;
+                            }
+                        }
+
+                        // If no matching slot found, add to the first empty inventory slot
+                        if (!itemReturned)
+                        {
+                            foreach (ItemSlot inventorySlot in itemSlots)
+                            {
+                                if (inventorySlot.quantity == 0)
+                                {
+                                    int leftover = inventorySlot.AddItem(
+                                        workstationSlot.itemName,
+                                        workstationSlot.quantity,
+                                        workstationSlot.itemSprite,
+                                        workstationSlot.itemDescription
+                                    );
+
+                                    if (leftover == 0)
+                                    {
+                                        workstationSlot.RemoveItem();
+                                    }
+                                    else
+                                    {
+                                        workstationSlot.quantity = leftover;
+                                    }
+
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
                 workstationActivated = false;
                 InventoryMenu.SetActive(false);
                 WorkstationMenu.SetActive(false);

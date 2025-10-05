@@ -4,9 +4,6 @@ using System.Collections;
 
 public class Item : MonoBehaviour, IInteractable
 {
-    [SerializeField] private string prompt;
-    public string InteractionPrompt => prompt;
-
      [SerializeField] private string itemName;
 
      [SerializeField] private int quantity;
