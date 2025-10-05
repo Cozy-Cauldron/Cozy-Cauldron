@@ -67,6 +67,8 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
 - Player can still move around while animation is playing
+- (Not exactly a bug, but something we want to update) PLayer spawns in from portals at a set location that we want to update.
+
 
 
 
