@@ -64,10 +64,12 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Made the fish collider a plane instead of a capsule
 - Save Menu opens right after close when next to Bed because they both use the E key
   - Added an additional check to see if the Save Menu was just opened and skips the animation and reopening.
+- The amount of time between animations is inconsistent
+  - Changed the trigger for animations from a boolean on key press to a trigger
 ### Not Fixed
-- Amount of time before animation starts is inconsistent between actions
 - Player can still move around while animation is playing
 - (Not exactly a bug, but something we want to update) PLayer spawns in from portals at a set location that we want to update.
+
 
 
 
