@@ -319,15 +319,6 @@ public class InventoryManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.K)) // Save with K
-        {
-            Save();
-        }
-        if (Input.GetKeyDown(KeyCode.L)) // Load with L
-        {
-            Load();
-        }
-
         if (isDelaying)
         {
             // Increment the timer
