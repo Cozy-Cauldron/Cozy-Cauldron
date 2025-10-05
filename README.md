@@ -1,4 +1,4 @@
-# Alpha Build
+# Beta Build
 ## The Cozy Cauldron
 The Cozy Cauldron is a collaborative senior project created for the University of Florida's Computer Engineering Design course. As an overview, this project is a videogame that's being developed alongside a custom hardware controller and machine learning model to create a unique physical and tacticile gameplay experience.
 
@@ -66,6 +66,8 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
   - Added an additional check to see if the Save Menu was just opened and skips the animation and reopening.
 ### Not Fixed
 - Amount of time before animation starts is inconsistent between actions
+- Player can still move around while animation is playing
+
 
 
 
