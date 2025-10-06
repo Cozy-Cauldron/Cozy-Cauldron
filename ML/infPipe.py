@@ -14,11 +14,13 @@ import joblib
 #config
 SERIAL_PORT = 'COM8'
 BAUD_RATE = 400000
-WINDOW_SIZE = 50  # number of samples per inference
-MODEL_PATH = "gesture_classifier.pkl"  
+FRAME_LEN = 6  # number of samples per inference
+THRESHOLD = 0.6  # confidence cutoff for failed gestures
 
 #load ML model
-clf, le = joblib.load(MODEL_PATH)
+clf = joblib.load("beta_gesture_model.joblib")
+scaler = joblib.load("beta_gesture_scaler.joblib")
+encoder = joblib.load("beta_gesture_encoder.joblib")
 
 #regex patterns
 gyro_pattern = re.compile(r'Gyro\. X = (-?[0-9]*[.]?[0-9]+), Y = (-?[0-9]*[.]?[0-9]+), Z = (-?[0-9]*[.]?[0-9]+)')
@@ -26,9 +28,6 @@ acc_pattern  = re.compile(r'Acc\. X = (-?[0-9]*[.]?[0-9]+), Y = (-?[0-9]*[.]?[0-
 
 #access serial connection
 ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
-
-#buffer for real-time pipeline
-buffer = deque(maxlen=WINDOW_SIZE)
 
 print("Streaming data... Press Ctrl+C to stop.")
 
@@ -79,57 +78,105 @@ try:
 
         elif line == "E" :
             print("E (Select) button pressed\n")
-            #keyboard.write("e")
             pyautogui.press('e')
 
         elif line == "I" :
             print("I (Inventory) button pressed\n")
-            #keyboard.write("i")
             pyautogui.press('i')
 
-        else :
-            gyro_match = gyro_pattern.match(line)
-            if gyro_match:
-                print("Gyro recognized...\n")
-                gyro_data = list(map(float, gyro_match.groups()))
+        elif line == "K" :
+
+            #steps:
+            #data is coming in from com8 via serial data
+            #keep collecting data for as long as "K" is being held down
+            #once K is released, stop collecting data and send data to preprocessing
+            #once data has been preprocessed, run the data through ml model
+            #print the model's output
+
+            print("Recording gesture data...")
+
+            # Use a buffer to store all samples while K is held
+            buffer = []
+
+            # Keep reading until K is released
+            while True:
+                raw_line = ser.readline().decode('utf-8', errors='ignore').strip()
                 
-                acc_line = ser.readline().decode('utf-8', errors='ignore').strip()
-                acc_match = acc_pattern.match(acc_line)
+                # If button released (no longer "K"), break out
+                if raw_line != "K":
+                    print("K released, stopping recording.")
+                    break
 
-                if acc_match:
-                    print("Accel recognized...\n")
-                    acc_data = list(map(float, acc_match.groups()))
-                    sample = gyro_data + acc_data  # [gx, gy, gz, ax, ay, az]
-                    buffer.append(sample)
+                # Read the next IMU data line
+                imu_line = ser.readline().decode('utf-8', errors='ignore').strip()
 
-                    #once we have enough samples, run inference
-                    if len(buffer) == WINDOW_SIZE:
-                        window = np.array(buffer)
-                        # TODO: apply preprocessing here
-                        features = extract_features(window)  
-                        prediction = model.predict([features])[0]
-                        confidence = max(model.predict_proba([features])[0])
+                parts = imu_line.split(",")
 
-                        if confidence > 0.7:
-                            print("Predicted action:", prediction)
-                    
-                        # send prediction to unity (thanks kylie)
-                        # Map gestures to keys
-                        mapping = {
-                            "zigzag": "z",
-                            "fish": "x",
-                            "clockwisecircle": "c",
-                            "downcarrot": "v",
-                            "jump": "j"
-                        }
+                # Expecting: timestamp, ax, ay, az, gx, gy, gz
+                if len(parts) < 7:
+                    continue  # Skip malformed packets
 
-                        if predicted_label in mapping:
-                            mapped_key = mapping[predicted_label]
-                            print(f"Sending keystroke: {mapped_key}")
-                            keyboard.write(mapped_key)  # types into the active window
-    
-                        else:
-                            print("No confident action detected")
+                try:
+                    timestamp, ax, ay, az, gx, gy, gz = parts
+                    packet = [float(ax), float(ay), float(az), float(gx), float(gy), float(gz)]
+                    buffer.append(packet)
+                except ValueError:
+                    continue  # Skip any non-numeric rows
+
+            # Once recording ends, process the data if we have enough samples
+            if len(buffer) == 0:
+                print("No IMU data collected, skipping.")
+                continue
+
+            # Convert to NumPy array for preprocessing
+            X_new = np.array(buffer)
+
+            print("\n--- RAW DATA STATS ---")
+            print(f"Raw shape (frames x features): {X_new.shape}")
+            print(f"Expected FRAME_LEN: {FRAME_LEN}")
+            print("First 2 raw frames (ax, ay, az, gx, gy, gz):")
+            print(X_new[:2])
+
+            # Preprocessing step
+            if X_new.shape[0] < FRAME_LEN:
+                pad_len = FRAME_LEN - X_new.shape[0]
+                print(f"Padding with {pad_len} zero-rows to reach {FRAME_LEN} frames.")
+                X_new = np.vstack([X_new, np.zeros((pad_len, X_new.shape[1]))])
+            elif X_new.shape[0] > FRAME_LEN:
+                print(f"Truncating to first {FRAME_LEN} frames.")
+                X_new = X_new[:FRAME_LEN, :]
+
+            print(f"Adjusted shape (after pad/truncate): {X_new.shape}")
+            
+            # Flatten the sequence or scale as your model expects
+            X_scaled = scaler.transform(X_new)
+            print("\n--- AFTER SCALING ---")
+            print(f"Scaled data shape: {X_scaled.shape}")
+            print("First 2 scaled frames:")
+            print(X_scaled[:2])
+
+            
+            X_flattened = X_scaled.flatten().reshape(1, -1)
+            print("\n--- AFTER FLATTENING ---")
+            print(f"Flattened shape: {X_flattened.shape}")
+            print(f"First 12 flattened values: {X_flattened[0][:12]}")
+            print("-----------------------\n")
+            
+            # Run the ML model
+            y_pred_proba = clf.predict_proba(X_flattened)[0]
+            y_pred_index = np.argmax(y_pred_proba)
+            y_pred_label = encoder.inverse_transform([y_pred_index])[0]
+            confidence = y_pred_proba[y_pred_index]
+
+            # Output prediction or failed gesture
+            if confidence >= THRESHOLD:
+                print(f"Predicted Gesture: {y_pred_label} (confidence {confidence:.2f})")
+                pyautogui.press(y_pred_label)
+            else:
+                print(f"Gesture unclear. Confidence {confidence:.2f} < {THRESHOLD}. Failed trace detected.")
+
+
+       
 except KeyboardInterrupt:
     print("\nStopped streaming.")
 finally:
