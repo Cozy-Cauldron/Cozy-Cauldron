@@ -343,7 +343,7 @@ public class InventoryManager : MonoBehaviour
 
         if (Input.GetButtonDown("Inventory"))
         {
-            if(workstationActivated)
+            if (workstationActivated)
             {
                 // If the workstation menu is active, close it
                 //return items to inventory
@@ -366,13 +366,9 @@ public class InventoryManager : MonoBehaviour
                                 );
 
                                 // If successfully added, clear the workstation slot
-                                if (leftover == 0)
+                                while (workstationSlot.quantity != 0)
                                 {
                                     workstationSlot.RemoveItem();
-                                }
-                                else
-                                {
-                                    workstationSlot.quantity = leftover;
                                 }
 
                                 itemReturned = true;
@@ -394,13 +390,9 @@ public class InventoryManager : MonoBehaviour
                                         workstationSlot.itemDescription
                                     );
 
-                                    if (leftover == 0)
+                                    while (workstationSlot.quantity != 0)
                                     {
                                         workstationSlot.RemoveItem();
-                                    }
-                                    else
-                                    {
-                                        workstationSlot.quantity = leftover;
                                     }
 
                                     break;
@@ -416,7 +408,7 @@ public class InventoryManager : MonoBehaviour
                 Time.timeScale = 1; // Reset time scale
                 return; // Exit early
             }
-            else if(menuActivated)
+            else if (menuActivated)
             {
                 // If the inventory menu is open, close it
                 menuActivated = false;
@@ -426,7 +418,7 @@ public class InventoryManager : MonoBehaviour
                 Time.timeScale = 1; // Reset time scale
                 return; // Exit early
             }
-            else if(taskPanelActivated)
+            else if (taskPanelActivated)
             {
                 // If the task panel is open, close it
                 taskPanelActivated = false;
@@ -442,7 +434,7 @@ public class InventoryManager : MonoBehaviour
                 //open end menu
                 endMenu = true;
                 EndMenu.SetActive(true);
-                return; 
+                return;
             }
             else
             {
@@ -452,7 +444,7 @@ public class InventoryManager : MonoBehaviour
                 WorkstationMenu.SetActive(false);
                 InventoryDescription.SetActive(true);
             }
-            
+
             Time.timeScale = menuActivated ? 0 : 1;
 
             if (menuActivated)
@@ -590,6 +582,23 @@ public class InventoryManager : MonoBehaviour
             justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
+        }
+        
+        if (workstationActivated && !isWorkstationMenuActive)
+        {
+            foreach (ItemSlot inventorySlot in itemSlots)
+            {
+                inventorySlot.SetHighlight(false);
+            }
+            itemSlots[selectedItemIndex].SetHighlight(true);
+        }
+        else if (workstationActivated && isWorkstationMenuActive)
+        {
+            foreach (ItemSlot workstationSlot in workstationSlots)
+            {
+                workstationSlot.SetHighlight(false);
+            }
+            itemSlots[selectedWorkstationIndex].SetHighlight(true);
         }
     }
 
@@ -745,11 +754,6 @@ public class InventoryManager : MonoBehaviour
                 loadedSaveData.itemDescriptions[i]
             );
         }
-
-        // Highlight the first item
-        selectedItemIndex = 0;
-        if (itemSlots.Length > 0)
-            itemSlots[selectedItemIndex].SetHighlight(true);
 
         // Clear temporary save data reference
         loadedSaveData = null;
@@ -1290,25 +1294,25 @@ public class InventoryManager : MonoBehaviour
         if (Input.anyKeyDown)
         {
             string expectedKey = keys[currentKeyIndex].ToLower();
-
-            if (Input.GetKeyDown(expectedKey))
+            if (Input.GetKeyDown(KeyCode.K))
+            {
+                return;
+            }
+            else if (Input.GetKeyDown(expectedKey))
             {
                 // Correct key → show overlay green
                 overlayImages[currentKeyIndex].gameObject.SetActive(true);
-
                 currentKeyIndex++;
-
                 if (currentKeyIndex >= keys.Length)
                 {
-                    FinishCraftingMinigame();
+                   FinishCraftingMinigame();
                 }
             }
             else
             {
                 // Wrong key → reset overlays
                 foreach (Image overlay in overlayImages)
-                    overlay.gameObject.SetActive(false);
-
+                overlay.gameObject.SetActive(false);
                 currentKeyIndex = 0;
             }
         }

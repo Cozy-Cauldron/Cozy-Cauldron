@@ -209,7 +209,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Bunny
   quantity: 1
   itemImage: {fileID: 21300000, guid: fec22c8138e7d054f9b942feca4c2330, type: 3}
@@ -607,7 +606,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Sunflower
   quantity: 1
   itemImage: {fileID: 21300000, guid: 1f5a669e41f38294e9a12569c21b78a8, type: 3}
@@ -1355,7 +1353,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
@@ -1494,7 +1491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Jumping Spider
   quantity: 1
   itemImage: {fileID: 21300000, guid: 50f2747ca21a69d4d9de96f2a98d9d5e, type: 3}
@@ -2598,7 +2594,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Mushroom
   quantity: 1
   itemImage: {fileID: 21300000, guid: ec86e3cdc03c7b14d819ea73ef895f22, type: 3}
@@ -2703,7 +2698,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Dandelion
   quantity: 1
   itemImage: {fileID: 21300000, guid: 70bc486a6c8088c44ae633c9c889f3d8, type: 3}
@@ -3211,8 +3205,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
-  itemName: RolyPoly
+  itemName: Roly Poly
   quantity: 1
   itemImage: {fileID: 21300000, guid: a6424456285fee148b5b448b12d6ef84, type: 3}
   itemDescription: "Looks like a pebble until it isn\u2019t."
@@ -3676,7 +3669,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Beetle
   quantity: 1
   itemImage: {fileID: 21300000, guid: d6c6f197a630f754785345372d239041, type: 3}
@@ -3815,7 +3807,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Beetle
   quantity: 1
   itemImage: {fileID: 21300000, guid: d6c6f197a630f754785345372d239041, type: 3}
@@ -4192,7 +4183,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Rose
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2d5abc9f65e916d4993e8aca1752e10b, type: 3}
@@ -4725,8 +4715,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
-  itemName: RolyPoly
+  itemName: Roly Poly
   quantity: 1
   itemImage: {fileID: 21300000, guid: a6424456285fee148b5b448b12d6ef84, type: 3}
   itemDescription: "Looks like a pebble until it isn\u2019t."
@@ -4830,7 +4819,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Rose
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2d5abc9f65e916d4993e8aca1752e10b, type: 3}
@@ -5748,7 +5736,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Egg
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2658678400ea71144949f1ebe03fc48d, type: 3}
@@ -5950,8 +5937,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
-  itemName: Ladybug
+  itemName: Lady Bug
   quantity: 1
   itemImage: {fileID: 21300000, guid: ab45bb956f628de469cb0e7308632880, type: 3}
   itemDescription: A sign of good luck!
@@ -6077,7 +6063,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Bunny
   quantity: 1
   itemImage: {fileID: 21300000, guid: fec22c8138e7d054f9b942feca4c2330, type: 3}
@@ -6245,7 +6230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Egg
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2658678400ea71144949f1ebe03fc48d, type: 3}
@@ -6539,7 +6523,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
@@ -6751,7 +6734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Rose
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2d5abc9f65e916d4993e8aca1752e10b, type: 3}
@@ -7683,7 +7665,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Mushroom
   quantity: 1
   itemImage: {fileID: 21300000, guid: ec86e3cdc03c7b14d819ea73ef895f22, type: 3}
@@ -8402,7 +8383,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Mushroom
   quantity: 1
   itemImage: {fileID: 21300000, guid: ec86e3cdc03c7b14d819ea73ef895f22, type: 3}
@@ -8512,7 +8492,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Sunflower
   quantity: 1
   itemImage: {fileID: 0}
@@ -9328,8 +9307,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
-  itemName: Ladybug
+  itemName: Lady Bug
   quantity: 1
   itemImage: {fileID: 21300000, guid: ab45bb956f628de469cb0e7308632880, type: 3}
   itemDescription: A sign of good luck!
@@ -10050,7 +10028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Egg
   quantity: 1
   itemImage: {fileID: 21300000, guid: 2658678400ea71144949f1ebe03fc48d, type: 3}
@@ -10370,7 +10347,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
@@ -10653,7 +10629,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Sunflower
   quantity: 1
   itemImage: {fileID: 0}
@@ -10780,7 +10755,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Dandelion
   quantity: 1
   itemImage: {fileID: 21300000, guid: 70bc486a6c8088c44ae633c9c889f3d8, type: 3}
@@ -10980,7 +10954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Dandelion
   quantity: 1
   itemImage: {fileID: 21300000, guid: 70bc486a6c8088c44ae633c9c889f3d8, type: 3}
@@ -11186,7 +11159,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Mushroom
   quantity: 1
   itemImage: {fileID: 21300000, guid: ec86e3cdc03c7b14d819ea73ef895f22, type: 3}
@@ -11386,7 +11358,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Jumping Spider
   quantity: 1
   itemImage: {fileID: 21300000, guid: 50f2747ca21a69d4d9de96f2a98d9d5e, type: 3}
