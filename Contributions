@@ -249,6 +249,14 @@ Created Shell model and sprite
 Created 6 character Sprites 
 9/20
 Crystal Ball UI and started its functionality
+
+Ryan
+9/16 
+sampled first half of gesture data
+9/17
+sampled second half of gesture data
+9/20 
+organized gesture data by timestamp to assign sequence id and label
 -------------------------------9/22 - 9/28-------------------------------------
 Kylie
 9/23 
@@ -264,6 +272,15 @@ Trashcan assets and Logic
 9/28
 Frog and Seaweed Assets
 
+Ryan
+9/24
+Retrained ml model with the new dataset
+9/25
+Tuned parameters to reduce overfitting
+9/26
+Reworked preprocessing algorithms to ensure user data is fed into model with the correct shape
+9/27
+Repackaged the model into joblib to serialize model state
 -------------------------------9/29 - 10/5-------------------------------------
 Kylie
 9/30
@@ -280,6 +297,14 @@ Fixed Save menu reopening bug
 Worked on beta test plan and build report
 10/5 
 Worked on beta test plan and build report
+
+Ryan
+10/1
+Imported joblib scaler and encoder into hardware->unity pipeline
+10/2
+added button state to poll for when gesture button is active
+10/3
+fixed bugs to allow ml model to output predictions straight to unity
 
 
 
