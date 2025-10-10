@@ -4,13 +4,13 @@ using System.Collections;
 
 public class Item : MonoBehaviour, IInteractable
 {
-     [SerializeField] private string itemName;
+     [SerializeField] public string itemName;
 
-     [SerializeField] private int quantity;
+     [SerializeField] public int quantity;
 
-     [SerializeField] private Sprite itemImage;
+     [SerializeField] public Sprite itemImage;
 
-     [TextArea][SerializeField] private string itemDescription;
+     [TextArea][SerializeField] public string itemDescription;
 
      private InventoryManager inventoryManager;
 
@@ -106,16 +106,20 @@ public class Item : MonoBehaviour, IInteractable
             // Add to inventory after animation
             if (animationTrigger == "StartFishing" || animationTrigger == "CatchBug")
             {
+                inventoryManager.currentCraftingItem = this; // Save reference
                 inventoryManager.StartCraftingMinigame();
-            }
-            int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
-            if (leftOverItems <= 0)
-            {
-                Destroy(gameObject);
             }
             else
             {
-                quantity = leftOverItems;
+                int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
+                if (leftOverItems <= 0)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    quantity = leftOverItems;
+                }
             }
         }
     }

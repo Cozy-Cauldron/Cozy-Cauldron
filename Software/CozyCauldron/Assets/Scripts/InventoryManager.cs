@@ -100,9 +100,15 @@ public class InventoryManager : MonoBehaviour
     public bool endMenu = false;
     public bool saveMenuJustOpened = false;
 
-
-
     private List<(Dictionary<string, int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string, int>, string, Sprite, string)>();
+
+    public TMP_Text popup;
+    public CanvasGroup popupGroup;
+
+    public Item currentCraftingItem;
+    public string currentCraftingResultName;
+    public Sprite currentCraftingResultSprite;
+    public string currentCraftingResultDescription;
 
     private SaveData loadedSaveData; // Store loaded data temporarily
 
@@ -369,6 +375,7 @@ public class InventoryManager : MonoBehaviour
                                 while (workstationSlot.quantity != 0)
                                 {
                                     workstationSlot.RemoveItem();
+                                    workstationSlot.SetHighlight(false);
                                 }
 
                                 itemReturned = true;
@@ -393,6 +400,7 @@ public class InventoryManager : MonoBehaviour
                                     while (workstationSlot.quantity != 0)
                                     {
                                         workstationSlot.RemoveItem();
+                                        workstationSlot.SetHighlight(false);
                                     }
 
                                     break;
@@ -584,22 +592,22 @@ public class InventoryManager : MonoBehaviour
             Time.timeScale = 1;
         }
         
-        if (workstationActivated && !isWorkstationMenuActive)
-        {
-            foreach (ItemSlot inventorySlot in itemSlots)
-            {
-                inventorySlot.SetHighlight(false);
-            }
-            itemSlots[selectedItemIndex].SetHighlight(true);
-        }
-        else if (workstationActivated && isWorkstationMenuActive)
-        {
-            foreach (ItemSlot workstationSlot in workstationSlots)
-            {
-                workstationSlot.SetHighlight(false);
-            }
-            itemSlots[selectedWorkstationIndex].SetHighlight(true);
-        }
+        //if (workstationActivated && !isWorkstationMenuActive)
+        //{
+        //    foreach (ItemSlot inventorySlot in itemSlots)
+        //    {
+        //        inventorySlot.SetHighlight(false);
+        //    }
+        //    itemSlots[selectedItemIndex].SetHighlight(true);
+        //}
+        //else if (workstationActivated && isWorkstationMenuActive)
+        //{
+        //    foreach (ItemSlot workstationSlot in workstationSlots)
+        //    {
+        //        workstationSlot.SetHighlight(false);
+        //    }
+        //    itemSlots[selectedWorkstationIndex].SetHighlight(true);
+        //}
     }
 
     public void NewSave()
@@ -741,8 +749,13 @@ public class InventoryManager : MonoBehaviour
         {
             inventorySlot.SetHighlight(false);
             while (inventorySlot.quantity > 0)
+            {
                 inventorySlot.RemoveItem();
+                inventorySlot.SetHighlight(false);
+            }
         }
+        //Rehighlight selected item index
+        itemSlots[selectedItemIndex].SetHighlight(true);
 
         // Load saved items into inventory
         for (int i = 0; i < loadedSaveData.itemNames.Count && i < itemSlots.Length; i++)
@@ -1329,9 +1342,36 @@ public class InventoryManager : MonoBehaviour
             workstationSlots[i].SetHighlight(false);
         }
             
-        workstationButton.SetHighlight(true); 
-           
-        //Debug.Log("Minigame complete!");
+        workstationButton.SetHighlight(true);
+        if(workstationActivated)
+        {
+            Debug.Log("Crafting Minigame complete!");
+            int leftover = AddItem(
+                currentCraftingResultName,
+                1,
+                currentCraftingResultSprite,
+                currentCraftingResultDescription
+            );
+
+            
+        }
+        else
+        {
+            Debug.Log("Catching Minigame complete!");
+            int leftover = AddItem(
+                currentCraftingItem.name,
+                currentCraftingItem.quantity,
+                currentCraftingItem.GetItemImage(),
+                currentCraftingItem.itemDescription
+            );
+
+            if (leftover <= 0)
+                Destroy(currentCraftingItem.gameObject);
+            else
+                currentCraftingItem.quantity = leftover;
+
+            currentCraftingItem = null;
+        }
     }
 
     private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)
@@ -1362,37 +1402,60 @@ public class InventoryManager : MonoBehaviour
         // If no items, exit
         if (itemCounts.Count == 0) return;
 
+        // Determine what will be crafted
+        string resultName = "";
+        Sprite resultSprite = null;
+        string resultDesc = "";
+
         bool matched = false;
         foreach (var recipe in craftingRecipes)
         {
             if (MatchesRecipe(recipe.recipe, itemCounts))
             {
-                AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
+                resultName = recipe.resultName;
+                resultSprite = recipe.resultSprite;
+                resultDesc = recipe.resultDesc;
                 matched = true;
-                break; // stop after the first match
+                break;
             }
         }
 
         if (!matched)
         {
-            // If no valid recipe, create Oops Potion
-            AddItem("Oops Potion", 1, oopsPotionSprite, "Oops… did you mean to make this?");
+            // Invalid recipe → Oops Potion
+            resultName = "Oops Potion";
+            resultSprite = oopsPotionSprite;
+            resultDesc = "Oops… did you mean to make this?";
         }
 
-        // Clear workstation slots
+        // Store the result in InventoryManager temporarily
+        currentCraftingResultName = resultName;
+        currentCraftingResultSprite = resultSprite;
+        currentCraftingResultDescription = resultDesc;
+
+        // Start the minigame BEFORE clearing the slots
+        StartCraftingMinigame();
+
+        // Clear workstation slots AFTER starting the minigame
         foreach (ItemSlot slot in workstationSlots)
         {
             while (slot.quantity > 0)
+            {
                 slot.RemoveItem();
+            }
+            slot.SetHighlight(false);
         }
-
-        // Start the minigame
-        StartCraftingMinigame();
     }
 
 
     public int AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
     {
+        //popup text
+        string popupText = $"+{quantity} {itemName}";
+        popup.text = popupText;
+        popup.gameObject.SetActive(true);
+        StartCoroutine(HidePopupAfterDelay());
+
         for (int i = 0; i < itemSlots.Length; i++)
         {
             if(itemSlots[i].isFull == false && (itemSlots[i].itemName == itemName || itemSlots[i].quantity==0))
@@ -1408,6 +1471,26 @@ public class InventoryManager : MonoBehaviour
         return quantity;
     }
 
+    private System.Collections.IEnumerator HidePopupAfterDelay()
+    {
+        popupGroup.alpha = 1f; // fully visible
+
+        float displayTime = 1.5f; // time before fading starts
+        float fadeDuration = 1f; // how long the fade lasts
+
+        yield return new WaitForSeconds(displayTime);
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.deltaTime;
+            popupGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        popupGroup.alpha = 0f;
+        popupGroup.gameObject.SetActive(false);
+    }
 }
 
 
