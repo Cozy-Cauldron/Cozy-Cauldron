@@ -59,12 +59,19 @@ public class InventoryManager : MonoBehaviour
 
     public Transform keySequenceContainer; 
     public GameObject keyImagePrefab;      // a prefab with just an Image component
+    // "Z", "X", "C", "V", "B", "N", "M", "F", "G", "H", "J", "L"
     public Sprite keyZSprite;
     public Sprite keyXSprite;
     public Sprite keyCSprite;
     public Sprite keyVSprite;
     public Sprite keyBSprite;
     public Sprite keyNSprite;
+    public Sprite keyMSprite;
+    public Sprite keyFSprite;
+    public Sprite keyGSprite;
+    public Sprite keyHSprite;
+    public Sprite keyJSprite;
+    public Sprite keyLSprite;
 
     private Dictionary<string, Sprite> keySprites;
     private List<Image> activeKeyImages = new List<Image>();
@@ -112,21 +119,20 @@ public class InventoryManager : MonoBehaviour
 
     private SaveData loadedSaveData; // Store loaded data temporarily
 
-    public static InventoryManager Instance;
+    public static InventoryManager instance;
 
     private void Awake()
     {
         // Make this a singleton
-        if (Instance == null)
+        if (instance != null && instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Keep this object between scenes
+            Destroy(gameObject); // There’s already one — destroy this duplicate
+            return;
         }
-        else
-        {
-            Destroy(gameObject); // Prevent duplicates
-        }
-        
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         pages = new TaskPage[6];
 
         pages[0] = new TaskPage 
@@ -318,7 +324,13 @@ public class InventoryManager : MonoBehaviour
             { "C", keyCSprite },
             { "V", keyVSprite },
             { "N", keyNSprite },
-            { "B", keyBSprite }
+            { "B", keyBSprite },
+            { "M", keyMSprite },
+            { "F", keyFSprite },
+            { "G", keyGSprite },
+            { "H", keyHSprite },
+            { "J", keyJSprite },
+            { "L", keyLSprite }
         };
 
     }
@@ -1247,7 +1259,7 @@ public class InventoryManager : MonoBehaviour
     public void StartCraftingMinigame()
     {
         int sequenceLength = 3;
-        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N" };
+        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N", "M", "F", "G", "H", "J", "L" };
 
         // Shuffle the list
         for (int i = 0; i < possibleKeys.Count; i++)
@@ -1478,12 +1490,12 @@ public class InventoryManager : MonoBehaviour
         float displayTime = 1.5f; // time before fading starts
         float fadeDuration = 1f; // how long the fade lasts
 
-        yield return new WaitForSeconds(displayTime);
+        yield return new WaitForSecondsRealtime(displayTime);
 
         float elapsed = 0f;
         while (elapsed < fadeDuration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             popupGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
             yield return null;
         }

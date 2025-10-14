@@ -6245,6 +6245,12 @@ MonoBehaviour:
   keyVSprite: {fileID: 21300000, guid: 005f714e542341c4f83da4f94acde9e9, type: 3}
   keyBSprite: {fileID: 21300000, guid: 1fd1929f70870944cb4c0197030425ef, type: 3}
   keyNSprite: {fileID: 21300000, guid: 5908eacec2bd7f14f984259f603c3c04, type: 3}
+  keyMSprite: {fileID: 21300000, guid: 1dc8470163cbfca41ae010eab73c9ba2, type: 3}
+  keyFSprite: {fileID: 21300000, guid: 4757bc1d1c8512047b3350675823e9de, type: 3}
+  keyGSprite: {fileID: 21300000, guid: 6082a7ef9c0e8d44d861a4068401c0bb, type: 3}
+  keyHSprite: {fileID: 21300000, guid: a4a3042b14279d14696ea9e14b70ed06, type: 3}
+  keyJSprite: {fileID: 21300000, guid: 2b76b0f7b2f418e44a2b560257b4baba, type: 3}
+  keyLSprite: {fileID: 21300000, guid: ca209aedec7924b4fb72cb9c1c4ba83f, type: 3}
   itemSlots:
   - {fileID: 33234398}
   - {fileID: 425827568}
