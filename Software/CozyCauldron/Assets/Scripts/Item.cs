@@ -66,19 +66,21 @@ public class Item : MonoBehaviour, IInteractable
         PlayerMovement playerMovement = interactor.GetComponent<PlayerMovement>();
         if (playerMovement != null)
         {
+            playerMovement.canMove = false;
             playerMovement.m_Animator.SetTrigger(trigger);
         }
 
         // Start the coroutine to handle the delayed pick-up
-        StartCoroutine(HandleDelayedPickup(trigger));
+        StartCoroutine(HandleDelayedPickup(trigger, playerMovement));
 
         return true;
     }
 
-    private IEnumerator HandleDelayedPickup(string animationTrigger)
+    private IEnumerator HandleDelayedPickup(string animationTrigger, PlayerMovement playerMovement)
     {
         // Wait 1 second for the animation to finish
         yield return new WaitForSeconds(1f);
+        playerMovement.canMove = true;
 
         // Now actually pick up the item (or do fishing/bug logic)
         if (itemName == "Cauldron" || itemName == "Trashcan")
@@ -92,7 +94,7 @@ public class Item : MonoBehaviour, IInteractable
         {
             inventoryManager.taskPanelActivated = true;
         }
-        else if(itemName == "Bed" && inventoryManager.saveMenuJustOpened)
+        else if (itemName == "Bed" && inventoryManager.saveMenuJustOpened)
         {
             StartCoroutine(ResetSaveMenuJustOpened());
         }
@@ -103,6 +105,32 @@ public class Item : MonoBehaviour, IInteractable
         }
         else
         {
+            bool matchingName = false;
+            foreach (ItemSlot inventorySlot in inventoryManager.itemSlots)
+            {
+                if (inventorySlot.itemName == itemName)
+                {
+                    matchingName = true;
+                }
+            }
+            //check if inventory full
+            bool inventoryfull = true;
+            foreach (ItemSlot inventorySlot in inventoryManager.itemSlots)
+            {
+                if (inventorySlot.quantity == 0)
+                {
+                    inventoryfull = false;
+                }
+            }
+            if (!matchingName && inventoryfull)
+            {
+                string popupText = $"Inventory Full";
+                inventoryManager.popup.text = popupText;
+                inventoryManager.popup.gameObject.SetActive(true);
+                StartCoroutine(inventoryManager.HidePopupAfterDelay());
+                yield break;
+            }
+
             // Add to inventory after animation
             if (animationTrigger == "StartFishing" || animationTrigger == "CatchBug")
             {

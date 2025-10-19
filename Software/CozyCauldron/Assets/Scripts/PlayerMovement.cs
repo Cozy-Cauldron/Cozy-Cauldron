@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     public float runSpeed = 10f;
     public float rotationDeadzone = 0.1f;
 
+    public bool canMove = true;
+
     public Animator m_Animator;
     Rigidbody m_Rigidbody;
     Vector3 m_Movement;
@@ -24,6 +26,10 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!canMove)
+        {
+            return;
+        }
         float horizontal = Input.GetAxis("Horizontal");
         float vertical = Input.GetAxis("Vertical");
 

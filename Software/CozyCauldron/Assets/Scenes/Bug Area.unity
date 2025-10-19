@@ -609,7 +609,7 @@ MonoBehaviour:
   itemName: Sunflower
   quantity: 1
   itemImage: {fileID: 21300000, guid: 1f5a669e41f38294e9a12569c21b78a8, type: 3}
-  itemDescription: 
+  itemDescription: I wonder if there is a moonflower?
 --- !u!64 &98348610
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1356,7 +1356,7 @@ MonoBehaviour:
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
-  itemDescription: it's a flower
+  itemDescription: Oopsie daisy!
 --- !u!64 &198337342
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3652,50 +3652,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: be3b4a0840219134dac9e8f3e8ce176e, type: 3}
---- !u!1 &698448343 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
-  m_PrefabInstance: {fileID: 1152241312}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &698448345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698448343}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemName: Beetle
-  quantity: 1
-  itemImage: {fileID: 21300000, guid: d6c6f197a630f754785345372d239041, type: 3}
-  itemDescription: Fly my scarab!
---- !u!64 &698448346
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 698448343}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!1001 &709674654
+--- !u!1001 &675624055
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -3705,19 +3662,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.56
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.56
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.56
+      value: 0.71
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -21.5
+      value: -20.23
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3725,7 +3682,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 12.9
+      value: 7.17
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3769,7 +3726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_Name
-      value: Beetle (1)
+      value: Beetle (2)
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
       propertyPath: m_Layer
@@ -3785,23 +3742,23 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 709674657}
+      addedObject: {fileID: 675624058}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 709674656}
+      addedObject: {fileID: 675624057}
   m_SourcePrefab: {fileID: 100100000, guid: 0d24c9869da70c048942254fab238722, type: 3}
---- !u!1 &709674655 stripped
+--- !u!1 &675624056 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
-  m_PrefabInstance: {fileID: 709674654}
+  m_PrefabInstance: {fileID: 675624055}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &709674656
+--- !u!114 &675624057
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 709674655}
+  m_GameObject: {fileID: 675624056}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
@@ -3811,13 +3768,13 @@ MonoBehaviour:
   quantity: 1
   itemImage: {fileID: 21300000, guid: d6c6f197a630f754785345372d239041, type: 3}
   itemDescription: Fly my scarab!
---- !u!64 &709674657
-MeshCollider:
+--- !u!135 &675624058
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 709674655}
+  m_GameObject: {fileID: 675624056}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -3829,10 +3786,51 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
+  serializedVersion: 3
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &698448343 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0d24c9869da70c048942254fab238722, type: 3}
+  m_PrefabInstance: {fileID: 1152241312}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &698448345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698448343}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemName: Beetle
+  quantity: 1
+  itemImage: {fileID: 21300000, guid: d6c6f197a630f754785345372d239041, type: 3}
+  itemDescription: Fly my scarab!
+--- !u!135 &698448346
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698448343}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &736119572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4619,11 +4617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84b10c5ee2f868a4aba401d7a6172d1d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.4
+      value: 4.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84b10c5ee2f868a4aba401d7a6172d1d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.3
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 84b10c5ee2f868a4aba401d7a6172d1d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -6526,7 +6524,7 @@ MonoBehaviour:
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
-  itemDescription: it's a flower
+  itemDescription: Oopsie daisy!
 --- !u!64 &1128296206
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -6897,6 +6895,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   rotationDeadzone: 0.1
+  canMove: 1
   m_Animator: {fileID: 0}
 --- !u!114 &1188160658
 MonoBehaviour:
@@ -8494,8 +8493,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sunflower
   quantity: 1
-  itemImage: {fileID: 0}
-  itemDescription: 
+  itemImage: {fileID: 21300000, guid: 1f5a669e41f38294e9a12569c21b78a8, type: 3}
+  itemDescription: I wonder if there is a moonflower?
 --- !u!64 &1592171960
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10128,6 +10127,12 @@ MonoBehaviour:
   keyVSprite: {fileID: 0}
   keyBSprite: {fileID: 0}
   keyNSprite: {fileID: 0}
+  keyMSprite: {fileID: 0}
+  keyFSprite: {fileID: 0}
+  keyGSprite: {fileID: 0}
+  keyHSprite: {fileID: 0}
+  keyJSprite: {fileID: 0}
+  keyLSprite: {fileID: 0}
   itemSlots:
   - {fileID: 1229443462}
   - {fileID: 495433459}
@@ -10164,6 +10169,12 @@ MonoBehaviour:
   saveMenu: 0
   endMenu: 0
   saveMenuJustOpened: 0
+  popup: {fileID: 0}
+  popupGroup: {fileID: 0}
+  currentCraftingItem: {fileID: 0}
+  currentCraftingResultName: 
+  currentCraftingResultSprite: {fileID: 0}
+  currentCraftingResultDescription: 
 --- !u!114 &1816328463
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10269,15 +10280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7bc2b896eb57442a425bcac8b8ebd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 24.6
+      value: 22.45
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7bc2b896eb57442a425bcac8b8ebd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 9.4
+      value: 5.58
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7bc2b896eb57442a425bcac8b8ebd3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -14.69
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: ed7bc2b896eb57442a425bcac8b8ebd3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10350,7 +10361,7 @@ MonoBehaviour:
   itemName: Daisy
   quantity: 1
   itemImage: {fileID: 21300000, guid: ad9363c27d94ac74c8f413ef70b0fe60, type: 3}
-  itemDescription: it's a flower
+  itemDescription: Oopsie daisy!
 --- !u!64 &1860047080
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -10555,11 +10566,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4f5ed5f50fb535a479cca5a85da93ea5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.3
+      value: 5.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4f5ed5f50fb535a479cca5a85da93ea5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.5
+      value: -26.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4f5ed5f50fb535a479cca5a85da93ea5, type: 3}
       propertyPath: m_LocalRotation.w
@@ -10631,8 +10642,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Sunflower
   quantity: 1
-  itemImage: {fileID: 0}
-  itemDescription: 
+  itemImage: {fileID: 21300000, guid: 1f5a669e41f38294e9a12569c21b78a8, type: 3}
+  itemDescription: I wonder if there is a moonflower?
 --- !u!64 &1923376877
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -11808,7 +11819,7 @@ SceneRoots:
   - {fileID: 744015049}
   - {fileID: 840938327}
   - {fileID: 1152241312}
-  - {fileID: 709674654}
+  - {fileID: 675624055}
   - {fileID: 1273644791}
   - {fileID: 1039006351}
   - {fileID: 1510214781}

@@ -215,7 +215,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Shell
   quantity: 1
   itemImage: {fileID: 21300000, guid: 8205e4ae29e8a17499006bba57a67d40, type: 3}
@@ -395,7 +394,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Salmon
   quantity: 1
   itemImage: {fileID: 21300000, guid: 178186fadfc40c84286f8781400ffa9e, type: 3}
@@ -507,7 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Lily Pad
   quantity: 1
   itemImage: {fileID: 21300000, guid: 86e74975c6bbe7846b42aa2492a53f9c, type: 3}
@@ -15299,7 +15296,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Shell
   quantity: 1
   itemImage: {fileID: 21300000, guid: 8205e4ae29e8a17499006bba57a67d40, type: 3}
@@ -20548,7 +20544,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Shell
   quantity: 1
   itemImage: {fileID: 21300000, guid: 8205e4ae29e8a17499006bba57a67d40, type: 3}
@@ -20761,7 +20756,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Bass
   quantity: 1
   itemImage: {fileID: 21300000, guid: 59adb95addf981a4aa87d49147a4dc70, type: 3}
@@ -20889,7 +20883,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Pufferfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: 281df27a9e5669b43b5c14b8f10041b2, type: 3}
@@ -20977,7 +20970,7 @@ Transform:
   m_GameObject: {fileID: 866226521}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: -0.5, z: 0.5, w: 0.5}
-  m_LocalPosition: {x: 104, y: 3.2, z: 44.7}
+  m_LocalPosition: {x: 104, y: 3.2, z: 28.74}
   m_LocalScale: {x: 1, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -21001,7 +20994,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Starfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: b4bdb53dce2aebb45945fcf9d9b99a9e, type: 3}
@@ -21143,7 +21135,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Lily Pad
   quantity: 1
   itemImage: {fileID: 21300000, guid: 86e74975c6bbe7846b42aa2492a53f9c, type: 3}
@@ -21278,7 +21269,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Barnacle
   quantity: 1
   itemImage: {fileID: 21300000, guid: 505f23ad1219c0f4dbba3b7480dc85fa, type: 3}
@@ -21411,7 +21401,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Frog
   quantity: 1
   itemImage: {fileID: 21300000, guid: 6604f5f0463fcdd4abc87d56cbc13986, type: 3}
@@ -21523,7 +21512,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Lily Pad
   quantity: 1
   itemImage: {fileID: 21300000, guid: 86e74975c6bbe7846b42aa2492a53f9c, type: 3}
@@ -21758,7 +21746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Starfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: b4bdb53dce2aebb45945fcf9d9b99a9e, type: 3}
@@ -27044,7 +27031,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Sturgeon
   quantity: 1
   itemImage: {fileID: 21300000, guid: 50f296e636a10bd489eb95d301368bb6, type: 3}
@@ -32004,7 +31990,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Goldfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: 717e89f4498f34c40aaa85778059dcd9, type: 3}
@@ -32225,7 +32210,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Butterfly Fish
   quantity: 1
   itemImage: {fileID: 21300000, guid: 82ecb85a70850804791ccb107299a9e2, type: 3}
@@ -37347,7 +37331,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Barnacle
   quantity: 1
   itemImage: {fileID: 21300000, guid: 505f23ad1219c0f4dbba3b7480dc85fa, type: 3}
@@ -37513,6 +37496,7 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 10
   rotationDeadzone: 0.1
+  canMove: 1
   m_Animator: {fileID: 0}
 --- !u!114 &1873726524
 MonoBehaviour:
@@ -37723,7 +37707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Starfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: b4bdb53dce2aebb45945fcf9d9b99a9e, type: 3}
@@ -37787,7 +37770,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33f61b872a208f44c9b68f33ab77ca79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prompt: 
   itemName: Clownfish
   quantity: 1
   itemImage: {fileID: 21300000, guid: c32cdc9eea24bef40b42eb1524b4ffe8, type: 3}

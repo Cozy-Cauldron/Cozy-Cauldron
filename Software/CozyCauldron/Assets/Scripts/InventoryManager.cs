@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEditor.Experimental.GraphView;
 
 
 public class InventoryManager : MonoBehaviour
@@ -77,7 +78,7 @@ public class InventoryManager : MonoBehaviour
     private List<Image> activeKeyImages = new List<Image>();
     private List<Image> overlayImages = new List<Image>();
 
-    [SerializeField] private ItemSlot[] itemSlots; // Array of inventory item slots
+    [SerializeField] public ItemSlot[] itemSlots; // Array of inventory item slots
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
     public Image WorkstationImage;
 
@@ -1258,6 +1259,7 @@ public class InventoryManager : MonoBehaviour
 
     public void StartCraftingMinigame()
     {
+        Time.timeScale = 0;
         int sequenceLength = 3;
         List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N", "M", "F", "G", "H", "J", "L" };
 
@@ -1325,7 +1327,7 @@ public class InventoryManager : MonoBehaviour
             }
             else if (Input.GetKeyDown(expectedKey))
             {
-                // Correct key → show overlay green
+                // Correct key show overlay green
                 overlayImages[currentKeyIndex].gameObject.SetActive(true);
                 currentKeyIndex++;
                 if (currentKeyIndex >= keys.Length)
@@ -1335,14 +1337,38 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                // Wrong key → reset overlays
-                foreach (Image overlay in overlayImages)
-                overlay.gameObject.SetActive(false);
-                currentKeyIndex = 0;
+                // Wrong key flash red and reset overlays
+                StartCoroutine(FlashRedAndReset());
             }
         }
     }
+    private System.Collections.IEnumerator FlashRedAndReset()
+    {
+        // Show all overlays as red
+        foreach (Image overlay in overlayImages)
+        {
+            overlay.gameObject.SetActive(true);
+            overlay.color = new Color(1, 0, 0, 0.5f); // semi-transparent red
+        }
 
+        // Wait briefly (use unscaled time since Time.timeScale = 0)
+        float flashDuration = 0.3f;
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Reset overlays and progress
+        foreach (Image overlay in overlayImages)
+        {
+            overlay.gameObject.SetActive(false);
+            overlay.color = new Color(0, 1, 0, 0.5f); // back to green for next round
+        }
+
+        currentKeyIndex = 0;
+    }
     public void FinishCraftingMinigame()
     {
         minigameActive = false;
@@ -1353,7 +1379,7 @@ public class InventoryManager : MonoBehaviour
         {
             workstationSlots[i].SetHighlight(false);
         }
-            
+        Time.timeScale = 1;   
         workstationButton.SetHighlight(true);
         if(workstationActivated)
         {
@@ -1371,7 +1397,7 @@ public class InventoryManager : MonoBehaviour
         {
             Debug.Log("Catching Minigame complete!");
             int leftover = AddItem(
-                currentCraftingItem.name,
+                currentCraftingItem.itemName,
                 currentCraftingItem.quantity,
                 currentCraftingItem.GetItemImage(),
                 currentCraftingItem.itemDescription
@@ -1398,7 +1424,7 @@ public class InventoryManager : MonoBehaviour
 
     private void PerformCombinationAction()
     {
-            // Count items in workstation slots
+        // Count items in workstation slots
         Dictionary<string,int> itemCounts = new Dictionary<string,int>();
         foreach (ItemSlot slot in workstationSlots)
         {
@@ -1413,7 +1439,6 @@ public class InventoryManager : MonoBehaviour
 
         // If no items, exit
         if (itemCounts.Count == 0) return;
-
         // Determine what will be crafted
         string resultName = "";
         Sprite resultSprite = null;
@@ -1444,6 +1469,32 @@ public class InventoryManager : MonoBehaviour
         currentCraftingResultName = resultName;
         currentCraftingResultSprite = resultSprite;
         currentCraftingResultDescription = resultDesc;
+        //check if there is a slot matching crafting result
+        bool matchingName = false;
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            if (inventorySlot.itemName == resultName)
+            {
+                matchingName = true;
+            }
+        }
+        //check if inventory is full
+        bool inventoryfull = true;
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            if (inventorySlot.quantity == 0)
+            {
+                inventoryfull = false;
+            }
+        }
+        if (!matchingName && inventoryfull)
+        {
+            string popupText = $"Inventory Full";
+            popup.text = popupText;
+            popup.gameObject.SetActive(true);
+            StartCoroutine(HidePopupAfterDelay());
+            return;
+        }
 
         // Start the minigame BEFORE clearing the slots
         StartCraftingMinigame();
@@ -1483,7 +1534,7 @@ public class InventoryManager : MonoBehaviour
         return quantity;
     }
 
-    private System.Collections.IEnumerator HidePopupAfterDelay()
+    public System.Collections.IEnumerator HidePopupAfterDelay()
     {
         popupGroup.alpha = 1f; // fully visible
 
