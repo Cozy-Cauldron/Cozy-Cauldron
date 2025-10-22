@@ -34,15 +34,16 @@ public class Item : MonoBehaviour, IInteractable
 
     public bool Interact(Interactor interactor)
     {
-        Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
+        if(inventoryManager.workstationActivated || inventoryManager.saveMenu || inventoryManager.taskPanelActivated)
+        {
+            Input.ResetInputAxes();
+            return false;
+        }
 
+        Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
         // Determine which animation to play
         string trigger = "";
-        if(itemName == "Bed" && inventoryManager.saveMenuJustOpened)
-        {
-            return false; // Don't interact if the save menu was just opened
-        }
-        else if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball" || itemName == "Bed")
+        if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball" || itemName == "Bed")
         {
             trigger = "Craft";
         }
@@ -94,13 +95,8 @@ public class Item : MonoBehaviour, IInteractable
         {
             inventoryManager.taskPanelActivated = true;
         }
-        else if (itemName == "Bed" && inventoryManager.saveMenuJustOpened)
+        else if (itemName == "Bed")
         {
-            StartCoroutine(ResetSaveMenuJustOpened());
-        }
-        else if (itemName == "Bed" && !inventoryManager.saveMenuJustOpened)
-        {
-            inventoryManager.saveMenuJustOpened = true;
             inventoryManager.saveMenu = true;
         }
         else
@@ -155,12 +151,5 @@ public class Item : MonoBehaviour, IInteractable
     public Sprite GetItemImage()
     {
         return itemImage;
-    }
-
-    private IEnumerator ResetSaveMenuJustOpened()
-    {
-        // Wait one frame so input isn't double-counted
-        yield return null;
-        inventoryManager.saveMenuJustOpened = false;
     }
 }

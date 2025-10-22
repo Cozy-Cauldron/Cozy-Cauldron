@@ -25,7 +25,7 @@ public class InventoryManager : MonoBehaviour
     public Button workstationButton;
     public string currentWorkstationName;
     public Sprite currentWorkstationSprite;
-    private bool menuActivated;
+    public bool menuActivated;
     public bool workstationActivated;
     public bool taskPanelActivated;
     private bool isWorkstationMenuActive;
@@ -101,12 +101,11 @@ public class InventoryManager : MonoBehaviour
 
     private float delayTimer = 0f;
     private bool isDelaying = false;
-    private bool justOpened = false; // Track if the workstation was just opened
 
     public bool startMenu = true;
     public bool saveMenu = false;
     public bool endMenu = false;
-    public bool saveMenuJustOpened = false;
+
 
     private List<(Dictionary<string, int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string, int>, string, Sprite, string)>();
 
@@ -485,28 +484,17 @@ public class InventoryManager : MonoBehaviour
                 itemSlots[selectedItemIndex].RemoveItem();
             }
         }
-        else if (workstationActivated && !justOpened)
+        else if (workstationActivated)
         {
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
-            justOpened = true;
-
+    
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
             WorkstationImage.sprite = currentWorkstationSprite;
             InventoryDescription.SetActive(false);
-        }
-        else if (workstationActivated && justOpened)
-        {
-            // If the workstation menu is active, handle navigation for it
-            // Stop time when the workstation menu is active
 
-            Time.timeScale = 0;
-            InventoryMenu.SetActive(true);
-            WorkstationMenu.SetActive(true);
-            WorkstationImage.sprite = currentWorkstationSprite;
-            InventoryDescription.SetActive(false);
             HandleNavigation();
 
             if (Input.GetButtonDown("Interact"))
@@ -515,25 +503,16 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
-        else if (taskPanelActivated && !justOpened)
+        else if (taskPanelActivated)
         {
             //Debug.Log("Opened for first time!");
-            justOpened = true;
             Time.timeScale = 0;
             TaskPanel.SetActive(true);
 
-            selectedTaskButtonIndex = 1;
-            currentPageIndex = 0;
             // Unhighlight all buttons first
             foreach (Button btn in taskPanelButtons)
                 btn.SetHighlight(false);
             taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
-        }
-        else if (taskPanelActivated && justOpened)
-        {
-            // If the task panel is active, show it
-            Time.timeScale = 0;
-            TaskPanel.SetActive(true);
             HandleTaskNavigation();
         }
         else if (startMenu)
@@ -566,19 +545,7 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
-        else if (saveMenu && !justOpened)
-        {
-            justOpened = true;
-            Time.timeScale = 0;
-            SaveMenu.SetActive(true);
-            selectedSaveButtonIndex = 0;
-            saveStatus.sprite = noStatus;
-            // Unhighlight all buttons first
-            foreach (Button btn in saveButtons)
-                btn.SetHighlight(false);
-            saveButtons[selectedSaveButtonIndex].SetHighlight(true);
-        }
-        else if (saveMenu && justOpened)
+        else if (saveMenu)
         {
             Time.timeScale = 0;
             SaveMenu.SetActive(true);
@@ -600,27 +567,9 @@ public class InventoryManager : MonoBehaviour
             saveMenu = false;
             startMenu = false;
             endMenu = false;
-            justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
         }
-        
-        //if (workstationActivated && !isWorkstationMenuActive)
-        //{
-        //    foreach (ItemSlot inventorySlot in itemSlots)
-        //    {
-        //        inventorySlot.SetHighlight(false);
-        //    }
-        //    itemSlots[selectedItemIndex].SetHighlight(true);
-        //}
-        //else if (workstationActivated && isWorkstationMenuActive)
-        //{
-        //    foreach (ItemSlot workstationSlot in workstationSlots)
-        //    {
-        //        workstationSlot.SetHighlight(false);
-        //    }
-        //    itemSlots[selectedWorkstationIndex].SetHighlight(true);
-        //}
     }
 
     public void NewSave()
@@ -829,6 +778,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact"))
             {
+                //consume E press to prevent double opening
                 if (selectedTaskButtonIndex == 0) //left
                 {
                     //change page
@@ -906,6 +856,8 @@ public class InventoryManager : MonoBehaviour
         //on submit
         else if (Input.GetButtonDown("Interact"))
         {
+            //consume E press to prevent double opening
+            Input.ResetInputAxes();
             if (selectedSaveButtonIndex == 0)
             {
                 Save();
