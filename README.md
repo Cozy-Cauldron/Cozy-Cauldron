@@ -1,4 +1,4 @@
-# Beta Build
+# Release Candidate
 
 ## The Cozy Cauldron
 
@@ -114,9 +114,12 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 
   * Programmed a 'stop read' state that allows for logic involving the detection of the gesture button releasing rather than continuously polling for gesture button state.
 
+* Player can still move around while animation is playing
+
+  * Whenever an animation is triggered, a coroutine is started that prevents the player from moving until the animation is finished
 
 
 ### Not Fixed
 
-* Player can still move around while animation is playing
 * (Not exactly a bug, but something we want to update) PLayer spawns in from portals at a set location that we want to update
+
