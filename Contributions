@@ -306,7 +306,46 @@ added button state to poll for when gesture button is active
 10/3
 fixed bugs to allow ml model to output predictions straight to unity
 
+-------------------------------10/6 - 10/12-------------------------------------
+Kylie
+10/6
+Prepare for Presentation
+10/7
+Presentation
+10/10
+Add Pickup Popup Text
+Fixed workstation highlighting bug
 
+-------------------------------10/13 - 10/19-------------------------------------
+Kylie
+10/14
+Fix Popup text after crafting minigame
+Stakeholder Meeting
+Add new gesture sprites and logic
+10/19
+Animation Prevent Movement
+Flash Red on Incorrect Gesture
+Inventory full check crafting
+Inventory full check pickup
+Fixed some Bug collisions
+
+-------------------------------10/20 - 10/26-------------------------------------
+Kylie
+10/22
+Fixed Double Opening Bug
+10/23
+Team Meeting
+
+-------------------------------10/27 - 11/2-------------------------------------
+10/28
+Team Meeting
+Looked into how to properly export the game as exe
+10/30 
+Fixed Sprites not loading in after unity is reopened
+Worked on RC reports
+11/2
+Team Meeting
+Finished RC Reports
 
 
 
