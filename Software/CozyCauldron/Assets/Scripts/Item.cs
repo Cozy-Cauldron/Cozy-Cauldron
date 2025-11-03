@@ -4,13 +4,13 @@ using System.Collections;
 
 public class Item : MonoBehaviour, IInteractable
 {
-     [SerializeField] private string itemName;
+     [SerializeField] public string itemName;
 
-     [SerializeField] private int quantity;
+     [SerializeField] public int quantity;
 
-     [SerializeField] private Sprite itemImage;
+     [SerializeField] public Sprite itemImage;
 
-     [TextArea][SerializeField] private string itemDescription;
+     [TextArea][SerializeField] public string itemDescription;
 
      private InventoryManager inventoryManager;
 
@@ -34,15 +34,16 @@ public class Item : MonoBehaviour, IInteractable
 
     public bool Interact(Interactor interactor)
     {
-        Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
+        if(inventoryManager.workstationActivated || inventoryManager.saveMenu || inventoryManager.taskPanelActivated)
+        {
+            Input.ResetInputAxes();
+            return false;
+        }
 
+        Debug.Log("Interact() called on: " + gameObject.name + " with itemName: " + itemName);
         // Determine which animation to play
         string trigger = "";
-        if(itemName == "Bed" && inventoryManager.saveMenuJustOpened)
-        {
-            return false; // Don't interact if the save menu was just opened
-        }
-        else if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball" || itemName == "Bed")
+        if (itemName == "Cauldron" || itemName == "Trashcan" || itemName == "Crystal Ball" || itemName == "Bed")
         {
             trigger = "Craft";
         }
@@ -66,19 +67,21 @@ public class Item : MonoBehaviour, IInteractable
         PlayerMovement playerMovement = interactor.GetComponent<PlayerMovement>();
         if (playerMovement != null)
         {
+            playerMovement.canMove = false;
             playerMovement.m_Animator.SetTrigger(trigger);
         }
 
         // Start the coroutine to handle the delayed pick-up
-        StartCoroutine(HandleDelayedPickup(trigger));
+        StartCoroutine(HandleDelayedPickup(trigger, playerMovement));
 
         return true;
     }
 
-    private IEnumerator HandleDelayedPickup(string animationTrigger)
+    private IEnumerator HandleDelayedPickup(string animationTrigger, PlayerMovement playerMovement)
     {
         // Wait 1 second for the animation to finish
         yield return new WaitForSeconds(1f);
+        playerMovement.canMove = true;
 
         // Now actually pick up the item (or do fishing/bug logic)
         if (itemName == "Cauldron" || itemName == "Trashcan")
@@ -92,30 +95,55 @@ public class Item : MonoBehaviour, IInteractable
         {
             inventoryManager.taskPanelActivated = true;
         }
-        else if(itemName == "Bed" && inventoryManager.saveMenuJustOpened)
+        else if (itemName == "Bed")
         {
-            StartCoroutine(ResetSaveMenuJustOpened());
-        }
-        else if (itemName == "Bed" && !inventoryManager.saveMenuJustOpened)
-        {
-            inventoryManager.saveMenuJustOpened = true;
             inventoryManager.saveMenu = true;
         }
         else
         {
+            bool matchingName = false;
+            foreach (ItemSlot inventorySlot in inventoryManager.itemSlots)
+            {
+                if (inventorySlot.itemName == itemName)
+                {
+                    matchingName = true;
+                }
+            }
+            //check if inventory full
+            bool inventoryfull = true;
+            foreach (ItemSlot inventorySlot in inventoryManager.itemSlots)
+            {
+                if (inventorySlot.quantity == 0)
+                {
+                    inventoryfull = false;
+                }
+            }
+            if (!matchingName && inventoryfull)
+            {
+                string popupText = $"Inventory Full";
+                inventoryManager.popup.text = popupText;
+                inventoryManager.popup.gameObject.SetActive(true);
+                StartCoroutine(inventoryManager.HidePopupAfterDelay());
+                yield break;
+            }
+
             // Add to inventory after animation
             if (animationTrigger == "StartFishing" || animationTrigger == "CatchBug")
             {
+                inventoryManager.currentCraftingItem = this; // Save reference
                 inventoryManager.StartCraftingMinigame();
-            }
-            int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
-            if (leftOverItems <= 0)
-            {
-                Destroy(gameObject);
             }
             else
             {
-                quantity = leftOverItems;
+                int leftOverItems = inventoryManager.AddItem(itemName, quantity, itemImage, itemDescription);
+                if (leftOverItems <= 0)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    quantity = leftOverItems;
+                }
             }
         }
     }
@@ -123,12 +151,5 @@ public class Item : MonoBehaviour, IInteractable
     public Sprite GetItemImage()
     {
         return itemImage;
-    }
-
-    private IEnumerator ResetSaveMenuJustOpened()
-    {
-        // Wait one frame so input isn't double-counted
-        yield return null;
-        inventoryManager.saveMenuJustOpened = false;
     }
 }
