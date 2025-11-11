@@ -6,7 +6,7 @@ using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
-using UnityEditor.Experimental.GraphView;
+using UnityEditor;
 
 
 public class InventoryManager : MonoBehaviour
@@ -116,6 +116,8 @@ public class InventoryManager : MonoBehaviour
     public string currentCraftingResultName;
     public Sprite currentCraftingResultSprite;
     public string currentCraftingResultDescription;
+
+    public Sprite[] allSprites;
 
     private SaveData loadedSaveData; // Store loaded data temporarily
 
@@ -635,7 +637,6 @@ public class InventoryManager : MonoBehaviour
             {
                 data.itemNames.Add(inventorySlot.itemName);
                 data.itemCounts.Add(inventorySlot.quantity);
-                data.itemSprites.Add(inventorySlot.itemSprite);
                 data.itemDescriptions.Add(inventorySlot.itemDescription);
             }
         }
@@ -722,10 +723,21 @@ public class InventoryManager : MonoBehaviour
         // Load saved items into inventory
         for (int i = 0; i < loadedSaveData.itemNames.Count && i < itemSlots.Length; i++)
         {
+            // Find the sprite by name
+            Sprite sprite = null;
+            for (int j = 0; j < allSprites.Length; j++)
+            {   
+                if (allSprites[j].name == loadedSaveData.itemNames[i])
+                {
+                    sprite = allSprites[j];
+                    break;
+                }
+            }
+            
             itemSlots[i].AddItem(
                 loadedSaveData.itemNames[i],
                 loadedSaveData.itemCounts[i],
-                loadedSaveData.itemSprites[i],
+                sprite,
                 loadedSaveData.itemDescriptions[i]
             );
         }
