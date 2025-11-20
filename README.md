@@ -1,4 +1,4 @@
-# Release Candidate
+# Production Release
 
 ## The Cozy Cauldron
 
@@ -28,7 +28,7 @@ Gesture database is fully implemented, which has been populated with 8000 motion
 
 ### Software
 
-Player movement and collisions are working within the game scene for our custom character model. Different player animations (including fishing rod and bug net animations) are triggered when interacting with different in-game objects. The ability to smoothly transition between scenes has been added for the use of multiple in-game environments. Interactable items have been created and can be picked up. The inventory system can be opened and the selected inventory slot will populate the item information on the right side. Items of the same type can stack in inventory slots. Items can be passed between the workstation menu and the inventory. Trashcan logic and UI is completed. Cauldron crafting logic has been implemented and all required recipes have been added. Crafting minigame and catching minigame logic and UI have been completed with associated gesture sprites. Crystal Ball UI and logic have been made for task list and game progression. Models for environments, witch house interior/exterior, furniture, and ingredients have been created with associated sprites. Start, save, and end menus have been implemented. Save, load, and new save are all fully functional.
+Player movement and collisions are working within the game scene for our custom character model. Different player animations (including fishing rod and bug net animations) are triggered when interacting with different in-game objects. The ability to smoothly transition between scenes has been added for the use of multiple in-game environments. Interactable items have been created and can be picked up. The inventory system can be opened and the selected inventory slot will populate the item information on the right side. Items of the same type can stack in inventory slots. Items can be passed between the workstation menu and the inventory. Trashcan logic and UI is completed. Cauldron crafting logic has been implemented and all required recipes have been added. Crafting minigame and catching minigame logic and UI have been completed with associated gesture sprites. Crystal Ball UI and logic have been made for task list and game progression. Models for environments, witch house interior/exterior, furniture, and ingredients have been created with associated sprites. Start, save, and end menus have been implemented. Save, load, and new save are all fully functional. Game has been exported as an exe.
 
 ## Project Architecture
 
@@ -121,5 +121,6 @@ Data collected via hardware -> interpretation algorithm -> output interface -> g
 
 ### Not Fixed
 
-* (Not exactly a bug, but something we want to update) PLayer spawns in from portals at a set location that we want to update
+
+
 

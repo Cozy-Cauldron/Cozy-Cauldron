@@ -6,6 +6,7 @@ using TMPro;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 
 public class InventoryManager : MonoBehaviour
@@ -24,7 +25,7 @@ public class InventoryManager : MonoBehaviour
     public Button workstationButton;
     public string currentWorkstationName;
     public Sprite currentWorkstationSprite;
-    private bool menuActivated;
+    public bool menuActivated;
     public bool workstationActivated;
     public bool taskPanelActivated;
     private bool isWorkstationMenuActive;
@@ -59,18 +60,25 @@ public class InventoryManager : MonoBehaviour
 
     public Transform keySequenceContainer; 
     public GameObject keyImagePrefab;      // a prefab with just an Image component
+    // "Z", "X", "C", "V", "B", "N", "M", "F", "G", "H", "J", "L"
     public Sprite keyZSprite;
     public Sprite keyXSprite;
     public Sprite keyCSprite;
     public Sprite keyVSprite;
     public Sprite keyBSprite;
     public Sprite keyNSprite;
+    public Sprite keyMSprite;
+    public Sprite keyFSprite;
+    public Sprite keyGSprite;
+    public Sprite keyHSprite;
+    public Sprite keyJSprite;
+    public Sprite keyLSprite;
 
     private Dictionary<string, Sprite> keySprites;
     private List<Image> activeKeyImages = new List<Image>();
     private List<Image> overlayImages = new List<Image>();
 
-    [SerializeField] private ItemSlot[] itemSlots; // Array of inventory item slots
+    [SerializeField] public ItemSlot[] itemSlots; // Array of inventory item slots
     [SerializeField] private ItemSlot[] workstationSlots; // Array of workstation item slots
     public Image WorkstationImage;
 
@@ -93,34 +101,40 @@ public class InventoryManager : MonoBehaviour
 
     private float delayTimer = 0f;
     private bool isDelaying = false;
-    private bool justOpened = false; // Track if the workstation was just opened
 
     public bool startMenu = true;
     public bool saveMenu = false;
     public bool endMenu = false;
-    public bool saveMenuJustOpened = false;
-
 
 
     private List<(Dictionary<string, int> recipe, string resultName, Sprite resultSprite, string resultDesc)> craftingRecipes = new List<(Dictionary<string, int>, string, Sprite, string)>();
 
+    public TMP_Text popup;
+    public CanvasGroup popupGroup;
+
+    public Item currentCraftingItem;
+    public string currentCraftingResultName;
+    public Sprite currentCraftingResultSprite;
+    public string currentCraftingResultDescription;
+
+    public Sprite[] allSprites;
+
     private SaveData loadedSaveData; // Store loaded data temporarily
 
-    public static InventoryManager Instance;
+    public static InventoryManager instance;
 
     private void Awake()
     {
         // Make this a singleton
-        if (Instance == null)
+        if (instance != null && instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); // Keep this object between scenes
+            Destroy(gameObject); // There’s already one — destroy this duplicate
+            return;
         }
-        else
-        {
-            Destroy(gameObject); // Prevent duplicates
-        }
-        
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+
         pages = new TaskPage[6];
 
         pages[0] = new TaskPage 
@@ -312,7 +326,13 @@ public class InventoryManager : MonoBehaviour
             { "C", keyCSprite },
             { "V", keyVSprite },
             { "N", keyNSprite },
-            { "B", keyBSprite }
+            { "B", keyBSprite },
+            { "M", keyMSprite },
+            { "F", keyFSprite },
+            { "G", keyGSprite },
+            { "H", keyHSprite },
+            { "J", keyJSprite },
+            { "L", keyLSprite }
         };
 
     }
@@ -369,6 +389,7 @@ public class InventoryManager : MonoBehaviour
                                 while (workstationSlot.quantity != 0)
                                 {
                                     workstationSlot.RemoveItem();
+                                    workstationSlot.SetHighlight(false);
                                 }
 
                                 itemReturned = true;
@@ -393,6 +414,7 @@ public class InventoryManager : MonoBehaviour
                                     while (workstationSlot.quantity != 0)
                                     {
                                         workstationSlot.RemoveItem();
+                                        workstationSlot.SetHighlight(false);
                                     }
 
                                     break;
@@ -464,28 +486,17 @@ public class InventoryManager : MonoBehaviour
                 itemSlots[selectedItemIndex].RemoveItem();
             }
         }
-        else if (workstationActivated && !justOpened)
+        else if (workstationActivated)
         {
             // If the workstation menu is active, handle navigation for it
             // Stop time when the workstation menu is active
-            justOpened = true;
-
+    
             Time.timeScale = 0;
             InventoryMenu.SetActive(true);
             WorkstationMenu.SetActive(true);
             WorkstationImage.sprite = currentWorkstationSprite;
             InventoryDescription.SetActive(false);
-        }
-        else if (workstationActivated && justOpened)
-        {
-            // If the workstation menu is active, handle navigation for it
-            // Stop time when the workstation menu is active
 
-            Time.timeScale = 0;
-            InventoryMenu.SetActive(true);
-            WorkstationMenu.SetActive(true);
-            WorkstationImage.sprite = currentWorkstationSprite;
-            InventoryDescription.SetActive(false);
             HandleNavigation();
 
             if (Input.GetButtonDown("Interact"))
@@ -494,25 +505,16 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
-        else if (taskPanelActivated && !justOpened)
+        else if (taskPanelActivated)
         {
             //Debug.Log("Opened for first time!");
-            justOpened = true;
             Time.timeScale = 0;
             TaskPanel.SetActive(true);
 
-            selectedTaskButtonIndex = 1;
-            currentPageIndex = 0;
             // Unhighlight all buttons first
             foreach (Button btn in taskPanelButtons)
                 btn.SetHighlight(false);
             taskPanelButtons[selectedTaskButtonIndex].SetHighlight(true);
-        }
-        else if (taskPanelActivated && justOpened)
-        {
-            // If the task panel is active, show it
-            Time.timeScale = 0;
-            TaskPanel.SetActive(true);
             HandleTaskNavigation();
         }
         else if (startMenu)
@@ -545,19 +547,7 @@ public class InventoryManager : MonoBehaviour
                 return;
             }
         }
-        else if (saveMenu && !justOpened)
-        {
-            justOpened = true;
-            Time.timeScale = 0;
-            SaveMenu.SetActive(true);
-            selectedSaveButtonIndex = 0;
-            saveStatus.sprite = noStatus;
-            // Unhighlight all buttons first
-            foreach (Button btn in saveButtons)
-                btn.SetHighlight(false);
-            saveButtons[selectedSaveButtonIndex].SetHighlight(true);
-        }
-        else if (saveMenu && justOpened)
+        else if (saveMenu)
         {
             Time.timeScale = 0;
             SaveMenu.SetActive(true);
@@ -579,26 +569,8 @@ public class InventoryManager : MonoBehaviour
             saveMenu = false;
             startMenu = false;
             endMenu = false;
-            justOpened = false;
             // Reset time scale to 1 when neither menu is active
             Time.timeScale = 1;
-        }
-        
-        if (workstationActivated && !isWorkstationMenuActive)
-        {
-            foreach (ItemSlot inventorySlot in itemSlots)
-            {
-                inventorySlot.SetHighlight(false);
-            }
-            itemSlots[selectedItemIndex].SetHighlight(true);
-        }
-        else if (workstationActivated && isWorkstationMenuActive)
-        {
-            foreach (ItemSlot workstationSlot in workstationSlots)
-            {
-                workstationSlot.SetHighlight(false);
-            }
-            itemSlots[selectedWorkstationIndex].SetHighlight(true);
         }
     }
 
@@ -665,7 +637,6 @@ public class InventoryManager : MonoBehaviour
             {
                 data.itemNames.Add(inventorySlot.itemName);
                 data.itemCounts.Add(inventorySlot.quantity);
-                data.itemSprites.Add(inventorySlot.itemSprite);
                 data.itemDescriptions.Add(inventorySlot.itemDescription);
             }
         }
@@ -741,16 +712,32 @@ public class InventoryManager : MonoBehaviour
         {
             inventorySlot.SetHighlight(false);
             while (inventorySlot.quantity > 0)
+            {
                 inventorySlot.RemoveItem();
+                inventorySlot.SetHighlight(false);
+            }
         }
+        //Rehighlight selected item index
+        itemSlots[selectedItemIndex].SetHighlight(true);
 
         // Load saved items into inventory
         for (int i = 0; i < loadedSaveData.itemNames.Count && i < itemSlots.Length; i++)
         {
+            // Find the sprite by name
+            Sprite sprite = null;
+            for (int j = 0; j < allSprites.Length; j++)
+            {   
+                if (allSprites[j].name == loadedSaveData.itemNames[i])
+                {
+                    sprite = allSprites[j];
+                    break;
+                }
+            }
+            
             itemSlots[i].AddItem(
                 loadedSaveData.itemNames[i],
                 loadedSaveData.itemCounts[i],
-                loadedSaveData.itemSprites[i],
+                sprite,
                 loadedSaveData.itemDescriptions[i]
             );
         }
@@ -803,6 +790,7 @@ public class InventoryManager : MonoBehaviour
         {
             if (Input.GetButtonDown("Interact"))
             {
+                //consume E press to prevent double opening
                 if (selectedTaskButtonIndex == 0) //left
                 {
                     //change page
@@ -880,6 +868,8 @@ public class InventoryManager : MonoBehaviour
         //on submit
         else if (Input.GetButtonDown("Interact"))
         {
+            //consume E press to prevent double opening
+            Input.ResetInputAxes();
             if (selectedSaveButtonIndex == 0)
             {
                 Save();
@@ -1233,8 +1223,9 @@ public class InventoryManager : MonoBehaviour
 
     public void StartCraftingMinigame()
     {
+        Time.timeScale = 0;
         int sequenceLength = 3;
-        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N" };
+        List<string> possibleKeys = new List<string> { "Z", "X", "C", "V", "B", "N", "M", "F", "G", "H", "J", "L" };
 
         // Shuffle the list
         for (int i = 0; i < possibleKeys.Count; i++)
@@ -1300,7 +1291,7 @@ public class InventoryManager : MonoBehaviour
             }
             else if (Input.GetKeyDown(expectedKey))
             {
-                // Correct key → show overlay green
+                // Correct key show overlay green
                 overlayImages[currentKeyIndex].gameObject.SetActive(true);
                 currentKeyIndex++;
                 if (currentKeyIndex >= keys.Length)
@@ -1310,14 +1301,38 @@ public class InventoryManager : MonoBehaviour
             }
             else
             {
-                // Wrong key → reset overlays
-                foreach (Image overlay in overlayImages)
-                overlay.gameObject.SetActive(false);
-                currentKeyIndex = 0;
+                // Wrong key flash red and reset overlays
+                StartCoroutine(FlashRedAndReset());
             }
         }
     }
+    private System.Collections.IEnumerator FlashRedAndReset()
+    {
+        // Show all overlays as red
+        foreach (Image overlay in overlayImages)
+        {
+            overlay.gameObject.SetActive(true);
+            overlay.color = new Color(1, 0, 0, 0.5f); // semi-transparent red
+        }
 
+        // Wait briefly (use unscaled time since Time.timeScale = 0)
+        float flashDuration = 0.3f;
+        float elapsed = 0f;
+        while (elapsed < flashDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        // Reset overlays and progress
+        foreach (Image overlay in overlayImages)
+        {
+            overlay.gameObject.SetActive(false);
+            overlay.color = new Color(0, 1, 0, 0.5f); // back to green for next round
+        }
+
+        currentKeyIndex = 0;
+    }
     public void FinishCraftingMinigame()
     {
         minigameActive = false;
@@ -1328,10 +1343,37 @@ public class InventoryManager : MonoBehaviour
         {
             workstationSlots[i].SetHighlight(false);
         }
+        Time.timeScale = 1;   
+        workstationButton.SetHighlight(true);
+        if(workstationActivated)
+        {
+            Debug.Log("Crafting Minigame complete!");
+            int leftover = AddItem(
+                currentCraftingResultName,
+                1,
+                currentCraftingResultSprite,
+                currentCraftingResultDescription
+            );
+
             
-        workstationButton.SetHighlight(true); 
-           
-        //Debug.Log("Minigame complete!");
+        }
+        else
+        {
+            Debug.Log("Catching Minigame complete!");
+            int leftover = AddItem(
+                currentCraftingItem.itemName,
+                currentCraftingItem.quantity,
+                currentCraftingItem.GetItemImage(),
+                currentCraftingItem.itemDescription
+            );
+
+            if (leftover <= 0)
+                Destroy(currentCraftingItem.gameObject);
+            else
+                currentCraftingItem.quantity = leftover;
+
+            currentCraftingItem = null;
+        }
     }
 
     private bool MatchesRecipe(Dictionary<string,int> recipe, Dictionary<string,int> currentCounts)
@@ -1346,7 +1388,7 @@ public class InventoryManager : MonoBehaviour
 
     private void PerformCombinationAction()
     {
-            // Count items in workstation slots
+        // Count items in workstation slots
         Dictionary<string,int> itemCounts = new Dictionary<string,int>();
         foreach (ItemSlot slot in workstationSlots)
         {
@@ -1361,38 +1403,86 @@ public class InventoryManager : MonoBehaviour
 
         // If no items, exit
         if (itemCounts.Count == 0) return;
+        // Determine what will be crafted
+        string resultName = "";
+        Sprite resultSprite = null;
+        string resultDesc = "";
 
         bool matched = false;
         foreach (var recipe in craftingRecipes)
         {
             if (MatchesRecipe(recipe.recipe, itemCounts))
             {
-                AddItem(recipe.resultName, 1, recipe.resultSprite, recipe.resultDesc);
+                resultName = recipe.resultName;
+                resultSprite = recipe.resultSprite;
+                resultDesc = recipe.resultDesc;
                 matched = true;
-                break; // stop after the first match
+                break;
             }
         }
 
         if (!matched)
         {
-            // If no valid recipe, create Oops Potion
-            AddItem("Oops Potion", 1, oopsPotionSprite, "Oops… did you mean to make this?");
+            // Invalid recipe → Oops Potion
+            resultName = "Oops Potion";
+            resultSprite = oopsPotionSprite;
+            resultDesc = "Oops… did you mean to make this?";
         }
 
-        // Clear workstation slots
+        // Store the result in InventoryManager temporarily
+        currentCraftingResultName = resultName;
+        currentCraftingResultSprite = resultSprite;
+        currentCraftingResultDescription = resultDesc;
+        //check if there is a slot matching crafting result
+        bool matchingName = false;
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            if (inventorySlot.itemName == resultName)
+            {
+                matchingName = true;
+            }
+        }
+        //check if inventory is full
+        bool inventoryfull = true;
+        foreach (ItemSlot inventorySlot in itemSlots)
+        {
+            if (inventorySlot.quantity == 0)
+            {
+                inventoryfull = false;
+            }
+        }
+        if (!matchingName && inventoryfull)
+        {
+            string popupText = $"Inventory Full";
+            popup.text = popupText;
+            popup.gameObject.SetActive(true);
+            StartCoroutine(HidePopupAfterDelay());
+            return;
+        }
+
+        // Start the minigame BEFORE clearing the slots
+        StartCraftingMinigame();
+
+        // Clear workstation slots AFTER starting the minigame
         foreach (ItemSlot slot in workstationSlots)
         {
             while (slot.quantity > 0)
+            {
                 slot.RemoveItem();
+            }
+            slot.SetHighlight(false);
         }
-
-        // Start the minigame
-        StartCraftingMinigame();
     }
 
 
     public int AddItem(string itemName, int quantity, Sprite itemSprite, string itemDescription)
     {
+        //popup text
+        string popupText = $"+{quantity} {itemName}";
+        popup.text = popupText;
+        popup.gameObject.SetActive(true);
+        StartCoroutine(HidePopupAfterDelay());
+
         for (int i = 0; i < itemSlots.Length; i++)
         {
             if(itemSlots[i].isFull == false && (itemSlots[i].itemName == itemName || itemSlots[i].quantity==0))
@@ -1408,6 +1498,26 @@ public class InventoryManager : MonoBehaviour
         return quantity;
     }
 
+    public System.Collections.IEnumerator HidePopupAfterDelay()
+    {
+        popupGroup.alpha = 1f; // fully visible
+
+        float displayTime = 1.5f; // time before fading starts
+        float fadeDuration = 1f; // how long the fade lasts
+
+        yield return new WaitForSecondsRealtime(displayTime);
+
+        float elapsed = 0f;
+        while (elapsed < fadeDuration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            popupGroup.alpha = Mathf.Lerp(1f, 0f, elapsed / fadeDuration);
+            yield return null;
+        }
+
+        popupGroup.alpha = 0f;
+        popupGroup.gameObject.SetActive(false);
+    }
 }
 
 
