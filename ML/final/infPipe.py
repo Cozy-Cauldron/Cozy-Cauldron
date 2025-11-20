@@ -15,16 +15,16 @@ import joblib
 #config
 SERIAL_PORT = 'COM9'
 BAUD_RATE = 400000
-FRAME_LEN = 6  # number of samples per inference
+FRAME_LEN = 7  # number of samples per inference
 THRESHOLD = 0.6  # confidence cutoff for failed gestures
 prediction_cnt = 0
 gesture_cnt = 0
 FEATURES = ["gyro_x", "gyro_y", "gyro_z", "acc_x", "acc_y", "acc_z"]
 
 #load ML model
-clf = joblib.load("beta_gesture_model.joblib")
-scaler = joblib.load("beta_gesture_scaler.joblib")
-encoder = joblib.load("beta_gesture_encoder.joblib")
+clf = joblib.load("final_gesture_model.joblib")
+scaler = joblib.load("final_gesture_scaler.joblib")
+encoder = joblib.load("final_gesture_encoder.joblib")
 
 def preprocess_gesture(frames, frame_len=FRAME_LEN):
     """
@@ -162,7 +162,7 @@ try:
                     if stop_flag == True:
                         break
 
-                    if len(buffer) >= 6: 
+                    if len(buffer) >= FRAME_LEN: 
                         # Stop collecting once we have enough frames
                         break
                     #imu_line = ser.readline().decode('utf-8', errors='ignore').strip()
@@ -215,7 +215,7 @@ try:
             max_prob = np.max(probs)
             pred_class = np.argmax(probs)
 
-            THRESHOLD = 0.3
+            THRESHOLD = 0.4
             if max_prob < THRESHOLD:
                 gesture = "FAILED"
             else:
